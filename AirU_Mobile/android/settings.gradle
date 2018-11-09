@@ -1,0 +1,3 @@
+rootProject.name = 'AirU_Mobile'
+
+include ':app'
