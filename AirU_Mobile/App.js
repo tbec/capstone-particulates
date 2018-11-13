@@ -1,17 +1,27 @@
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View} from 'react-native';
+import {createStackNavigator} from 'react-navigator'
 
 type Props = {};
 export default class App extends Component<Props> {
-
-  // need way to check if already setup or if this is first time - TC
-  // Pass into home? - TC
-  
   render() {
     return (
-      <View style={styles.container}>
-        <Home/>
-      </View>
+      <RootStack/>
     );
   }
 }
+
+// Home screen and options
+const RootStack = createStackNavigator(
+  {
+    Home: Home,
+    Map: Map,
+    Setting: Settings,
+    SetupNew: SetupNew,
+    Sensor: Sensor,
+    Tracker: Tracker
+  },
+  {
+    initialRouteName: 'Home',
+  }
+);
