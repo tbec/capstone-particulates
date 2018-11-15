@@ -9,7 +9,8 @@ export default class Home extends Component<Props> {
     render() {
         return (
             <View>
-                {/* <NavBar/> */}
+                <Text>Home Screen</Text>
+                <NavBar/>
             </View>
         );
     }
