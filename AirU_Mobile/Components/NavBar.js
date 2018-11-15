@@ -5,10 +5,9 @@
 
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
-import {createStackNavigator} from react-navigator
-import {StyleSheets} from '../StyleSheets/StyleSheets'
+import StyleSheets from '../StyleSheets/StyleSheets'
 
-export default class NavBar extends Components<Props>
+export default class NavBar extends Component<Props>
 {
     render(){
         return(
