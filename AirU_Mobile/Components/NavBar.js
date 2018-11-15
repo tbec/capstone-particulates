@@ -9,7 +9,6 @@ export default class NavBar extends Component<Props>
         return(
             <View style={styles.navBar}>
                 <Text>NavBar</Text>
-
                 {/* settings */}
                 <TouchableOpacity onPress={() => Navigation.push('Settings')}>
                     <Image source={require("../Resources/Sensor.png")}/>

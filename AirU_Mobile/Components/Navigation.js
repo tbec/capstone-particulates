@@ -1,20 +1,29 @@
-import {createStackNavigator} from 'react-navigation'
+import {createBottomTabNavigator, createStackNavigator} from 'react-navigation'
 import Home from '../Views/Home'
 import Settings from '../Views/Settings'
 import Map from '../Views/Map'
 import Tracker from '../Views/Tracker'
 
 // Home screen and options
-export const navigation = createStackNavigator(
+const TabNavigator = createBottomTabNavigator(
   {
-    Home: Home,
-    Settings: Settings,
-    //Map: Map,
-    //Tracker: Tracker
+    Home: {screen: Home},
+    Settings: {screen: Settings}
   },
-  {
-    initialRouteName: 'Home'
-  }
 );
 
-export default navigation
+const Router = createStackNavigator(
+  {
+    Home: {screen: Home, },
+    Settings: {screen: Settings, },
+    Tabs: {screen: TabNavigator, initalRouteName: 'Home'}
+  },
+  {
+    initalRouteName: 'Home',
+    navigationOptions: ({navigation}) => ({
+      header: null
+    }),
+  },
+);
+
+export default Router
