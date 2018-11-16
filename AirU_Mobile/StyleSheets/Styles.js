@@ -1,16 +1,16 @@
 import {StyleSheet} from 'react-native';
 
-export const styles = () => StyleSheet.create({
-    container: {
-        flex: 1,
-        flexDirection: 'row',
+export const styles = StyleSheet.create({
+    home: {
+        flex: 5,
+        flexDirection: 'column',
         justifyContent: 'space-evenly',
-        height: '10%',
-        width: '100%',
         alignItems: 'center'
     },
     button: {
-
+        borderWidth: 5,
+        padding: 5,
+        borderColor: 'blue',
     }
 });
 

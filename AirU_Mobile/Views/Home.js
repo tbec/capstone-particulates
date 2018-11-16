@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Text, View, TouchableOpacity, Image} from 'react-native';
+import {View, TouchableHighlight, Text} from 'react-native';
 import {TabNavigator} from '../Components/Navigation'
 import {NavigationActions} from 'react-navigation'
 import styles from '../StyleSheets/Styles'
@@ -10,14 +10,40 @@ export default class Home extends Component<Props> {
     
     render() {
         return (
-            <View style={styles.container}>
-                <Text>Home Screen</Text>
-                <TouchableOpacity onPress={() => this.props.navigation.navigate({
-                    routeName: 'Tabs',
-                    params: {},
-                    action: NavigationActions.navigate({routeName: 'Home'})})}>
-                    <Image source={require("../Resources/Sensor.png")}/>
-                </TouchableOpacity>
+            <View style={styles.home}>
+                <Text>Here is text</Text>
+                <TouchableHighlight 
+                    style={styles.button}
+                    onPress={() => this.props.navigation.navigate({
+                        routeName: 'Tabs',
+                        params: {},
+                        action: NavigationActions.navigate({routeName: 'Home'})})}>
+                        <Text>Setup Sensor</Text>
+                </TouchableHighlight>
+                <TouchableHighlight 
+                    style={styles.button}
+                    onPress={() => this.props.navigation.navigate({
+                        routeName: 'Tabs',
+                        params: {},
+                        action: NavigationActions.navigate({routeName: 'Settings'})})}>
+                        <Text>Personal Tracker</Text>
+                </TouchableHighlight>
+                <TouchableHighlight 
+                    style={styles.button}
+                    onPress={() => this.props.navigation.navigate({
+                        routeName: 'Tabs',
+                        params: {},
+                        action: NavigationActions.navigate({routeName: 'Settings'})})}>
+                        <Text>Sensor Map</Text>
+                </TouchableHighlight>
+                <TouchableHighlight 
+                    style={styles.button}
+                    onPress={() => this.props.navigation.navigate({
+                        routeName: 'Tabs',
+                        params: {},
+                        action: NavigationActions.navigate({routeName: 'Settings'})})}>
+                        <Text>Settings</Text>
+                </TouchableHighlight>
             </View>
         );
     }
