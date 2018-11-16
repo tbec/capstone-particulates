@@ -6,7 +6,7 @@ export const styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'space-evenly',
         alignItems: 'center'
-    },
+    }, 
     button: {
         borderWidth: 5,
         padding: 5,

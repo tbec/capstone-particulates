@@ -43,7 +43,7 @@ export default class Home extends Component<Props> {
                         params: {},
                         action: NavigationActions.navigate({routeName: 'Settings'})})}>
                         <Text>Settings</Text>
-                </TouchableHighlight>
+                </TouchableHighlight> 
             </View>
         );
     }
