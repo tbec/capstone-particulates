@@ -1,17 +1,15 @@
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View} from 'react-native';
+import Router from './Components/Navigation'
+import Home from './Views/Home'
 
+// Main screen. Uses Router from Navigation to load home screen, 
+// do not load <Home> in here directly.
 type Props = {};
 export default class App extends Component<Props> {
-
-  // need way to check if already setup or if this is first time - TC
-  // Pass into home? - TC
-  
   render() {
     return (
-      <View style={styles.container}>
-        <Home/>
-      </View>
+      <Router/>
     );
   }
 }
