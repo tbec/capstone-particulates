@@ -5,6 +5,7 @@ import Home from '../Views/Home'
 import Settings from '../Views/Settings'
 import Map from '../Views/Map'
 import Tracker from '../Views/Tracker'
+import Setup from '../Views/Setup/SetupNew'
 
 /**
  * Navigator used for moving between screens. Update any new screen 
@@ -14,7 +15,9 @@ import Tracker from '../Views/Tracker'
 // Home screen and options
 const TabNavigator = createBottomTabNavigator(
   {
-    Home: {screen: Home},
+    Setup: {screen: Setup},
+    Tracker: {screen: Tracker},
+    Map: {screen: Map},
     Settings: {screen: Settings}
   },
   {
@@ -23,20 +26,31 @@ const TabNavigator = createBottomTabNavigator(
         const {routeName} = navigation.state
         // update me with various images to display in tabs, icons 
         // would be ideal
-        if (routeName == 'Home') {
-          return <Image source={require("../Resources/Sensor.png")}/>
-        }
-        else {
+        if (routeName == 'Setup') {
           return <Image/>
         }
-      }})
+        else if (routeName == 'Tracker') {
+          return <Image/>
+        }
+        else if (routeName == 'Map') {
+          return <Image/>
+        }
+        else if (routeName == 'Settings') {
+          return <Image/>
+        }
+        else
+          return <Image/>
+        }
+      })
   }
 );
 
 const Router = createStackNavigator(
   {
-    Home: {screen: Home, },
-    Settings: {screen: Settings, },
+    Home: {screen: Home},
+    Settings: {screen: Settings}, 
+    Map: {screen: Map},
+    Tracker: {screen: Tracker},
     Tabs: {screen: TabNavigator, initalRouteName: 'Home'}
   },
   {
