@@ -8,6 +8,7 @@ import Settings from '../Views/Settings'
 import Map from '../Views/Map'
 import Tracker from '../Views/Tracker'
 import Setup from '../Views/Setup/SetupNew'
+import MountingSensor from '../Views/Setup/MountingSensor'
 
 // setup
 import ReviewFirst from '../Views/Setup/ReviewFirst'
@@ -65,16 +66,20 @@ const TabNavigator = createBottomTabNavigator(
 // top level navigator
 const Router = createStackNavigator(
   {
+    // home or tabs
     Home: {screen: Home},
     Settings: {screen: Settings}, 
     Map: {screen: Map},
     Tracker: {screen: Tracker},
     Tabs: {screen: TabNavigator, initalRouteName: 'Home'},
+    // sensor setup
     ReviewFirst: {screen: ReviewFirst}, 
     WiFiSetup: {screen: WiFiSetup}, 
     Privacy: {screen: Privacy}, 
     Confirmation: {screen: Confirmation}, 
-    BluetoothSetup: {screen: BluetoothSetup}, 
+    BluetoothSetup: {screen: BluetoothSetup},
+    MountingSensor: {screen: MountingSensor}, 
+    //sensor screens
     Sensor: {screen: Sensor}
   },
   {

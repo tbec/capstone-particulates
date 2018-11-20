@@ -7,14 +7,14 @@ export const styles = StyleSheet.create({
     header: {
         flex: 5,
         flexDirection: 'column',
-        padding: 30,
+        padding: 40,
         alignItems: 'center',
     },
     home: {
         flex: 100,
         flexDirection: 'column',
         justifyContent: 'space-evenly',
-        alignItems: 'center'
+        alignItems: 'center', 
     }, 
     // Button with text justified in center, used on Home screen
     button: {
@@ -26,7 +26,31 @@ export const styles = StyleSheet.create({
         height: 50, 
         alignItems: 'center', 
         justifyContent: 'space-evenly'
-    }
+    }, 
+    mainView: {
+        flex: 1,
+        paddingTop: 30, 
+        flexDirection: 'column',
+        justifyContent: 'space-between'
+    }, 
+    nextButton: {
+        flex: 5,
+        padding: 10,
+        borderColor: 'black',
+        width:  40,
+        height: 40, 
+        alignItems: 'flex-end', 
+        justifyContent: 'flex-end'
+    }, 
+    previousButton: {
+        flex: 5,
+        padding: 10,
+        borderColor: 'black',
+        width:  40,
+        height: 40, 
+        alignItems: 'flex-start', 
+        justifyContent: 'flex-start'
+    }, 
 });
 
 export default styles
