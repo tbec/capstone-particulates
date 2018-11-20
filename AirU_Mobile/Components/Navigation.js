@@ -1,18 +1,35 @@
 import {createBottomTabNavigator, createStackNavigator} from 'react-navigation'
 import React from 'react';
 import {Image} from 'react-native'
+
+// home
 import Home from '../Views/Home'
 import Settings from '../Views/Settings'
 import Map from '../Views/Map'
 import Tracker from '../Views/Tracker'
 import Setup from '../Views/Setup/SetupNew'
 
+// setup
+import ReviewFirst from '../Views/Setup/ReviewFirst'
+import WiFiSetup from '../Views/Setup/WiFiSetup'
+import Privacy from '../Views/Setup/Privacy'
+import BluetoothSetup from '../Views/Setup/BluetoothSetup'
+import Confirmation from '../Views/Setup/Confirmation'
+import Sensor from '../Views/Sensor/Sensor'
+
+// sensor if needed
+
+// tracker if needed
+
+// settings if needed
+
 /**
  * Navigator used for moving between screens. Update any new screen 
  * routes here as needed
  */
 
-// Home screen and options
+
+// Tabs across bottom of screens
 const TabNavigator = createBottomTabNavigator(
   {
     Setup: {screen: Setup},
@@ -45,13 +62,20 @@ const TabNavigator = createBottomTabNavigator(
   }
 );
 
+// top level navigator
 const Router = createStackNavigator(
   {
     Home: {screen: Home},
     Settings: {screen: Settings}, 
     Map: {screen: Map},
     Tracker: {screen: Tracker},
-    Tabs: {screen: TabNavigator, initalRouteName: 'Home'}
+    Tabs: {screen: TabNavigator, initalRouteName: 'Home'},
+    ReviewFirst: {screen: ReviewFirst}, 
+    WiFiSetup: {screen: WiFiSetup}, 
+    Privacy: {screen: Privacy}, 
+    Confirmation: {screen: Confirmation}, 
+    BluetoothSetup: {screen: BluetoothSetup}, 
+    Sensor: {screen: Sensor}
   },
   {
     initalRouteName: 'Home',

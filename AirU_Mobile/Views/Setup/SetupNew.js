@@ -3,9 +3,8 @@
  */
 
 import React, {Component} from 'react';
-import {View, Text} from 'react-native';
-import Login from './Login'
-import Review from './Review'
+import SetupNavigation from '../../Components/Navigation'
+import Login from '../Setup/Login'
 
 export default class SetupNew extends Component<Props> {
 
@@ -32,11 +31,11 @@ export default class SetupNew extends Component<Props> {
           }
     }
 
-    // If logged in already go to review, otherwise have login first
+    // If logged in already go to review via navigator, otherwise have login first
     render() {
         if (this.state.loggedIn) {
             return (
-                <Review/>
+                this.props.navigation.navigate('ReviewFirst')
             );
         } else {
             return (
@@ -44,4 +43,7 @@ export default class SetupNew extends Component<Props> {
             )
         }
     }
+
+    // need way to go to SetupNavigation after Login successful
+    // Change to navigation.push, when returned way to pass in variable back and logic off that?
 }

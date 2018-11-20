@@ -3,7 +3,7 @@
  */
 
 import React, {Component} from 'react';
-import {View, WebView} from 'react-native';
+import {WebView} from 'react-native';
 
 // WIP. Will need to go to correct URL, save token after login, and navigate to next page after done
 export default class Login extends Component<Props> {
