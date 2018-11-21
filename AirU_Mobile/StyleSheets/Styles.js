@@ -40,7 +40,8 @@ export const styles = StyleSheet.create({
         width:  40,
         height: 40, 
         alignItems: 'flex-end', 
-        justifyContent: 'flex-end'
+        justifyContent: 'flex-end',
+        backgroundColor: 'transparent'
     }, 
     previousButton: {
         flex: 5,
@@ -49,7 +50,8 @@ export const styles = StyleSheet.create({
         width:  40,
         height: 40, 
         alignItems: 'flex-start', 
-        justifyContent: 'flex-start'
+        justifyContent: 'flex-start',
+        backgroundColor: 'transparent'
     }, 
 });
 

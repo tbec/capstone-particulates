@@ -5,46 +5,38 @@
 import React, {Component} from 'react';
 import {Text, View, TouchableHighlight, Image, ScrollView, StyleSheet} from 'react-native';
 import styles from '../../StyleSheets/Styles'
+import NavBar from '../../Components/NavBar'
 
 export default class ReviewFirst extends Component<Props> {
 
     render() {
         return (
-            <ScrollView contentContainerStyle={scrollStyle.mainView} showsVerticalScrollIndicator='true'>
+            <ScrollView contentContainerStyle={styles.mainView} showsVerticalScrollIndicator='true'>
                 <Text>Before proceeding, please confirm the following items were in your AirU box: </Text>
                 <Text></Text>
                 <View style={{flex: 4, flexDirection: 'row'}}>
-                    <View style={{flex: 2, flexDirection: 'column', justifyContent: 'center'}}>
-                        <Text style={{padding: 5}}>AirU Sensor</Text>
-                        <Text style={{padding: 5}}>2 zip ties</Text>
-                        <Text style={{padding: 5}}>Black power cord</Text>
+                        <View style={{flex: 2, flexDirection: 'column', justifyContent: 'center'}}>
+                            <Text style={{padding: 5}}>AirU Sensor</Text>
+                            <Text style={{padding: 5}}>2 zip ties</Text>
+                            <Text style={{padding: 5}}>Black power cord</Text>
+                        </View>
+                        <Image source={require('../../Resources/SensorBox.png')} style={{width: '50%', height: '100%', flex: 3}}/>
                     </View>
-                    <Image source={require('../../Resources/SensorBox.png')} style={{width: '50%', height: '100%', flex: 3}}/>
-                </View>
-                <Text></Text>
-                <Text style={{flex: 1}}>On the back of the sensor, make sure there are two stickers</Text>
-                <Image source={require('../../Resources/SensorStickers.png')} style={{width: '60%', height: '50%', flex: 3}}/>
-                <Text></Text>
-                <Text style={{flex: 1}}>The first is the MAC address which will be used to connect to the sensor</Text>
-                <Text style={{flex: 1}}>The second is the S-A-XXX label, which is the name of the sensor</Text>
-                <Text style={{flex: 1}}>After confirming everything, please proceed to connecting to the sensor</Text>
-                <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between'}}>
+                    <Text></Text>
+                    <Text style={{flex: 1}}>On the back of the sensor, make sure there are two stickers</Text>
+                    <Image source={require('../../Resources/SensorStickers.png')} style={{width: '60%', height: '50%', flex: 3}}/>
+                    <Text></Text>
+                    <Text style={{flex: 1}}>The first is the MAC address which will be used to connect to the sensor</Text>
+                    <Text style={{flex: 1}}>The second is the S-A-XXX label, which is the name of the sensor</Text>
+                    <Text style={{flex: 1}}>After confirming everything, please proceed to connecting to the sensor</Text>
+                    <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between'}}>
                     <TouchableHighlight 
                         style={styles.nextButton}
                         onPress={() => this.props.navigation.navigate('MountingSensor')}>
-                            <Image source={require('../../Resources/next.jpg')} style={styles.nextButton}/>
+                            <Image source={require('../../Resources/next.png')} style={styles.nextButton}/>
                     </TouchableHighlight>
                 </View>
             </ScrollView>
         );
     }
 }
-
-const scrollStyle = StyleSheet.create({
-    mainView: {
-        flex: 1,
-        paddingTop: 30, 
-        flexDirection: 'column',
-        justifyContent: 'space-between'
-    }
-})

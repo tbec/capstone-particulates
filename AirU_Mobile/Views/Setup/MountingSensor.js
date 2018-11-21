@@ -10,18 +10,18 @@ export default class ReviewFirst extends Component<Props> {
 
     render() {
         return (
-            <View style={{flex: 1}}>
+            <View style={styles.mainView}>
                 <Text>Mounting</Text>
                 <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between'}}>
-                <TouchableHighlight 
+                    <TouchableHighlight 
                         style={styles.previousButton}
-                        onPress={() => this.props.navigation.navigate('MountingSensor')}>
-                            <Image source={require('../../Resources/previous.jpeg')} style={styles.nextButton}/>
+                        onPress={() => this.props.navigation.navigate('ReviewFirst')}>
+                            <Image source={require('../../Resources/previous.png')} style={styles.nextButton}/>
                     </TouchableHighlight>
                     <TouchableHighlight 
                         style={styles.nextButton}
-                        onPress={() => this.props.navigation.navigate('MountingSensor')}>
-                            <Image source={require('../../Resources/next.jpg')} style={styles.nextButton}/>
+                        onPress={() => this.props.navigation.navigate('BluetoothSetup')}>
+                            <Image source={require('../../Resources/next.png')} style={styles.nextButton}/>
                     </TouchableHighlight>
                 </View>
             </View>
