@@ -14,11 +14,11 @@ export default class ReviewFirst extends Component<Props> {
             <ScrollView contentContainerStyle={styles.mainView} showsVerticalScrollIndicator='true'>
                 <Text>Before proceeding, please confirm the following items were in your AirU box: </Text>
                 <Text></Text>
-                <View style={{flex: 4, flexDirection: 'row'}}>
+                <View style={{flex: 4, flexDirection: 'row', backgroundColor: 'powderBlue'}}>
                         <View style={{flex: 2, flexDirection: 'column', justifyContent: 'center'}}>
-                            <Text style={{padding: 5}}>AirU Sensor</Text>
-                            <Text style={{padding: 5}}>2 zip ties</Text>
-                            <Text style={{padding: 5}}>Black power cord</Text>
+                            <Text style={{padding: 5}}>* AirU Sensor</Text>
+                            <Text style={{padding: 5}}>* 2 zip ties</Text>
+                            <Text style={{padding: 5}}>* Power cord</Text>
                         </View>
                         <Image source={require('../../Resources/SensorBox.png')} style={{width: '50%', height: '100%', flex: 3}}/>
                     </View>
