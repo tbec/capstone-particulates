@@ -1,7 +1,7 @@
 # Holds all the routes but need to have access to the app.routes decorator
 # Grab the application from the myapp file
 from myapp import app, db
-from flask import Flask, redirect, render_template
+from flask import Flask, redirect, render_template, url_for
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_user, login_required,logout_user, current_user
 # IMport the class form created
@@ -10,6 +10,7 @@ from flask_login import LoginManager, UserMixin, login_user, login_required,logo
 #import the models from the model file
 from models import User
 
+# Manages 
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'index'
@@ -22,30 +23,36 @@ def load_user(user_id):
 
 @app.route('/')
 def index():
-    return "You are not logged in, sign up!"
+    return render_template('index.html')
+
 @app.route('/login')
 def login():
     user = User.query.get(1)
     login_user(user)
-    return "<h1> You are logged in as: " + current_user.username + current_user.email+"</h1>"
+    return render_template('login.html', user=current_user)
 
 @app.route('/signup', methods=['GET','POST'])
 def signup():
-    hashed_pwd = generate_password_hash('password', method='sha256')
-    user = User(id=1, username='John', email='John@gmail.com', password=hashed_pwd )
-    db.session.add(user)
-    db.session.commit()
-    return redirect('login')
+    user = User.query.filter_by(username="John").first()
+    if not user:
+        hashed_pwd = generate_password_hash('password', method='sha256')
+        user = User(id=1, username='John', email='John@gmail.com', password=hashed_pwd )
+        db.session.add(user)
+        db.session.commit()
+        return redirect(url_for('login'))
+    return render_template('index.html', error=True)
 
  
 @app.route('/check')
 @login_required
 def check():
-    return "<h1> You're still logged in: " + current_user.username + "</h1>"
+    return render_template('check.html', user = current_user)
 
 
 @app.route('/logout')
 @login_required
 def logout():
+    db.session.delete(current_user)
+    db.session.commit()
     logout_user()
-    return "You have logged out!"
+    return render_template('logout.html')
