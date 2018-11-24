@@ -1,3 +1,4 @@
+# Do the Basic imports to get the application running
 
 from flask import Flask
 from flask_bootstrap import Bootstrap
@@ -12,7 +13,7 @@ db = SQLAlchemy(app)
 
 
 
-
+# Test whether this line is necessary 
 from views import *
 if __name__ == "__main__":
     app.run(debug=True)
