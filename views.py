@@ -30,21 +30,72 @@ def index():
 
 @app.route('/login', methods=['GET','POST'])
 def login():
+    # Create the two forms for login or create
     form = LoginForm(prefix='log')
     reg_form = RegisterForm()
+
+    #If it was a post request check which form was being validated
     if request.method == 'POST':
-        if form.validate_on_submit():
-            user = userExists(form.username.data)
-            if user:
-                if check_password_hash(user.password, form.password.data):
-                    login_user(user, remember=form.remember.data)
-                    return redirect(url_for('check'))
-            return render_template('login.html', form=form, reg=reg_form, error=True)
-    return render_template('login.html', form=form,reg=reg_form,  error=False)
-    #Grabs the current user, in this test case the only one
-    # user = User.query.get(1)
-    # login_user(user)
-    # return render_template('login.html', user=current_user)
+        # Checks whether the login for was submitted, refreshes the signup and validates the user
+        if request.form['form_type'] == 'login':
+            reg_form = RegisterForm()
+
+            if form.validate_on_submit():
+                user = userExists(form.username.data)
+                if user:
+                    if check_password_hash(user.password, form.password.data):
+                        # Use login manager with the logged in user and redirect
+                        login_user(user, remember=form.remember.data)
+                        return redirect(url_for('check'))
+                flash('Invalid username or password', category='alert alert-danger _login')
+            # Else there was an error TODO: Check whether the reg form needs to be revalidated
+            return render_template('login.html', form=form, reg=reg_form, active="login")
+        elif request.form['form_type'] == 'register':
+            form = LoginForm(prefix='log')
+            if reg_form.validate_on_submit():
+                 # Checks the uniqueness of username and email, create one and direct back to the login screen
+                user_exists = userExists(reg_form.username.data)
+                email_exists = emailExists(reg_form.email.data)
+                if not user_exists and not email_exists:
+                    hashed_password = generate_password_hash(reg_form.password.data, method='sha256')
+                    new_user = User(username=reg_form.username.data, email=reg_form.email.data, password=hashed_password)
+                    db.session.add(new_user)
+                    db.session.commit()
+                    flash('User successfully created!', category='alert alert-success _login')
+                    return render_template('login.html', form=form,reg=reg_form, active="login")
+            # refresh the login form so it doesn't error out
+                flash('Username taken!', category='alert alert-danger _reg')
+            return render_template('login.html', form=form,reg=reg_form, active="signup")
+    return render_template('login.html', form=form,reg=reg_form, active="login")
+
+    #     # If it was the login form: grab the user and validate it
+    #     if form.validate_on_submit():
+    #         user = userExists(form.username.data)
+    #         if user:
+    #             if check_password_hash(user.password, form.password.data):
+    #                 # Use login manager with the logged in user and redirect
+    #                 login_user(user, remember=form.remember.data)
+    #                 return redirect(url_for('check'))
+    #         flash('Invalid username or password', category='alert alert-danger _login')
+    #         # Else there was an error TODO: Check whether the reg form needs to be revalidated
+    #         return render_template('login.html', form=form, reg=reg_form, active="login")
+    #     # Check whether it was a registration form    
+    #     elif reg_form.validate_on_submit():
+    #         # form = LoginForm(prefix='log')
+    #         # Checks the uniqueness of username and email, create one and direct back to the login screen
+    #         user_exists = userExists(reg_form.username.data)
+    #         email_exists = emailExists(reg_form.email.data)
+    #         if not user_exists and not email_exists:
+    #             hashed_password = generate_password_hash(reg_form.password.data, method='sha256')
+    #             new_user = User(username=reg_form.username.data, email=reg_form.email.data, password=hashed_password)
+    #             db.session.add(new_user)
+    #             db.session.commit()
+    #             flash('User successfully created!', category='alert alert-success _login')
+    #             return render_template('login.html', form=form,reg=reg_form, active="login")
+    #         # refresh the login form so it doesn't error out
+    #         flash('Username taken.', category='alert alert-danger _reg')
+    #         return render_template('login.html', form=form,reg=reg_form, active="signup")
+    # return render_template('login.html', form=form,reg=reg_form, active="login")
 
 @app.route('/signup', methods=['GET','POST'])
 def signup():
@@ -89,3 +140,7 @@ def logout():
 # Checks whether the user exists
 def userExists(name):
     return User.query.filter_by(username=name).first()
+
+# checks whether the email exists
+def emailExists(email):
+    return User.query.filter_by(email=email).first()
