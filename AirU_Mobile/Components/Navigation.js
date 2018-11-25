@@ -1,6 +1,7 @@
 import {createBottomTabNavigator, createStackNavigator} from 'react-navigation'
-import React from 'react';
-import {Image} from 'react-native'
+import React from 'react'
+import {Platform} from 'react-native'
+import Icon from 'react-native-vector-icons/Ionicons'
 
 // home
 import Home from '../Views/Home'
@@ -45,16 +46,16 @@ const TabNavigator = createBottomTabNavigator(
         // update me with various images to display in tabs, icons 
         // would be ideal
         if (routeName == 'Setup') {
-          return <Image/>
+          return <Icon name={Platform.OS === "ios" ? "ios-analytics" : "md-analytics"} size={20}/>
         }
         else if (routeName == 'Tracker') {
-          return <Image/>
+          return <Icon name={Platform.OS === "ios" ? "ios-bonfire" : "md-bonfire"} size={20}/>
         }
         else if (routeName == 'Map') {
-          return <Image/>
+          return <Icon name={Platform.OS === "ios" ? "ios-map" : "md-map"} size={20}/>
         }
         else if (routeName == 'Settings') {
-          return <Image/>
+          return <Icon name={Platform.OS === "ios" ? "ios-settings" : "md-settings"} size={20}/>
         }
         else
           return <Image/>

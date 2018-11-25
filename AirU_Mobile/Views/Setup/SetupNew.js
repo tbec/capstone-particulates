@@ -33,10 +33,10 @@ export default class SetupNew extends Component<Props> {
 
     // If logged in already go to review via navigator, otherwise have login first
     render() {
+        
         if (this.state.loggedIn) {
-            return (
-                this.props.navigation.navigate('ReviewFirst')
-            );
+            this.props.navigation.navigate('ReviewFirst')    
+            return(null)
         } else {
             return (
               <Login/>  

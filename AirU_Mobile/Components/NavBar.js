@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import {View, TouchableHighlight, Image,Text} from 'react-native';
 import {styles} from '../StyleSheets/Styles'
 
+// navbar that is used on bottom of screens in setup process
+
 export default class NavBar extends Component<Props>
 {
     constructor(Props) {
