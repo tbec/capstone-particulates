@@ -1,4 +1,4 @@
-# Do the Basic imports to get the application running
+#Do the Basic imports to get the application running
 
 from flask import Flask
 from flask_bootstrap import Bootstrap
@@ -16,4 +16,6 @@ db = SQLAlchemy(app)
 # Test whether this line is necessary 
 from views import *
 if __name__ == "__main__":
+    app.jinja_env.auto_reload = True
+    app.config['TEMPLATES_AUTO_RELOAD'] = True
     app.run(debug=True)

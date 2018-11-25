@@ -1,1 +1,56 @@
-<h1> You are logged in as:  {{user.username }}</h1>
+
+
+{% extends "bootstrap/base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+
+{%block content%}
+
+<!-- <div class='body-wrap'> -->
+    <img class="logo" src="{{url_for('static', filename='red_cloud.jpeg')}}">
+
+    <div class='signup-wrapper'>
+        <div class='toggle-form'>
+            <div class='open-login active toggle-button'>Login</div>
+            <div class='open-signup toggle-button'>Signup</div>
+        </div>
+
+        <form class="form-signin login active" method="POST" action="/login">
+            {{ form.hidden_tag() }}
+            {{ wtf.form_field(form.username) }}
+            {{ wtf.form_field(form.password) }}
+            {{ wtf.form_field(form.remember)}}
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="{{category}}">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+            {% endwith %}
+            <button class="btn btn-lg btn-danger btn-block" type="submit"> Login </button>
+        </form>
+
+        <form class="form-signin signup" method="POST" action="/signup">
+            {{ reg.hidden_tag() }}
+            {{ wtf.form_field(reg.username) }}
+            {{ wtf.form_field(reg.email) }}
+            {{ wtf.form_field(reg.password) }}
+
+            <button class="btn btn-lg btn-danger btn-block" type="submit">Sign Up</button>
+        </form>
+    </div>
+<!-- </div> -->
+
+
+
+
+{{super()}}
+<link rel="stylesheet" href="{{url_for('static', filename='login.css')}}">
+<script src="{{url_for('static', filename='login.js')}}"></script>
+
+{%endblock%}
+
+
+
+<!-- <h1> You are logged in as:  {{user.username }}</h1> -->
