@@ -15,7 +15,8 @@ import Tracker from '../Views/Tracker'
 const TabNavigator = createBottomTabNavigator(
   {
     Home: {screen: Home},
-    Settings: {screen: Settings}
+    Settings: {screen: Settings},
+    Tracker: {screen: Tracker}
   },
   {
     navigationOptions: ({navigation}) => ({
@@ -23,12 +24,12 @@ const TabNavigator = createBottomTabNavigator(
         const {routeName} = navigation.state
         // update me with various images to display in tabs, icons 
         // would be ideal
-        if (routeName == 'Home') {
-          return <Image source={require("../Resources/Sensor.png")}/>
-        }
-        else {
-          return <Image/>
-        }
+        // if (routeName == 'Home') {
+        //   return <Image source={require("../Resources/Sensor.png")}/>
+        // }
+        // else {
+        //   return <Image/>
+        // }
       }})
   }
 );
@@ -37,6 +38,7 @@ const Router = createStackNavigator(
   {
     Home: {screen: Home, },
     Settings: {screen: Settings, },
+    Tracker: {screen: Tracker},
     Tabs: {screen: TabNavigator, initalRouteName: 'Home'}
   },
   {

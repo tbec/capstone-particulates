@@ -1,6 +1,18 @@
-import {StyleSheet} from 'react-native';
+'use strict';
+var React = require('react-native');
+var { StyleSheet } = React;
 
-export const styles = () => StyleSheet.create({
+module.exports = StyleSheet.create({
+    mapContainer: {
+        ...StyleSheet.absoluteFillObject,
+        height: 400,
+        width: 400,
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+    },
+    map: {
+        ...StyleSheet.absoluteFillObject,
+    },
     container: {
         flex: 1,
         flexDirection: 'row',
@@ -13,5 +25,3 @@ export const styles = () => StyleSheet.create({
 
     }
 });
-
-export default styles

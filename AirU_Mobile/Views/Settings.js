@@ -4,7 +4,7 @@ import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View} from 'react-native';
 import NavBar from '../Components/NavBar'
 
-export default class Settings extends Component<Props> {
+export default class Settings extends Component {
     render() {
         return (
             <View>
