@@ -15,15 +15,14 @@ export default class SetupNew extends Component<Props> {
             try {
               const value = await AsyncStorage.getItem('LOGIN');
               if (value !== null) {
-                // We have data!!
                 console.log(value);
               }
              } catch (error) {
-               // Error retrieving data
+               console.log(error)
              }
           }
 
-          if (_retrieveData == null) {
+          if (_retrieveData === null) {
             this.state={ loggedIn: false}
           }
           else {
@@ -33,14 +32,9 @@ export default class SetupNew extends Component<Props> {
 
     // If logged in already go to review via navigator, otherwise have login first
     componentWillMount() {
-        
         if (this.state.loggedIn) {
             this.props.navigation.navigate('ReviewFirst');
             return(null);
-        } else {
-            return (
-              render()
-            )
         }
     }
 

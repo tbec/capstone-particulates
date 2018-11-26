@@ -31,7 +31,6 @@ import Sensor from '../Views/Sensor/Sensor'
  * routes here as needed
  */
 
-
 // Tabs across bottom of screens
 const TabNavigator = createBottomTabNavigator(
   {
@@ -44,8 +43,7 @@ const TabNavigator = createBottomTabNavigator(
     navigationOptions: ({navigation}) => ({
       tabBarIcon: ({ focused, horizontal, tintColor }) => {
         const {routeName} = navigation.state
-        // update me with various images to display in tabs, icons 
-        // would be ideal
+        // Icons for bottom page
         if (routeName == 'Setup') {
           return <Icon name={Platform.OS === "ios" ? "ios-analytics" : "md-analytics"} size={20}/>
         }
@@ -74,6 +72,7 @@ const Router = createStackNavigator(
     Map: {screen: Map},
     Tracker: {screen: Tracker},
     Tabs: {screen: TabNavigator, initalRouteName: 'Home'},
+
     // sensor setup
     ReviewFirst: {screen: ReviewFirst}, 
     WiFiSetup: {screen: WiFiSetup}, 
@@ -81,6 +80,7 @@ const Router = createStackNavigator(
     Confirmation: {screen: Confirmation}, 
     BluetoothSetup: {screen: BluetoothSetup},
     MountingSensor: {screen: MountingSensor}, 
+
     //sensor screens
     Sensor: {screen: Sensor}
   },

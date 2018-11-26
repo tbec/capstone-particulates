@@ -3,7 +3,6 @@ import {Text, View, TouchableHighlight,Image} from 'react-native';
 import styles from '../../StyleSheets/Styles'
 
 export default class BluetoothSetup extends Component<Props> {
-
     render() {
         return (
             <View style={styles.mainView}>
