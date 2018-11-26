@@ -16,6 +16,11 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'index'
 
+# Hopefully this injects an object in to context of all templates
+@app.context_processor
+def context_processor():
+    return dict(user=current_user)
+
 
 # Callback that is used by flask_login to load the current user details
 @login_manager.user_loader
@@ -26,8 +31,15 @@ def load_user(user_id):
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    x = current_user
+    logged_in = False
+    if current_user:
+        logged_in = True
+    return render_template('index.html', logged_in=logged_in)
 
+@app.route('/graph')
+def graph():
+    return render_template('graph.html')
 @app.route('/login', methods=['GET','POST'])
 def login():
     # Create the two forms for login or create

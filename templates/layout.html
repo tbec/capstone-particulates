@@ -1,0 +1,36 @@
+<html lang="en">
+<head>
+    {%block head%}
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Document</title>
+        <link rel="stylesheet" href="{{url_for('static', filename='layout.css')}}">
+    {%endblock%}
+</head>
+<body>
+    <div class="sidenav">
+        <div class="nav-wrapper">
+            <img class="logo" src="{{url_for('static', filename='red_cloud.jpeg')}}">
+            <a href="#about">Account</a>
+            <a href="{{url_for('graph')}}">Graph</a>
+            <a href="{{url_for('check')}}">Check</a>
+
+            <a class="logout" href="#contact">
+                {%if current_user.is_active%}
+                        Logout
+                {%else%}
+                    Login
+                {%endif%}
+            </a>
+        </div>
+    </div>
+    <div id="content">
+        {% block content %}
+
+
+        {% endblock %}
+    </div>
+    <script src="{{url_for('static', filename='layout.js')}}"></script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+body {
+    margin: 0;
+}
+
+.sidenav{
+    width: 135px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #d95350;
+}
+
+#content{
+    height: 100vh;
+    margin-left: 135px;
+}
+
+.nav-wrapper{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.logo{
+    width: 100%;
+}
+.sidenav a {
+    height: 20%;
+    padding: 20px;
+    text-decoration: none;
+    font-size: 25px;
+    color: white;
+    box-sizing: border-box;
+}
