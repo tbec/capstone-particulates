@@ -32,16 +32,20 @@ export default class SetupNew extends Component<Props> {
     }
 
     // If logged in already go to review via navigator, otherwise have login first
-    render() {
+    componentWillMount() {
         
         if (this.state.loggedIn) {
-            this.props.navigation.navigate('ReviewFirst')    
-            return(null)
+            this.props.navigation.navigate('ReviewFirst');
+            return(null);
         } else {
             return (
-              <Login/>  
+              render()
             )
         }
+    }
+
+    render() {
+        return (<Login/>)
     }
 
     // need way to go to SetupNavigation after Login successful

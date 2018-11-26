@@ -8,7 +8,6 @@ import styles from '../../StyleSheets/Styles'
 import NavBar from '../../Components/NavBar'
 
 export default class ReviewFirst extends Component<Props> {
-
     render() {
         return (
             <ScrollView contentContainerStyle={styles.mainView} showsVerticalScrollIndicator='true'>

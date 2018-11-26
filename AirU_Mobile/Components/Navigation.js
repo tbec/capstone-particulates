@@ -1,12 +1,8 @@
 import {createBottomTabNavigator, createStackNavigator} from 'react-navigation'
-<<<<<<< HEAD
-import React from 'react'
 import {Platform} from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons'
-=======
 import React from 'react';
 import {Image} from 'react-native'
->>>>>>> d75c4b754029253e9f502bf17e18ba2dff6acb52
 
 // home
 import Home from '../Views/Home'
