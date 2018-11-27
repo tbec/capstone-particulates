@@ -1,12 +1,9 @@
-'use strict';
-var React = require('react-native');
-var { StyleSheet } = React;
+import {StyleSheet} from 'react-native';
 
-module.exports = StyleSheet.create({
+export const styles = StyleSheet.create({
     mapContainer: {
         ...StyleSheet.absoluteFillObject,
-        height: 400,
-        width: 400,
+        flex: 1,
         justifyContent: 'flex-end',
         alignItems: 'center',
     },
@@ -15,13 +12,56 @@ module.exports = StyleSheet.create({
     },
     container: {
         flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'space-evenly',
-        height: '10%',
-        width: '100%',
-        alignItems: 'center'
     },
+    header: {
+        flex: 5,
+        flexDirection: 'column',
+        padding: 40,
+        alignItems: 'center',
+    },
+    home: {
+        flex: 100,
+        flexDirection: 'column',
+        justifyContent: 'space-evenly',
+        alignItems: 'center', 
+    }, 
+    // Button with text justified in center, used on Home screen
     button: {
-
-    }
+        borderWidth: 2,
+        padding: 1,
+        borderColor: 'black',
+        backgroundColor: 'powderblue',
+        width: 150,
+        height: 50, 
+        alignItems: 'center', 
+        justifyContent: 'space-evenly'
+    }, 
+    mainView: {
+        flex: 1,
+        paddingTop: 30, 
+        flexDirection: 'column',
+        justifyContent: 'space-between'
+    }, 
+    nextButton: {
+        flex: 5,
+        padding: 10,
+        borderColor: 'black',
+        width:  40,
+        height: 40, 
+        alignItems: 'flex-end', 
+        justifyContent: 'flex-end',
+        backgroundColor: 'transparent'
+    }, 
+    previousButton: {
+        flex: 5,
+        padding: 10,
+        borderColor: 'black',
+        width:  40,
+        height: 40, 
+        alignItems: 'flex-start', 
+        justifyContent: 'flex-start',
+        backgroundColor: 'transparent'
+    }, 
 });
+
+export default styles
