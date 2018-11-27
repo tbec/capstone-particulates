@@ -10,7 +10,7 @@ import NavBar from '../../Components/NavBar'
 export default class ReviewFirst extends Component<Props> {
     render() {
         return (
-            <ScrollView contentContainerStyle={styles.mainView} showsVerticalScrollIndicator='true'>
+            <ScrollView contentContainerStyle={styles.mainView} showsVerticalScrollIndicator={true}>
                 <Text>Before proceeding, please confirm the following items were in your AirU box: </Text>
                 <Text/>
                 <View style={{flex: 4, flexDirection: 'row', backgroundColor: 'powderBlue'}}>
@@ -28,13 +28,7 @@ export default class ReviewFirst extends Component<Props> {
                     <Text style={{flex: 1}}>The first is the MAC address which will be used to connect to the sensor</Text>
                     <Text style={{flex: 1}}>The second is the S-A-XXX label, which is the name of the sensor</Text>
                     <Text style={{flex: 1}}>After confirming everything, please proceed to connecting to the sensor</Text>
-                    <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between'}}>
-                    <TouchableHighlight 
-                        style={styles.nextButton}
-                        onPress={() => this.props.navigation.navigate('MountingSensor')}>
-                            <Image source={require('../../Resources/next.png')} style={styles.nextButton}/>
-                    </TouchableHighlight>
-                </View>
+                    <NavBar navigation={this.props.navigation} next='MountingSensor'/>
             </ScrollView>
         );
     }

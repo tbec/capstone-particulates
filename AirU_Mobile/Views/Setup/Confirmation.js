@@ -10,7 +10,7 @@ import {NavigationActions} from 'react-navigation'
 export default class Confirmation extends Component<Props> {
     render() {
         return (
-            <View style={{flex: 1}}>
+            <View style={styles.mainView}>
                 <Text>Final confirmation page here</Text>
                 <TouchableHighlight 
                     style={styles.button}

@@ -1,24 +1,16 @@
 import React, {Component} from 'react';
 import {Text, View, TouchableHighlight,Image} from 'react-native';
+import NavBar from '../../Components/NavBar'
 import styles from '../../StyleSheets/Styles'
 
 export default class BluetoothSetup extends Component<Props> {
     render() {
         return (
             <View style={styles.mainView}>
-                <Text>BluetoothSetup</Text>
-                <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between'}}>
-                    <TouchableHighlight 
-                        style={styles.previousButton}
-                        onPress={() => this.props.navigation.navigate('MountingSensor')}>
-                            <Image source={require('../../Resources/previous.png')} style={styles.nextButton}/>
-                    </TouchableHighlight>
-                    <TouchableHighlight 
-                        style={styles.nextButton}
-                        onPress={() => this.props.navigation.navigate('WiFiSetup')}>
-                            <Image source={require('../../Resources/next.png')} style={styles.nextButton}/>
-                    </TouchableHighlight>
+                <View style={{flex: 10}}>
+                    <Text>BluetoothSetup</Text>
                 </View>
+                <NavBar navigation={this.props.navigation} next='WiFiSetup' previous='MountingSensor'/>
             </View>
         );
     }

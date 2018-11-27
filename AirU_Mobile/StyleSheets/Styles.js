@@ -16,6 +16,7 @@ export const styles = StyleSheet.create({
         justifyContent: 'space-evenly',
         alignItems: 'center', 
     }, 
+
     // Button with text justified in center, used on Home screen
     button: {
         borderWidth: 2,
@@ -31,7 +32,8 @@ export const styles = StyleSheet.create({
         flex: 1,
         paddingTop: 30, 
         flexDirection: 'column',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between', 
+        height: '80%'
     }, 
     nextButton: {
         flex: 5,
@@ -53,6 +55,12 @@ export const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         backgroundColor: 'transparent'
     }, 
+    navBar: {
+        flex: 1, 
+        flexDirection: 'row', 
+        justifyContent: 'flex-end', 
+        alignContent: 'space-between'
+    }
 });
 
 export default styles
