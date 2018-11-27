@@ -12,6 +12,7 @@
     <div class="sidenav">
         <div class="nav-wrapper">
             <img class="logo" src="{{url_for('static', filename='red_cloud.jpeg')}}">
+            {%if current_user.is_active%}
             <a href="#about">Account</a>
             <a href="{{url_for('graph')}}">Graph</a>
             <a href="{{url_for('check')}}">Check</a>
@@ -23,6 +24,7 @@
                     Login
                 {%endif%}
             </a>
+            {%endif%}
         </div>
     </div>
     <div id="content">

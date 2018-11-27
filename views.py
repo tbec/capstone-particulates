@@ -33,11 +33,14 @@ def load_user(user_id):
 def index():
     x = current_user
     logged_in = False
-    if current_user:
+    if current_user.is_active:
         logged_in = True
-    return render_template('index.html', logged_in=logged_in)
+        return render_template('index.html', logged_in=logged_in)
+    return redirect(url_for('login'))
+    
 
 @app.route('/graph')
+@login_required
 def graph():
     return render_template('graph.html')
 @app.route('/login', methods=['GET','POST'])
@@ -58,7 +61,7 @@ def login():
                     if check_password_hash(user.password, form.password.data):
                         # Use login manager with the logged in user and redirect
                         login_user(user, remember=form.remember.data)
-                        return redirect(url_for('check'))
+                        return redirect(url_for('index'))
                 flash('Invalid username or password', category='alert alert-danger _login')
             # Else there was an error TODO: Check whether the reg form needs to be revalidated
             return render_template('login.html', form=form, reg=reg_form, active="login")
@@ -146,8 +149,11 @@ def logout():
     # db.session.delete(current_user)
     # db.session.commit()
     logout_user()
-    return render_template('logout.html')
+    return redirect(url_for('index'))
 
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
 
 # Checks whether the user exists
 def userExists(name):
