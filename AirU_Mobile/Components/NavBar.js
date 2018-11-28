@@ -21,7 +21,7 @@ export default class NavBar extends Component<Props>
                                 <Image source={require('../Resources/previous.png')} style={styles.previousButton}/>
                         </TouchableHighlight>;
         } else {
-            nextButton=null
+            prevButton=null
         }
         if (this.state.next != null) {
             nextButton=<TouchableHighlight 
@@ -30,7 +30,7 @@ export default class NavBar extends Component<Props>
                         <Image source={require('../Resources/next.png')} style={styles.nextButton}/>
                 </TouchableHighlight>;
         } else {
-            prevButton=null
+            nextButton=null
         }
 
         return(
