@@ -13,6 +13,7 @@ import Setup from '../Views/Setup/SetupNew'
 import MountingSensor from '../Views/Setup/MountingSensor'
 
 // setup
+import Login from '../Views/Setup/Login'
 import ReviewFirst from '../Views/Setup/ReviewFirst'
 import Privacy from '../Views/Setup/Privacy'
 import ConnectionSetup from '../Views/Setup/ConnectionSetup'
@@ -75,6 +76,7 @@ const Router = createStackNavigator(
     Tabs: {screen: TabNavigator, initalRouteName: 'Home'},
 
     // sensor setup
+    Login: {screen: Login},
     ReviewFirst: {screen: ReviewFirst}, 
     Privacy: {screen: Privacy}, 
     Confirmation: {screen: Confirmation}, 

@@ -5,24 +5,18 @@
 import React, {Component} from 'react';
 import SetupNavigation from '../../Components/Navigation'
 import Login from '../Setup/Login'
+import ReviewFirst from './ReviewFirst';
 
 export default class SetupNew extends Component<Props> {
 
-    // checks if user has logged in previously, need to fix logic as appropriate
+    // checks if user has logged in previously
     constructor(Props) {
         super(Props);
-        _retrieveData = async () => {
-            try {
-              const value = await AsyncStorage.getItem('LOGIN');
-              if (value !== null) {
-                console.log(value);
-              }
-             } catch (error) {
-               console.log(error)
-             }
+        const _retrieveData = async () => {
+            return await AsyncStorage.getItem('Login');
           }
 
-          if (_retrieveData === null) {
+          if (_retrieveData) {
             this.state={ loggedIn: false}
           }
           else {
@@ -33,13 +27,13 @@ export default class SetupNew extends Component<Props> {
     // If logged in already go to review via navigator, otherwise have login first
     componentWillMount() {
         if (this.state.loggedIn) {
-            this.props.navigation.navigate('ReviewFirst');
+            this.props.navigation.push('Login');
             return(null);
         }
     }
 
     render() {
-        return (<Login/>)
+        return (<ReviewFirst/>)
     }
 
     // need way to go to SetupNavigation after Login successful
