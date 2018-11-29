@@ -8,7 +8,7 @@ import Login from '../Setup/Login'
 
 export default class SetupNew extends Component<Props> {
 
-    // checks if user has logged in previously
+    // checks if user has logged in previously, need to fix logic as appropriate
     constructor(Props) {
         super(Props);
         _retrieveData = async () => {

@@ -1,15 +1,18 @@
 import {StyleSheet} from 'react-native';
 
+// CSS Styles page
 export const styles = StyleSheet.create({
     container: {
         flex: 1,
     },
+    // header for image on home screen
     header: {
         flex: 5,
         flexDirection: 'column',
         padding: 40,
         alignItems: 'center',
     },
+    // home layout, with buttons centered and spaced
     home: {
         flex: 100,
         flexDirection: 'column',
@@ -35,6 +38,7 @@ export const styles = StyleSheet.create({
         justifyContent: 'space-between', 
         height: '80%'
     }, 
+    // next arrow used in setup
     nextButton: {
         flex: 5,
         padding: 10,
@@ -45,6 +49,7 @@ export const styles = StyleSheet.create({
         justifyContent: 'flex-end',
         backgroundColor: 'transparent'
     }, 
+    // previous arrow used in setup
     previousButton: {
         flex: 5,
         padding: 10,
@@ -55,6 +60,7 @@ export const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         backgroundColor: 'transparent'
     }, 
+    // position for bottom NavBar.js
     navBar: {
         flex: 1, 
         flexDirection: 'row', 

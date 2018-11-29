@@ -14,9 +14,8 @@ import MountingSensor from '../Views/Setup/MountingSensor'
 
 // setup
 import ReviewFirst from '../Views/Setup/ReviewFirst'
-import WiFiSetup from '../Views/Setup/WiFiSetup'
 import Privacy from '../Views/Setup/Privacy'
-import BluetoothSetup from '../Views/Setup/BluetoothSetup'
+import ConnectionSetup from '../Views/Setup/ConnectionSetup'
 import Confirmation from '../Views/Setup/Confirmation'
 import Sensor from '../Views/Sensor/Sensor'
 
@@ -27,8 +26,9 @@ import Sensor from '../Views/Sensor/Sensor'
 // settings if needed
 
 /**
- * Navigator used for moving between screens. Update any new screen 
- * routes here as needed
+ * Navigator used for moving between screens using react-navigation library. 
+ * Update any new screen routes here as needed. Note: there should only be 1 
+ * navigator in a project, so do not add another stackNavigator
  */
 
 // Tabs across bottom of screens
@@ -43,7 +43,8 @@ const TabNavigator = createBottomTabNavigator(
     navigationOptions: ({navigation}) => ({
       tabBarIcon: ({ focused, horizontal, tintColor }) => {
         const {routeName} = navigation.state
-        // Icons for bottom page
+        
+        // Icons for bottom page, if update above add image here as well
         if (routeName == 'Setup') {
           return <Icon name={Platform.OS === "ios" ? "ios-analytics" : "md-analytics"} size={20}/>
         }
@@ -75,10 +76,9 @@ const Router = createStackNavigator(
 
     // sensor setup
     ReviewFirst: {screen: ReviewFirst}, 
-    WiFiSetup: {screen: WiFiSetup}, 
     Privacy: {screen: Privacy}, 
     Confirmation: {screen: Confirmation}, 
-    BluetoothSetup: {screen: BluetoothSetup},
+    ConnectionSetup: {screen: ConnectionSetup},
     MountingSensor: {screen: MountingSensor}, 
 
     //sensor screens

@@ -1,5 +1,5 @@
 /**
- * Main setup page
+ * Instructions for mounting sensor setup page
  */
 
 import React, {Component} from 'react';
@@ -31,7 +31,7 @@ export default class ReviewFirst extends Component<Props> {
                         <Text/>
                     </View>
                 </View>
-                <NavBar navigation={this.props.navigation} next='BluetoothSetup' previous='ReviewFirst'/>
+                <NavBar navigation={this.props.navigation} next='ConnectionSetup' previous='ReviewFirst'/>
             </View>
         );
     }

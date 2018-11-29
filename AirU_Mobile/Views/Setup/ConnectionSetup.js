@@ -3,21 +3,25 @@ import {Text, View,Image, TextInput} from 'react-native';
 import NavBar from '../../Components/NavBar'
 import styles from '../../StyleSheets/Styles'
 
-export default class BluetoothSetup extends Component<Props> {
+export default class ConnectionSetup extends Component<Props> {
     constructor(props) {
         super(props)
         this.state={bleConnected: false, MAC: '', wifiConnected: false, WiFiName: '', WiFiPassword: '', WiFiError: false}
     }
 
+    // used to connect to sensor via Bluetooth
     connectToBluetooth() {
 
     }
 
+    // used to connect to WiFi network 
     connectToWiFi() {
 
     }
 
     render() {
+
+        // after trying to connect will set state, renders error text if true
         var error
         if (this.state.WiFiError == true) {
             error = <Text>Could not connect to WiFi Network</Text>
@@ -50,7 +54,7 @@ export default class BluetoothSetup extends Component<Props> {
                     {error}
                 </View>
                 <Text>{this.state.WiFiPassword}</Text>
-                <NavBar navigation={this.props.navigation} next='WiFiSetup' previous='MountingSensor'/>
+                <NavBar navigation={this.props.navigation} next='Privacy' previous='MountingSensor'/>
             </View>
         );
     }

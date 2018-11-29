@@ -5,7 +5,6 @@
 import React, {Component} from 'react';
 import {WebView} from 'react-native';
 
-// WIP. Will need to go to correct URL, save token after login, and navigate to next page after done
 export default class Map extends Component<Props> {
     render() {
         return (

@@ -13,6 +13,7 @@ export default class Privacy extends Component<Props> {
         this.state = {privacy: null}
     }
 
+    // after selecting option, sets as appropriate 
     setPrivacy(value) {
         this.setState({privacy: value})
         this.props.navigation.navigate('Confirmation');
@@ -30,8 +31,8 @@ export default class Privacy extends Component<Props> {
                     <Text/>
                     <Image source={require('../../Resources/SensorPrivacy.png')} style={{width: '100%', height: '100%', flex: 4, alignContent: 'center'}}/>
                 </View>
-                <View style={{flex: 3, flexDirection: 'column', alignContent: 'space-between', justifyContent: 'space-evenly', 
-                            paddingTop: 5, paddingBottom: 5, paddingLeft: 20, paddingRight: 20}}>
+                {/* choice section */}
+                <View style={[styles.home, {flex: 3}]}>
                     <TouchableHighlight style={styles.button} onPress={() => this.setPrivacy(true)}>
                         <Text>Allow</Text>
                     </TouchableHighlight>

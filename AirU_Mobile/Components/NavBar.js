@@ -6,12 +6,14 @@ import {styles} from '../StyleSheets/Styles'
 
 export default class NavBar extends Component<Props>
 {
+    // Takes 'next' and 'previous', which are used for where each button will navigate to; should match to screen in Navigator.js
     constructor(props) {
         super(props);
         this.props.navigation = props.navigation
         this.state={next: props.next, previous: props.previous}
     }
 
+    // only renders appropriate button if path is provided
     render(){
         var nextButton, prevButton
         if (this.state.previous != null) {
