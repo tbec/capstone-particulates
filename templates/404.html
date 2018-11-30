@@ -4,8 +4,6 @@
 <div style="margin: 0 auto; text-align: center;">
   <h1>404 Page Not Found</h1>
   <p>What you were looking for is just not there. </p>
-  {%if not current_user.is_active%}
   <p><a href="{{ url_for('index') }}"> Get back to known areas</a></p>
-  {%endif%}
 </div>
 {% endblock %}
