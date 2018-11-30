@@ -19,6 +19,8 @@ export default class NavBar extends Component<Props>
         if (this.state.previous != null) {
             prevButton=<TouchableHighlight 
                             style={styles.previousButton}
+                            activeOpacity={30}
+                            underlayColor="yellow"
                             onPress={() => this.props.navigation.navigate(this.state.previous)}>
                                 <Image source={require('../Resources/previous.png')} style={styles.previousButton}/>
                         </TouchableHighlight>;
@@ -28,6 +30,8 @@ export default class NavBar extends Component<Props>
         if (this.state.next != null) {
             nextButton=<TouchableHighlight 
                     style={styles.nextButton}
+                    activeOpacity={30}
+                    underlayColor="yellow"
                     onPress={() => this.props.navigation.navigate(this.state.next)}>
                         <Image source={require('../Resources/next.png')} style={styles.nextButton}/>
                 </TouchableHighlight>;

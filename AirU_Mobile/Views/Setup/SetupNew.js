@@ -33,7 +33,7 @@ export default class SetupNew extends Component<Props> {
     }
 
     render() {
-        return (<ReviewFirst/>)
+        return (<ReviewFirst navigation={this.props.navigation}/>)
     }
 
     // need way to go to SetupNavigation after Login successful
