@@ -3,9 +3,11 @@ import {View, TouchableHighlight, Text, ImageBackground, Image} from 'react-nati
 import {NavigationActions} from 'react-navigation'
 import styles from '../StyleSheets/Styles'
 
-export default class Home extends Component<Props> {
-    // need way to check if already registered and change options accordingly
+/**
+ * Main home page opened with app, with options to navigate to other screens
+ */
 
+export default class Home extends Component<Props> {
     render() {
         return (
                 <View style={styles.container}>
@@ -14,6 +16,7 @@ export default class Home extends Component<Props> {
                             <Image source={require('../Resources/AQ_Logo.png')} style={{width: '100%', height: '100%'}}/>
                         </View>
                         <View style={styles.home}>
+                            {/* Setup/Sensor */}
                             <TouchableHighlight 
                                 style={styles.button}
                                 onPress={() => this.props.navigation.navigate({
@@ -22,6 +25,7 @@ export default class Home extends Component<Props> {
                                     action: NavigationActions.navigate({routeName: 'Setup'})})}>
                                     <Text>Setup Sensor</Text>
                             </TouchableHighlight>
+                            {/* Personal Exposure Tracker */}
                             <TouchableHighlight 
                                 style={styles.button}
                                 onPress={() => this.props.navigation.navigate({
@@ -30,6 +34,7 @@ export default class Home extends Component<Props> {
                                     action: NavigationActions.navigate({routeName: 'Tracker'})})}>
                                     <Text>Personal Tracker</Text>
                             </TouchableHighlight>
+                            {/* AQandU Map page */}
                             <TouchableHighlight 
                                 style={styles.button}
                                 onPress={() => this.props.navigation.navigate({
@@ -38,6 +43,7 @@ export default class Home extends Component<Props> {
                                     action: NavigationActions.navigate({routeName: 'Map'})})}>
                                     <Text>Sensor Map</Text>
                             </TouchableHighlight>
+                            {/* Settings */}
                             <TouchableHighlight 
                                 style={styles.button}
                                 onPress={() => this.props.navigation.navigate({

@@ -1,16 +1,14 @@
 /**
- * Pulls up aqandu.com in iFrame
+ * Pulls up iFrame for login page, afterwards pulls back info or token and saves locally
  */
 
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
+import {WebView} from 'react-native';
 
 export default class Map extends Component<Props> {
     render() {
         return (
-            <View>
-                <Text>This is the map screen</Text>
-            </View>
+            <WebView source={{uri: 'http://www.aqandu.org'}}/>
         );
     }
 }

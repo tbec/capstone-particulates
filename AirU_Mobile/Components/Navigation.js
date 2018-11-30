@@ -1,4 +1,6 @@
 import {createBottomTabNavigator, createStackNavigator} from 'react-navigation'
+import {Platform} from 'react-native'
+import Icon from 'react-native-vector-icons/Ionicons'
 import React from 'react';
 import {Image} from 'react-native'
 
@@ -11,11 +13,13 @@ import Setup from '../Views/Setup/SetupNew'
 import MountingSensor from '../Views/Setup/MountingSensor'
 
 // setup
+import Login from '../Views/Setup/Login'
 import ReviewFirst from '../Views/Setup/ReviewFirst'
-import WiFiSetup from '../Views/Setup/WiFiSetup'
 import Privacy from '../Views/Setup/Privacy'
-import BluetoothSetup from '../Views/Setup/BluetoothSetup'
+import ConnectionSetup from '../Views/Setup/ConnectionSetup'
 import Confirmation from '../Views/Setup/Confirmation'
+
+// sensor
 import Sensor from '../Views/Sensor/Sensor'
 
 // sensor if needed
@@ -25,15 +29,16 @@ import Sensor from '../Views/Sensor/Sensor'
 // settings if needed
 
 /**
- * Navigator used for moving between screens. Update any new screen 
- * routes here as needed
+ * Navigator used for moving between screens using react-navigation library. 
+ * Update any new screen routes here as needed. Note: there should only be 1 
+ * navigator in a project, so do not add another stackNavigator
  */
-
 
 // Tabs across bottom of screens
 const TabNavigator = createBottomTabNavigator(
   {
     Setup: {screen: Setup},
+    Sensor: {screen: Sensor},
     Tracker: {screen: Tracker},
     Map: {screen: Map},
     Settings: {screen: Settings}
@@ -42,19 +47,19 @@ const TabNavigator = createBottomTabNavigator(
     navigationOptions: ({navigation}) => ({
       tabBarIcon: ({ focused, horizontal, tintColor }) => {
         const {routeName} = navigation.state
-        // update me with various images to display in tabs, icons 
-        // would be ideal
+        
+        // Icons for bottom page, if update above add image here as well
         if (routeName == 'Setup') {
-          return <Image/>
+          return <Icon name={Platform.OS === "ios" ? "ios-analytics" : "md-analytics"} size={20}/>
         }
         else if (routeName == 'Tracker') {
-          return <Image/>
+          return <Icon name={Platform.OS === "ios" ? "ios-bonfire" : "md-bonfire"} size={20}/>
         }
         else if (routeName == 'Map') {
-          return <Image/>
+          return <Icon name={Platform.OS === "ios" ? "ios-map" : "md-map"} size={20}/>
         }
         else if (routeName == 'Settings') {
-          return <Image/>
+          return <Icon name={Platform.OS === "ios" ? "ios-settings" : "md-settings"} size={20}/>
         }
         else
           return <Image/>
@@ -72,13 +77,15 @@ const Router = createStackNavigator(
     Map: {screen: Map},
     Tracker: {screen: Tracker},
     Tabs: {screen: TabNavigator, initalRouteName: 'Home'},
+
     // sensor setup
+    Login: {screen: Login},
     ReviewFirst: {screen: ReviewFirst}, 
-    WiFiSetup: {screen: WiFiSetup}, 
     Privacy: {screen: Privacy}, 
     Confirmation: {screen: Confirmation}, 
-    BluetoothSetup: {screen: BluetoothSetup},
+    ConnectionSetup: {screen: ConnectionSetup},
     MountingSensor: {screen: MountingSensor}, 
+
     //sensor screens
     Sensor: {screen: Sensor}
   },

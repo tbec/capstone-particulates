@@ -1,1 +1,0 @@
-// shows contents of box, review then click next
