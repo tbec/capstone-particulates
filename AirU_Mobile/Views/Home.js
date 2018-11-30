@@ -1,13 +1,9 @@
 import React, {Component} from 'react';
 import {View, TouchableHighlight, Text, ImageBackground, Image} from 'react-native';
 import {NavigationActions} from 'react-navigation'
-import styles from '../StyleSheets/Styles'
-
-/**
- * Main home page opened with app, with options to navigate to other screens
- */
-
+import  styles  from '../StyleSheets/Styles';
 export default class Home extends Component<Props> {
+    // need way to check if already registered and change options accordingly
     render() {
         return (
                 <View style={styles.container}>

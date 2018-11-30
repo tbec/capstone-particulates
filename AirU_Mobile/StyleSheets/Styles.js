@@ -2,6 +2,15 @@ import {StyleSheet} from 'react-native';
 
 // CSS Styles page
 export const styles = StyleSheet.create({
+    mapContainer: {
+        ...StyleSheet.absoluteFillObject,
+        flex: 1,
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+    },
+    map: {
+        ...StyleSheet.absoluteFillObject,
+    },
     container: {
         flex: 1,
     },

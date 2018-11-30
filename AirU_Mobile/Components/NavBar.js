@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {View, TouchableHighlight, Image,Text} from 'react-native';
-import {styles} from '../StyleSheets/Styles'
+//import {styles} from '../StyleSheets/Styles'
 
 // navbar that is used on bottom of screens in setup process
 
@@ -15,6 +15,7 @@ export default class NavBar extends Component<Props>
 
     // only renders appropriate button if path is provided
     render(){
+        var styles = require('../StyleSheets/Styles');
         var nextButton, prevButton
         if (this.state.previous != null) {
             prevButton=<TouchableHighlight 

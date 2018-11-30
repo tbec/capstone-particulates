@@ -16,7 +16,7 @@ export default class SetupNew extends Component<Props> {
             return await AsyncStorage.getItem('Login');
           }
 
-          if (_retrieveData) {
+          if (_retrieveData === null) {
             this.state={ loggedIn: false}
           }
           else {
@@ -24,18 +24,17 @@ export default class SetupNew extends Component<Props> {
           }
     }
 
-    // If logged in already go to review via navigator, otherwise have login first
     componentWillMount() {
-        if (this.state.loggedIn) {
-            this.props.navigation.push('Login');
-            return(null);
+        if(this.state.loggedIn){
+            this.props.navigation.navigate('ReviewFirst');
+            return null;
         }
     }
 
+    // If logged in already go to review via navigator, otherwise have login first
     render() {
-        return (<ReviewFirst navigation={this.props.navigation}/>)
-    }
-
+            return (<Login/>)
+        }
     // need way to go to SetupNavigation after Login successful
     // Change to navigation.push, when returned way to pass in variable back and logic off that?
 }
