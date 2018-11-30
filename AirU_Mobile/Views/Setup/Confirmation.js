@@ -3,12 +3,23 @@
  **/
 
 import React, {Component} from 'react';
-import {Text, View, TouchableHighlight, Image} from 'react-native';
+import {Text, View, TouchableHighlight, Image, AsyncStorage} from 'react-native';
 import styles from '../../StyleSheets/Styles'
 import {NavigationActions} from 'react-navigation'
 
 export default class Confirmation extends Component<Props> {
+    saveSensor() {
+        _storeData = async () => {
+            try {
+              await AsyncStorage.setItem('@SensorName:key', 'Sensor');
+            } catch (error) {
+              // Error saving data
+            }
+          }
+    }
+
     render() {
+        this.saveSensor();
         return (
             <View style={styles.mainView}>
                 <View style={{flex: 3}}>

@@ -1,17 +1,26 @@
 import React, {Component} from 'react';
-import {Text, View,Image, TextInput} from 'react-native';
+import {Text, View, Image, TextInput} from 'react-native';
 import NavBar from '../../Components/NavBar'
 import styles from '../../StyleSheets/Styles'
 
 export default class ConnectionSetup extends Component<Props> {
     constructor(props) {
         super(props)
-        this.state={bleConnected: false, MAC: '', wifiConnected: false, WiFiName: '', WiFiPassword: '', WiFiError: false}
+        this.state={bleConnected: false, MAC: null, wifiConnected: false, 
+                    WiFiName: "", WiFiPassword: "", WiFiError: false};
+        this.updateTimer = this.updateTimer.bind(this)
     }
+
+    updateTimer() {
+        this.setState({
+          MAC: 'MAC ADDRESS'
+        });
+      }
 
     // used to connect to sensor via Bluetooth
     connectToBluetooth() {
-
+        // dummy code, make me actually work
+        return "TEST"
     }
 
     // used to connect to WiFi network 
@@ -19,22 +28,31 @@ export default class ConnectionSetup extends Component<Props> {
 
     }
 
-    render() {
+    componentWillMount() {
+        setInterval(this.updateTimer, 1000);
+    }
 
+    render() {
         // after trying to connect will set state, renders error text if true
-        var error
+        var error, macAddress
         if (this.state.WiFiError == true) {
             error = <Text>Could not connect to WiFi Network</Text>
         }
         else {
             error = null
         }
+
+        if (this.state.MAC) {
+            macAddress=<Text>{this.state.MAC}</Text>
+        }
+
         return (
             <View style={styles.mainView}>
                 <View style={{flex: 3}}>
                     <Text>Enable your Bluetooth and connect to the sensor. Once it is connected the device name will show below. 
                         Select your WiFi network to connect to, enter the password, then select 'Connect'.
                     </Text>
+                    <Text>{this.state.MAC}</Text>
                 </View>
                 {/* BLE name goes here */}
                 <View style={{flex: 3}}>

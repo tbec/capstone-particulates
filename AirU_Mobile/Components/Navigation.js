@@ -18,6 +18,8 @@ import ReviewFirst from '../Views/Setup/ReviewFirst'
 import Privacy from '../Views/Setup/Privacy'
 import ConnectionSetup from '../Views/Setup/ConnectionSetup'
 import Confirmation from '../Views/Setup/Confirmation'
+
+// sensor
 import Sensor from '../Views/Sensor/Sensor'
 
 // sensor if needed
@@ -36,6 +38,7 @@ import Sensor from '../Views/Sensor/Sensor'
 const TabNavigator = createBottomTabNavigator(
   {
     Setup: {screen: Setup},
+    Sensor: {screen: Sensor},
     Tracker: {screen: Tracker},
     Map: {screen: Map},
     Settings: {screen: Settings}
