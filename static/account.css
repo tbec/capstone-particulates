@@ -1,0 +1,59 @@
+.wrapper{
+    height: 85vh;
+    display: flex;
+    flex-direction: column;
+    margin-top: -20px;
+}
+
+.wrapper h2{
+    margin-left: 50px;
+}
+
+.info-element{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 60px;
+}
+
+.info-element label{
+    margin: 0px 50px;
+    justify-self: right;
+    width: 100px;
+}
+
+.user-info{
+    display: flex;
+    flex-direction: column;
+    height: 40%;
+    justify-content: space-around;
+}
+
+
+.device-info{
+    display: flex;
+    flex-direction: column;
+    height: 40%;
+    justify-content: space-around;
+
+}
+
+hr {
+    display: block;
+    position: relative;
+    padding: 0;
+    margin: 8px auto;
+    height: 0;
+    width: 95%;
+    max-height: 0;
+    font-size: 1px;
+    line-height: 0;
+    clear: both;
+    border: none;
+    border-top: 1px solid #aaaaaa;
+    border-bottom: 1px solid #ffffff;
+ }
+
+ .mapouter{
+     margin-top:30px;
+ }

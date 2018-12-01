@@ -1,0 +1,40 @@
+{% extends 'layout.html' %}
+
+{%block content%}
+<p>Logged in: {{ user.username }}</p> 
+<div class="wrapper">
+    <div class="user-info">
+        <h2>Account Details</h2>
+        <div class="info-element"> 
+            <label for="username">Username: </label>
+           <!-- <p id="username">{{current_user.username}}</p> -->
+            <input type="text" id ="username" disabled value="{{user.username}}">
+        </div>
+        <div class="info-element"> 
+                <label for="email">Email: </label>
+                <!-- <p id="email">{{current_user.email}}</p> -->
+                <input type="text" id ="email" disabled value="{{user.email}}">
+        </div>
+        <div class="info-element"> 
+                <label for="password">Password: </label>
+                <p id="password">{{user}}</p>
+         </div>
+    </div>
+
+
+    <hr>   
+
+    <h2>Devices</h2>
+
+    <div class="device-info">
+        {%for device in ids %}
+        <div class="info-element"> 
+                <label >Device ID: </label>
+                <input type="text" disabled value="{{device}}">
+        </div>
+        {%endfor%}
+</div>
+
+
+<link rel="stylesheet" href="{{url_for('static', filename='account.css')}}">
+{%endblock%}
