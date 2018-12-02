@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import {View, TouchableHighlight, Image,Text} from 'react-native';
-//import {styles} from '../StyleSheets/Styles'
+import {View, TouchableHighlight, Image, Platform} from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons'
 
 // navbar that is used on bottom of screens in setup process
 
@@ -15,33 +15,33 @@ export default class NavBar extends Component<Props>
 
     // only renders appropriate button if path is provided
     render(){
-        var styles = require('../StyleSheets/Styles');
+        var navStyles = require('../StyleSheets/Styles');
         var nextButton, prevButton
         if (this.state.previous != null) {
             prevButton=<TouchableHighlight 
-                            style={styles.previousButton}
+                            style={navStyles.styles.previousButton}
                             activeOpacity={30}
                             underlayColor="yellow"
                             onPress={() => this.props.navigation.navigate(this.state.previous)}>
-                                <Image source={require('../Resources/previous.png')} style={styles.previousButton}/>
+                                <Icon name={Platform.OS === "ios" ? "ios-arrow-dropleft" : "md-arrow-dropleft"} size={40}/>
                         </TouchableHighlight>;
         } else {
             prevButton=null
         }
         if (this.state.next != null) {
             nextButton=<TouchableHighlight 
-                    style={styles.nextButton}
+                    style={navStyles.styles.nextButton}
                     activeOpacity={30}
                     underlayColor="yellow"
                     onPress={() => this.props.navigation.navigate(this.state.next)}>
-                        <Image source={require('../Resources/next.png')} style={styles.nextButton}/>
+                        <Icon name={Platform.OS === "ios" ? "ios-arrow-dropright" : "md-arrow-dropright"} size={40}/>
                 </TouchableHighlight>;
         } else {
             nextButton=null
         }
 
         return(
-            <View style={styles.navBar}>
+            <View style={navStyles.styles.navBar}>
                 {prevButton}
                 {nextButton}
             </View>
