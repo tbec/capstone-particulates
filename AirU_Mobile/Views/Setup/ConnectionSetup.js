@@ -1,49 +1,60 @@
 import React, {Component} from 'react';
-import {Text, View, Image, TextInput} from 'react-native';
+import {Text, View, Image, TextInput, Button} from 'react-native';
 import NavBar from '../../Components/NavBar'
 import styles from '../../StyleSheets/Styles'
 
 export default class ConnectionSetup extends Component<Props> {
     constructor(props) {
         super(props)
-        this.state={bleConnected: false, MAC: null, wifiConnected: false, 
-                    WiFiName: "", WiFiPassword: "", WiFiError: false};
+        // timer for faking
         this.updateTimer = this.updateTimer.bind(this)
+        let _timer = setInterval(this.updateTimer, 5000);
+
+        this.state={bleConnected: false, MAC: null, wifiConnected: false, 
+                    WiFiName: "", WiFiPassword: "", WiFiError: false, timer: _timer};
     }
 
+    // used to fake connecting to BT
     updateTimer() {
-        this.setState({
-          MAC: 'MAC ADDRESS'
-        });
+        this.setState({MAC: 'MAC ADDRESS'});
       }
 
-    // used to connect to sensor via Bluetooth
     connectToBluetooth() {
         // dummy code, make me actually work
-        return "TEST"
     }
 
-    // used to connect to WiFi network 
     connectToWiFi() {
-
+        // if valid, navigate to Privacy. Otherwise mark as error
+        if (this.state.WiFiName == "Utah" && this.state.WiFiPassword == "password") {
+           this.props.navigation.navigate("Privacy");
+        }
+        else {
+            this.setState({WiFiError: true})
+        }
     }
 
-    componentWillMount() {
-        setInterval(this.updateTimer, 1000);
+    componentWillUnmount() {
+        clearInterval(this.state.timer);
     }
 
     render() {
-        // after trying to connect will set state, renders error text if true
         var error, macAddress
+
+        // after trying to connect will set state, renders error text if true
         if (this.state.WiFiError == true) {
-            error = <Text>Could not connect to WiFi Network</Text>
+            error = <Text style={{color: 'red', fontSize: 12}}>Could not connect to WiFi Network</Text>
         }
         else {
-            error = null
+            error = <Text style={{color: 'red', fontSize: 12}}></Text>
         }
 
-        if (this.state.MAC) {
+        // faking loading
+        if (this.state.MAC != null) {
             macAddress=<Text>{this.state.MAC}</Text>
+        }
+        else {
+            macAddress=<Image source={require('../../Resources/Loading.gif')} 
+                                style={{width: 100, height: 100, alignContent: 'center', justifyContent: 'center'}}/>
         }
 
         return (
@@ -52,27 +63,42 @@ export default class ConnectionSetup extends Component<Props> {
                     <Text>Enable your Bluetooth and connect to the sensor. Once it is connected the device name will show below. 
                         Select your WiFi network to connect to, enter the password, then select 'Connect'.
                     </Text>
-                    <Text>{this.state.MAC}</Text>
                 </View>
                 {/* BLE name goes here */}
+                <View style={{flex: 3}}>
+                    <Text>{macAddress}</Text>
+                </View>
                 <View style={{flex: 3}}>
                     <Text>Confirm the MAC ID listed above matches the one on your sensor. If it is correct, 
                         enter WiFi information below to connect the sensor to your network.
                     </Text>
                 </View>
-                <View style={{flex: 5}}>
+                <View style={{flex: 5, alignContent: 'space-around', justifyContent: 'space-between', 
+                        paddingLeft: 30}}>
                     {/* network */}
+                    <TextInput editable={true} keyboardType='default' 
+                                autoCorrect={false} placeholder='SSID' secureTextEntry={false}
+                                style={{borderWidth: 2, borderColor: 'black', 
+                                width: '50%', alignContent: 'center', justifyContent: 'center'}}
+                                onChangeText={(value) => {this.setState({WiFiName: value})}}
+                                />
                     {/* password */}
                     <TextInput editable={true} keyboardType='default' 
                                 autoCorrect={false} placeholder='Password' secureTextEntry={true} 
                                 style={{borderWidth: 2, borderColor: 'black', 
-                                width: '50%', alignContent: 'center', justifyContent: 'center'}}/>
-                    {/* show password toggle */}
+                                width: '50%', alignContent: 'center', justifyContent: 'center'}}
+                                onChangeText={(value) => {this.setState({WiFiPassword: value})}}
+                                />
                     {/* connect button */}
+                    <Button 
+                        style={styles.button}
+                        onPress={() => this.connectToWiFi()} 
+                        title="Connect"
+                        >
+                    </Button>
                     {error}
                 </View>
-                <Text>{this.state.WiFiPassword}</Text>
-                <NavBar navigation={this.props.navigation} next='Privacy' previous='MountingSensor'/>
+                <NavBar navigation={this.props.navigation} previous='MountingSensor'/>
             </View>
         );
     }

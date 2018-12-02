@@ -40,7 +40,7 @@ export default class Privacy extends Component<Props> {
                         <Text>Deny</Text>
                     </TouchableHighlight>
                 </View>
-                <NavBar navigation={this.props.navigation} previous='WiFiSetup'/>
+                <NavBar navigation={this.props.navigation} previous='ConnectionSetup'/>
             </View>
         );
     }
