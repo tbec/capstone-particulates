@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Text, View, Image, TextInput, Button} from 'react-native';
+import {Text, View, Image, TextInput, Button, KeyboardAvoidingView, ScrollView} from 'react-native';
 import NavBar from '../../Components/NavBar'
 import styles from '../../StyleSheets/Styles'
 
@@ -59,7 +59,7 @@ export default class ConnectionSetup extends Component<Props> {
         }
         
         return (
-            <View style={styles.mainView}>
+            <ScrollView contentContainerStyle={{flexGrow: 1, justifyContent: 'space-between'}}>
                 <View style={{flex: 2}}>
                     <Text>Enable your Bluetooth and connect to the sensor. Once it is connected the device name will show below. 
                         Select your WiFi network to connect to, enter the password, then select 'Connect'.
@@ -74,7 +74,7 @@ export default class ConnectionSetup extends Component<Props> {
                         enter WiFi information below to connect the sensor to your network.
                     </Text>
                 </View>
-                <View style={{flex: 3, alignContent: 'flex-start', justifyContent: 'flex-start',
+                <KeyboardAvoidingView style={{flex: 3, alignContent: 'flex-start', justifyContent: 'flex-start',
                         paddingLeft: 30}}>
                     {/* network */}
                     <TextInput editable={true} keyboardType='default' 
@@ -91,7 +91,7 @@ export default class ConnectionSetup extends Component<Props> {
                                 width: '50%', height: 40, alignContent: 'center', justifyContent: 'center', paddingBottom: 10}}
                                 onChangeText={(value) => {this.setState({WiFiPassword: value})}}
                                 />
-                </View>
+                </KeyboardAvoidingView>
                 <View>
                     {/* connect button */}
                     <Button title="Connect"
@@ -99,13 +99,13 @@ export default class ConnectionSetup extends Component<Props> {
                         disabled={(this.state.WiFiPassword == "" || this.state.WiFiName == "")}
                     />
                 </View>
-                <View style={{flex: 2}}>
+                <View style={{flex: 1}}>
                     {/* <Text>{this.state.WiFiName}</Text>
                     <Text>{this.state.WiFiPassword}</Text> */}
                     {error}
                 </View>
                 <NavBar navigation={this.props.navigation} previous='MountingSensor'/>
-            </View>
+            </ScrollView>
         );
     }
 }
