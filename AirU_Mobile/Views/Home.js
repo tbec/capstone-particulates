@@ -18,8 +18,8 @@ export default class Home extends Component<Props> {
                                 onPress={() => this.props.navigation.navigate({
                                     routeName: 'Tabs',
                                     params: {},
-                                    action: NavigationActions.navigate({routeName: 'Setup'})})}>
-                                    <Text>Setup Sensor</Text>
+                                    action: NavigationActions.navigate({routeName: 'Sensor'})})}>
+                                    <Text>Sensor</Text>
                             </TouchableHighlight>
                             {/* Personal Exposure Tracker */}
                             <TouchableHighlight 
