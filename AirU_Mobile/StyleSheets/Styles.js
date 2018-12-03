@@ -23,7 +23,7 @@ export const styles = StyleSheet.create({
     },
     // home layout, with buttons centered and spaced
     home: {
-        flex: 100,
+        flex: 1,
         flexDirection: 'column',
         justifyContent: 'space-evenly',
         alignItems: 'center', 

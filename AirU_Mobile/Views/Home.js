@@ -11,7 +11,7 @@ export default class Home extends Component<Props> {
                         <View style={styles.header}>
                             <Image source={require('../Resources/AQ_Logo.png')} style={{width: '100%', height: '100%'}}/>
                         </View>
-                        <View style={styles.home}>
+                        <View style={[styles.home, {flex: 100}]}>
                             {/* Setup/Sensor */}
                             <TouchableHighlight 
                                 style={styles.button}

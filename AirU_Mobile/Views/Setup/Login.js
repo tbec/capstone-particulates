@@ -9,7 +9,7 @@ import {WebView} from 'react-native';
 export default class Login extends Component<Props> {
     render() {
         return (
-            <WebView source={{uri: 'https://particulates.slack.com'}}/>
+            <WebView source={{uri: 'localhost:5000/login'}}/>
         );
     }
 }
