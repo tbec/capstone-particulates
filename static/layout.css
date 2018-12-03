@@ -20,6 +20,7 @@ body {
 #content{
     height: 100vh;
     margin-left: 100px;
+    width: 100%;
 }
 
 .nav-wrapper{

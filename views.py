@@ -1,9 +1,12 @@
 # Holds all the routes but need to have access to the app.routes decorator
 # Grab the application from the myapp file
 from myapp import app, db
-from flask import Flask, redirect, render_template, url_for, request, flash, abort, jsonify
+from flask import Flask, redirect, render_template, url_for, request, flash, abort, jsonify, json
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_user, login_required,logout_user, current_user
+
+from influxdb import DataFrameClient, InfluxDBClient
+import pandas as pf
 
 # Import the models for forms so they can be validated
 from forms import LoginForm, RegisterForm
@@ -19,6 +22,34 @@ login_manager.login_view = 'index'
 # Fake Device ID's to be used for account details and possibly graphs
 IDS = ['F3AF4FSAD4F','GSA43FASDF2','H6FD23ASF5G']
 
+# InfluxDB Username and Password
+USERNAME = 'trentSenior'
+PASSWORD = 'LnSwACNZPN5BLP95'
+
+client = DataFrameClient(host='air.eng.utah.edu',
+                         port=8086,
+                         username=USERNAME,
+                         password=PASSWORD,
+                         database='airU',
+                         ssl=True,
+                         verify_ssl=True)
+
+
+def queryDB():
+        # Pandas DataFrame
+    df = client.query("select \"ID\",\"CO\",\"NO\",\"PM1\",\"PM10\",\"PM2.5\" from \"airQuality\" where time > now() - 1h AND \"ID\" = '606405AA0C73'", chunked=True)['airQuality']
+
+    # You can print DataFrame keys just like dict keys
+    # print('\033[92m \nDataFrame keys (column names): \033[0m')
+    # print(df.keys())
+
+    # Do some operation to the DataFrame -- Get a DataFrame for a single Sensor ID:
+    df2 = df[df['ID'] == '606405AA0C73']
+    # print('\033[92m \nPandas DataFrame where ID is "606405AA0C73": \033[0m')
+    # print(df2)
+    df2.to_csv('./static/pollution.csv')
+    # Option to return the dataframe
+    # return df
 
 # Hopefully this injects an object in to context of all templates
 @app.context_processor
@@ -48,10 +79,22 @@ def index():
 def account():
     return render_template('account.html', user=current_user, ids = IDS)
 
-@app.route('/graph')
+@app.route('/graph',methods=["GET","POST"])
 @login_required
 def graph():
-    return render_template('graph.html')
+    bar = False
+    circle = False
+    if request.method == "POST":
+        print(request.form['selected'])
+        if(request.form['selected'] == 'circle'):
+            circle = True
+            bar = False
+        else:
+            circle = False
+            bar = True
+        queryDB()
+        
+    return render_template('graph.html', cGraph = circle, bGraph = bar)
 
 @app.route('/login', methods=['GET','POST'])
 def login():
