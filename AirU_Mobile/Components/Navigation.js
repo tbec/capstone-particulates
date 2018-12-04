@@ -8,7 +8,7 @@ import {Image} from 'react-native'
 import Home from '../Views/Home'
 import Settings from '../Views/Settings'
 import Map from '../Views/Map'
-import Tracker from '../Views/Tracker'
+import Tracker from '../Views/Tracker/Tracker'
 import Setup from '../Views/Setup/SetupNew'
 import MountingSensor from '../Views/Setup/MountingSensor'
 
