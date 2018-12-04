@@ -26,7 +26,7 @@ export default class Sensor extends Component<Props> {
     }
     render() {
         if (this.state.sensors) {
-            sensorPage = <WebView></WebView>
+            sensorPage = <WebView source={{uri: 'localhost:8081'}}/>
         }
         else {
             sensorPage = <View style={styles.home}>

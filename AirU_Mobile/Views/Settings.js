@@ -1,7 +1,7 @@
 // settings screen
 
 import React, {Component} from 'react';
-import {Text, View, TouchableHighlight, ImageBackground} from 'react-native';
+import {Text, View, TouchableHighlight, ImageBackground, Linking} from 'react-native';
 import styles from '../StyleSheets/Styles'
 
 export default class Settings extends Component {
@@ -14,11 +14,9 @@ export default class Settings extends Component {
                         <Text>Settings</Text>
                     </View>
                     <View style={[styles.home, {flex: 10}]}>
-                        <Setting text="Setting1"/>
-                        <Setting text="Setting2"/>
-                        <Setting text="Setting3"/>
-                        <Setting text="Setting4"/>
-                        <Setting text="Setting5"/>
+                        <Setting text="Adjust WiFi Network" action={() => this.props.navigation.navigate('ConnectionSetup')}/>
+                        <Setting text="Modify Privacy Setting" action={() => this.props.navigation.navigate('Privacy')}/>
+                        <Setting text="Contact AirU" action={() => Linking.openURL('mailto:aqandu@utah.edu')}/>
                     </View>
                 </ImageBackground>
             </View>
@@ -35,6 +33,7 @@ export default class Settings extends Component {
 class Setting extends Component {
     constructor(props) {
         super(props);
+        this.state = {action: props.action, text: props.text}
     }
 
     render() {
@@ -43,8 +42,10 @@ class Setting extends Component {
                 <TouchableHighlight 
                         style={styles.button}
                         activeOpacity={30}
-                        underlayColor="yellow">
-                    <Text>{this.props.text}</Text>
+                        underlayColor="yellow"
+                        onPress={this.state.action}
+                        >
+                    <Text>{this.state.text}</Text>
                 </TouchableHighlight>
             </View>
         )
