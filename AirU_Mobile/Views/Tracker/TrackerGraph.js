@@ -16,38 +16,34 @@ export default class TrackerGraph extends Component<Props>
             <G
                 x={ x(selectedIndex) - (75 / 2) }
                 key={ 'tooltip' }
-                onPress={ () => console.log('tooltip clicked') }
+                onPress={ () => this.props.navigation.navigate('PollutionInfo', {
+                    pollution: data[selectedIndex]
+                  }) }
             >
                 <G y={ 50 }>
                     <Rect
-                        height={ 40 }
-                        width={ 75 }
-                        stroke={ 'grey' }
+                        height={ 20 }
+                        width={ 50 }
+                        stroke={ 'blue' }
                         fill={ 'white' }
                         ry={ 10 }
                         rx={ 10 }
                     />
                     <Text
-                        x={ 75 / 2 }
-                        dy={ 20 }
+                        x={ 50 / 2 }
+                        dy={ 10 }
                         alignmentBaseline={ 'middle' }
                         textAnchor={ 'middle' }
-                        stroke={ 'rgb(134, 65, 244)' }
+                        stroke={ 'rgb(0, 0, 255)' }
                     >
                         { `${data[selectedIndex]}` }
                     </Text>
                 </G>
                 <G x={ 75 / 2 }>
-                    <Line
-                        y1={ 50 + 40 }
-                        y2={ y(data[ selectedIndex ]) }
-                        stroke={ 'grey' }
-                        strokeWidth={ 2 }
-                    />
                     <Circle
                         cy={ y(data[ selectedIndex ]) }
                         r={ 6 }
-                        stroke={ 'rgb(134, 65, 244)' }
+                        stroke={ 'rgb(0, 0, 255)' }
                         strokeWidth={ 2 }
                         fill={ 'white' }
                     />
@@ -57,13 +53,13 @@ export default class TrackerGraph extends Component<Props>
 
         return (
             <LineChart
-                style={{ height: 200, backgroundColor: "#fff" }}
+                style={{ height: 200, backgroundColor: "#000" }}
                 data={ data }
                 svg={{
-                    stroke: 'rgb(134, 65, 244)',
+                    stroke: 'rgb(0, 0, 255)',
                     strokeWidth: 2,
                 }}
-                contentInset={{ top: 20, bottom: 20 }}
+                contentInset={{ top: 20, bottom: 20, left: 25, right: 25 }}
                 curve={ shape.curveLinear }
             >
                 <Grid/>

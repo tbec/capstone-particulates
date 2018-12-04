@@ -4,6 +4,8 @@ import NavBar from '../../Components/NavBar';
 import TrackerGraph from './TrackerGraph';
 import MapView, { Polyline, Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import styles from '../../StyleSheets/Styles';
+import {NavigationActions} from 'react-navigation'
+
 
 export default class Tracker extends Component {
     constructor(props) {
@@ -13,7 +15,7 @@ export default class Tracker extends Component {
             allPoints: [],
             pollutionData: [50, 10, 40, 95, -4, -24, 85, 91, 35, 53, -53, 24, 50, -20, -80],
             sliderValue: 0,
-            markerPos: {latitude: 37.8025259, longitude: -122.4351431},
+            markerPos: { latitude: 37.8025259, longitude: -122.4351431 },
             startTracking: true,
             stopTracking: false,
             viewData: false,
@@ -21,7 +23,7 @@ export default class Tracker extends Component {
         };
     }
     render() {
-        let button, trackerGraph, slider;
+        let button, trackerGraph, slider, icon;
         const sliderValue = this.state.sliderValue;
         if (this.state.startTracking) {
             button = <Button title="Start Tracking" onPress={this.startTracking.bind(this)}></Button>
@@ -33,9 +35,8 @@ export default class Tracker extends Component {
             button = <Button title="View Data" onPress={this.viewData.bind(this)}></Button>
         }
         if (this.state.graph) {
-            trackerGraph = <TrackerGraph data={this.state.pollutionData} selectedIndex={this.state.sliderValue}></TrackerGraph>
+            trackerGraph = <TrackerGraph data={this.state.pollutionData} selectedIndex={this.state.sliderValue} navigation={this.props.navigation}></TrackerGraph>
             slider = <View style={sliderStyles.container}>
-                <Text style={sliderStyles.text}>{String(sliderValue)}</Text>
                 <Slider
                     step={1}
                     maximumValue={this.state.pollutionData.length - 1}
@@ -43,6 +44,11 @@ export default class Tracker extends Component {
                     value={sliderValue}
                 />
             </View>
+            icon = <Marker
+                coordinate={this.state.markerPos}
+                image={require('./pin.png')}
+            />
+            button = <Button title="Dismiss" onPress={this.dismissGraph.bind(this)}></Button>
         }
         return (
             <View style={{ flex: 1, flexDirection: 'column' }}>
@@ -54,8 +60,8 @@ export default class Tracker extends Component {
                         initialRegion={{
                             latitude: 37.8025259,
                             longitude: -122.4351431,
-                            latitudeDelta: 0.05,
-                            longitudeDelta: 0.05,
+                            latitudeDelta: 0.03,
+                            longitudeDelta: 0.03,
                         }}
                     >
                         {this.state.pathArray.map((path, index) =>
@@ -66,11 +72,7 @@ export default class Tracker extends Component {
                                 strokeColor={path.color}
                                 onPress={() => this.linePressed(path.path[0].pollution)} />
                         )}
-                        <Marker
-                            coordinate={this.state.markerPos}
-                            title={"marker"}
-                            description={"marker"}
-                        />
+                        {icon}
                     </MapView>
                     {slider}
                     {button}
@@ -84,7 +86,7 @@ export default class Tracker extends Component {
         path = this.generateCoordinates();
         pollutionArray = this.pollutionFromPath(path);
         this.setState({ pollutionData: pollutionArray });
-        this.setState({allPoints: path});
+        this.setState({ allPoints: path });
         var count = 0;
         for (var i = 0; i < path.length - 1; i++) {
             setTimeout(() => {
@@ -98,8 +100,8 @@ export default class Tracker extends Component {
                 let r = {
                     latitude: path[count + 1].latitude,
                     longitude: path[count + 1].longitude,
-                    latitudeDelta: .05,
-                    longitudeDelta: .05,
+                    latitudeDelta: .03,
+                    longitudeDelta: .03,
                 };
                 count++;
                 this.mapView.animateToRegion(r, 50);
@@ -139,14 +141,9 @@ export default class Tracker extends Component {
     }
 
     linePressed(pollution) {
-        Alert.alert(
-            'Pollution Info',
-            'Estimated pollution levels at this point are: ' + pollution,
-            [
-                { text: 'OK', onPress: () => console.log('OK Pressed') },
-            ],
-            { cancelable: true }
-        );
+        this.props.navigation.navigate('PollutionInfo', {
+            pollution: pollution
+          });
     }
 
     pollutionFromPath(path) {
@@ -164,7 +161,14 @@ export default class Tracker extends Component {
             latitude: pathData.latitude,
             longitude: pathData.longitude
         }
-        this.setState({ sliderValue:  num, markerPos: markerCoord });
+        this.setState({ sliderValue: num, markerPos: markerCoord });
+        let r = {
+            latitude: markerCoord.latitude,
+            longitude: markerCoord.longitude,
+            latitudeDelta: .03,
+            longitudeDelta: .03,
+        };
+        this.mapView.animateToRegion(r, 50);
     }
 
     stopTracking() {
@@ -175,12 +179,16 @@ export default class Tracker extends Component {
         this.setState({ viewData: false, graph: true });
     }
 
+    dismissGraph() {
+        this.setState({graph:false, startTracking: true, pathArray: []});
+    }
+
     //estimates the pollution level between two data points
     estimatePollution(p1, p2, split, splitIndex) {
         difference = Math.abs(p1 - p2);
         increment = difference / split * splitIndex;
         result = (p2 > p1) ? p1 + increment : p1 - increment;
-        return result;
+        return parseFloat(result.toFixed(3));
     }
 
     calculateGradientColor(startColor, endColor, split, splitIndex) {
@@ -259,8 +267,7 @@ export default class Tracker extends Component {
 sliderStyles = StyleSheet.create({
     container: {
         width: 300,
-        height: 50,
-        backgroundColor: "#fff"
+        height: 25,
     },
     text: {
         fontSize: 10,

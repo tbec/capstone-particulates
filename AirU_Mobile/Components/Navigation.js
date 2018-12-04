@@ -19,6 +19,8 @@ import Privacy from '../Views/Setup/Privacy'
 import ConnectionSetup from '../Views/Setup/ConnectionSetup'
 import Confirmation from '../Views/Setup/Confirmation'
 
+import PollutionInfo from '../Views/Tracker/PollutionInfo'
+
 // sensor
 import Sensor from '../Views/Sensor/Sensor'
 
@@ -84,7 +86,10 @@ const Router = createStackNavigator(
     Privacy: {screen: Privacy}, 
     Confirmation: {screen: Confirmation}, 
     ConnectionSetup: {screen: ConnectionSetup},
-    MountingSensor: {screen: MountingSensor}, 
+    MountingSensor: {screen: MountingSensor},
+    
+    //pollution info linked to from tracker page
+    PollutionInfo: {screen: PollutionInfo},
 
     //sensor screens
     Sensor: {screen: Sensor}
