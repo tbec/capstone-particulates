@@ -8,12 +8,17 @@ import styles from '../../StyleSheets/Styles'
 import {NavigationActions} from 'react-navigation'
 
 export default class Confirmation extends Component<Props> {
+
+    // saves sensor after clicking final confirmation button, then navs to sensor screen
     saveSensor() {
-          AsyncStorage.setItem('@SensorName', 'Sensor');
+          AsyncStorage.setItem('SensorName', 'Sensor');
+          this.props.navigation.navigate({
+            routeName: 'Tabs',
+            params: {},
+            action: NavigationActions.navigate('Sensor', {sensor: 'sensor'})})
     }
 
     render() {
-        this.saveSensor();
         return (
             <View style={styles.mainView}>
                 <View style={{flex: 3}}>
@@ -27,10 +32,7 @@ export default class Confirmation extends Component<Props> {
                 </View>
                 <View style={[styles.home, {flex: 1}]}>
                     <TouchableHighlight style={styles.button} 
-                                        onPress={() => this.props.navigation.navigate({
-                                            routeName: 'Tabs',
-                                            params: {},
-                                            action: NavigationActions.navigate({routeName: 'Sensor'})})}>
+                                        onPress={() => this.saveSensor()}>
                         <Text>Complete Setup</Text>
                     </TouchableHighlight>
                 </View>

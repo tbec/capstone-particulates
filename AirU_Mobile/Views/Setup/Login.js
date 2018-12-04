@@ -11,7 +11,7 @@ import Icon from 'react-native-vector-icons/Ionicons'
 export default class Login extends Component<Props> {
 
     login() {
-        AsyncStorage.setItem('@Login', 'Login');
+        AsyncStorage.setItem('Login', 'Login');
         this.props.navigation.navigate('ReviewFirst');
     }
 
