@@ -9,13 +9,7 @@ import {NavigationActions} from 'react-navigation'
 
 export default class Confirmation extends Component<Props> {
     saveSensor() {
-        _storeData = async () => {
-            try {
-              await AsyncStorage.setItem('@SensorName:key', 'Sensor');
-            } catch (error) {
-              // Error saving data
-            }
-          }
+          AsyncStorage.setItem('@SensorName', 'Sensor');
     }
 
     render() {

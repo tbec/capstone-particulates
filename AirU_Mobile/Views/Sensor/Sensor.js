@@ -1,7 +1,7 @@
 // shows sensor data
 
 import React, {Component} from 'react';
-import {Text, View, WebView, TouchableHighlight} from 'react-native';
+import {Text, View, WebView, TouchableHighlight, AsyncStorage} from 'react-native';
 import styles from '../../StyleSheets/Styles'
 
 export default class Sensor extends Component<Props> {
@@ -13,17 +13,16 @@ export default class Sensor extends Component<Props> {
     }
 
     componentWillMount() {
-        const _retrieveData = async () => {
-            return await AsyncStorage.getItem('Sensor');
-          }
-
-          if (_retrieveData === null) {
-            this.setState={ sensors: false}
-          }
-          else {
-              this.setState={sensors: true}
-          }
+        AsyncStorage.getItem('user').then((_retrieveData) => {
+            if (_retrieveData == null) {
+                this.setState={ sensors: false}
+            }
+            else {
+                this.setState={sensors: true}
+            }
+        })
     }
+
     render() {
         if (this.state.sensors) {
             sensorPage = <WebView source={{uri: 'localhost:8081'}}/>

@@ -3,25 +3,24 @@
  */
 
 import React, {Component} from 'react';
-import SetupNavigation from '../../Components/Navigation'
+import {AsyncStorage} from 'react-native'
 import Login from '../Setup/Login'
-import ReviewFirst from './ReviewFirst';
 
 export default class SetupNew extends Component<Props> {
 
     // checks if user has logged in previously
     constructor(Props) {
         super(Props);
-        const _retrieveData = async () => {
-            return await AsyncStorage.getItem('Login');
-          }
-
-          if (_retrieveData === null) {
-            this.state={ loggedIn: false}
-          }
-          else {
-              this.state={loggedIn: true}
-          }
+        this.state = {loggedIn: false}
+        
+        AsyncStorage.getItem('@Login').then((_retrieveData) => {
+            if (_retrieveData == null) {
+                this.setState={ loggedIn: false}
+            }
+            else {
+                this.setState={loggedIn: true}
+            }
+        })
     }
 
     componentWillMount() {
@@ -36,7 +35,7 @@ export default class SetupNew extends Component<Props> {
             return null
         }
         else {
-            return (<Login/>)
+            return (<Login navigation={this.props.navigation}/>)
         }
     }
 }
