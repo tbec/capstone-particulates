@@ -177,6 +177,7 @@ def map():
 def logout():
     # db.session.delete(current_user)
     # db.session.commit()
+    IDS = []
     logout_user()
     return redirect(url_for('index'))
 
