@@ -5,17 +5,22 @@
 import React, {Component} from 'react';
 import {Text, View, TouchableHighlight, Image, AsyncStorage} from 'react-native';
 import styles from '../../StyleSheets/Styles'
-import {NavigationActions} from 'react-navigation'
+import {NavigationActions, StackActions} from 'react-navigation'
 
 export default class Confirmation extends Component<Props> {
 
     // saves sensor after clicking final confirmation button, then navs to sensor screen
     saveSensor() {
           AsyncStorage.setItem('SensorName', 'Sensor');
-          this.props.navigation.navigate({
-            routeName: 'Tabs',
-            params: {},
-            action: NavigationActions.navigate('Sensor', {sensor: 'sensor'})})
+          let reset = StackActions.reset({
+              index: 0, 
+              actions:  [NavigationActions.navigate({
+                    routeName: 'Tabs',
+                    params: {},
+                    action: NavigationActions.navigate('Sensor', {sensor: 'sensor'})})]
+            });
+
+            this.props.navigation.dispatch(reset);
     }
 
     render() {
