@@ -15,10 +15,9 @@
 
 #define SHA256_HASH_LEN 32	 		/* SHA-256 digest length */
 #define WIFI_CONNECTED_BIT BIT0		/* IP address obtained */
+#define OTA_REQUEST_BIT BIT1		/* OTA request recieved over MQTT */
 
 EventGroupHandle_t wifi_event_group;
-char DEVICE_MAC[17];
-
 
 /*
 * @brief	Delete the caller task and loop ad-infinitum

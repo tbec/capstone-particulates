@@ -2,7 +2,7 @@
 *	pm_if.c
 *	
 *	Last Modified: October 6, 2018
-*	 Author: tntay
+*	 Author: Trenton Taylor
 *
 */
 
@@ -16,31 +16,56 @@
 #include <string.h>
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
+#include "freertos/timers.h"
 #include "driver/uart.h"
 #include "esp_log.h"
 #include "pm_if.h"
 
+#define PM_TIMER_TIMEOUT_MS 5000
+
+static void _pm_accum_rst(void);
+static esp_err_t get_packet_from_buffer(void);
+static esp_err_t get_data_from_packet(uint8_t *packet);
+static uint8_t pm_checksum();
+static void uart_pm_manager_task(void *pvParameters);
+static void vTimerCallback(TimerHandle_t xTimer);
 
 /* Global variables */
 static QueueHandle_t PM_event_queue;
-pm_data_t pm_data;
-uint8_t pm_buf[BUF_SIZE];
+static TimerHandle_t pm_timer;
+static pm_data_t pm_accum;
+static uint8_t pm_buf[BUF_SIZE];
 
-/* Function prototypes */
-esp_err_t PM_init();
-esp_err_t PM_get_data();
-esp_err_t PM_reset();
-static void vPM_task(void *pvParameters);
-static esp_err_t get_packet_from_buffer();
-static esp_err_t get_data_from_packet(uint8_t *packet);
-static bool check_sum(uint8_t *buf);
+/*
+ * @brief 	PM data timer callback. If no valid PM data is received
+ * 			for PM_TIMER_TIMEOUT_MS then we clear out the pm data accumulator
+ * 			to ensure we don't use old stagnant data.
+ *
+ * @param 	xTimer - the timer handle
+ *
+ * @return 	N/A
+ */
+static void vTimerCallback(TimerHandle_t xTimer)
+{
+	ESP_LOGI(TAG_PM, "PM Timer Timeout -- Resetting PM Sample Accumulator");
+	xTimerStop(xTimer, 0);
+	_pm_accum_rst();
+}
 
-
-/* For debugging */
-//pm_data_t cur_data;
-//static void print();
-/*****************/
-
+/*
+ * @brief	Reset the pm accumulator struct
+ *
+ * @param
+ *
+ * @return
+ */
+static void _pm_accum_rst()
+{
+	pm_accum.pm1   = 0;
+	pm_accum.pm2_5 = 0;
+	pm_accum.pm10  = 0;
+	pm_accum.sample_count = 0;
+}
 
 /*
 * @brief
@@ -50,10 +75,9 @@ static bool check_sum(uint8_t *buf);
 * @return
 *
 */
-esp_err_t PM_init()
+esp_err_t PMS_Initialize()
 {
-  esp_err_t err = ESP_OK;
-  esp_log_level_set(TAG_PM, ESP_LOG_INFO);
+  esp_err_t err = ESP_FAIL;
 
   // configure parameters of the UART driver
   uart_config_t uart_config = 
@@ -73,12 +97,23 @@ esp_err_t PM_init()
   err = uart_driver_install(PM_UART_CH, BUF_SIZE, 0, 20, &PM_event_queue, 0);
 
   // create a task to handler UART event from ISR for the PM sensor
-  xTaskCreate(vPM_task, "vPM_task", 2048, NULL, 12, NULL);
+  xTaskCreate(uart_pm_manager_task, "vPM_task", 2048, NULL, 12, NULL);
+
+  // create the timer to determine validity of pm data
+  pm_timer = xTimerCreate("pm_timer",
+						  (PM_TIMER_TIMEOUT_MS / portTICK_PERIOD_MS),
+						  pdFALSE, (void *)NULL,
+						  vTimerCallback);
+
+  // clear out the pm data accumulator
+  _pm_accum_rst();
+
+  // start the first timer
+  xTimerStart(pm_timer, 0);
 
   return err;
 }
 
-
 /*
 * @brief
 *
@@ -87,40 +122,31 @@ esp_err_t PM_init()
 * @return
 *
 */
-esp_err_t PM_get_data(pm_data_t *cur_data)
-{
-	if(get_packet_from_buffer() == ESP_FAIL)
-  {
-    ESP_LOGI(TAG_PM, "Failed to get valid PM data.\n");
-    return ESP_FAIL;
-  }
-  else
-  {
-    pm_data.sample_count++;
-    cur_data->pm1 = pm_data.pm1;
-    cur_data->pm2_5 = pm_data.pm2_5;
-    cur_data->pm10 = pm_data.pm10;
-	  cur_data->sample_count = pm_data.sample_count;
-
-    return ESP_OK;
-  }
-}
-
-/*
-* @brief
-*
-* @param
-*
-* @return
-*
-*/
-esp_err_t PM_reset()
+esp_err_t PMS_Reset()
 {
   /* need gpio library set up first */
 
 	return ESP_FAIL;
 }
 
+esp_err_t PMS_Poll(pm_data_t *dat)
+{
+	if(pm_accum.sample_count == 0) {
+		dat->pm1   = -1;
+		dat->pm2_5 = -1;
+		dat->pm10  = -1;
+		return ESP_FAIL;
+	}
+
+	dat->pm1   = pm_accum.pm1   / pm_accum.sample_count;
+	dat->pm2_5 = pm_accum.pm2_5 / pm_accum.sample_count;
+	dat->pm10  = pm_accum.pm10  / pm_accum.sample_count;
+
+	_pm_accum_rst();
+
+	return ESP_OK;
+}
+
 
 /*
 * @brief
@@ -130,44 +156,31 @@ esp_err_t PM_reset()
 * @return
 *
 */
-static void vPM_task(void *pvParameters)
+static void uart_pm_manager_task(void *pvParameters)
 {
   uart_event_t event;
-  uint8_t buf[BUF_SIZE];
-  uint16_t i_buf = 0;
-
 
   for(;;) 
   {
     //Waiting for UART event.
     if(xQueueReceive(PM_event_queue, (void * )&event, (portTickType)portMAX_DELAY)) 
     {
-      bzero(buf, BUF_SIZE);
-      ESP_LOGI(TAG_PM, "uart[%d] event:", PM_UART_CH);
       switch(event.type) 
       {
         case UART_DATA:
-          ESP_LOGI(TAG_PM, "[UART DATA]: %d", event.size);
-
           if(event.size == 24) 
           {
-            uart_read_bytes(PM_UART_CH, buf, event.size, portMAX_DELAY); 
-            memcpy(pm_buf + i_buf, buf, sizeof(uint8_t) * PM_PKT_LEN);
-            if(i_buf == BUF_SIZE)
-              i_buf = 0;
-            else
-              i_buf = (i_buf + PM_PKT_LEN); 
+            uart_read_bytes(PM_UART_CH, pm_buf, event.size, portMAX_DELAY);
+            get_packet_from_buffer();
           }
-          //PM_get_data(&cur_data); // debug
-          //print(); // debug
-          ESP_LOGI(TAG_PM, "[DATA EVT]:");
-          uart_write_bytes(PM_UART_CH, (const char*) buf, event.size);
+          uart_flush_input(PM_UART_CH);
           break;
 
         case UART_FIFO_OVF:
           ESP_LOGI(TAG_PM, "hw fifo overflow");
           uart_flush_input(PM_UART_CH);
           xQueueReset(PM_event_queue);
+          break;
                 
         case UART_BUFFER_FULL:
           ESP_LOGI(TAG_PM, "ring buffer full");
@@ -206,30 +219,17 @@ static void vPM_task(void *pvParameters)
 * @return
 *
 */
-static esp_err_t get_packet_from_buffer()
-{
-  uint8_t packet[PM_PKT_LEN];
-  uint16_t i;
-
-
-  // Look for the first valid packet at the end of the buffer and if its not there
-  // then start moving to the front of the buffer looking for one.
-  for(i = BUF_SIZE - PM_PKT_LEN; i > 0; i--)
-  {
-  	if(pm_buf[i] == 'B' && pm_buf[i+1] == 'M')
-  	{
-  		memcpy(packet, pm_buf + i, sizeof(uint8_t) * PM_PKT_LEN);
-
-  		if(check_sum(packet))
-  		{
-  			// Store the data from the valid packet found in the global pm struct.
-  			//printf("Found valid packet at index: %d\n", i);
-  			if(get_data_from_packet(packet) == ESP_OK)
-          return ESP_OK;
-  		}
-  	}
-  }//for
-
+static esp_err_t get_packet_from_buffer(){
+  if(pm_buf[0] == 'B' && pm_buf[1] == 'M'){
+	  if(pm_checksum()){
+		  pm_accum.pm1   += (float)((pm_buf[PKT_PM1_HIGH]   << 8) | pm_buf[PKT_PM1_LOW]);
+		  pm_accum.pm2_5 += (float)((pm_buf[PKT_PM2_5_HIGH] << 8) | pm_buf[PKT_PM2_5_LOW]);
+		  pm_accum.pm10  += (float)((pm_buf[PKT_PM10_HIGH]  << 8) | pm_buf[PKT_PM10_LOW]);
+		  pm_accum.sample_count++;
+		  xTimerReset(pm_timer, 0);
+		  return ESP_OK;
+	  }
+  }
   return ESP_FAIL;
 }
 
@@ -256,24 +256,23 @@ static esp_err_t get_data_from_packet(uint8_t *packet)
   tmp2 = packet[PKT_PM1_LOW];
   tmp = tmp << sizeof(uint8_t);
   tmp = tmp | tmp2;
-  pm_data.pm1 = tmp;
+  pm_accum.pm1 += tmp;
 
   // PM2.5 data
   tmp = packet[PKT_PM2_5_HIGH];
   tmp2 = packet[PKT_PM2_5_LOW];
   tmp = tmp << sizeof(uint8_t);
   tmp = tmp | tmp2;
-  pm_data.pm2_5 = tmp;
+  pm_accum.pm2_5 += tmp;
 
   // PM10 data
-  tmp = packet[PKT_PM10_HIGH];
+  tmp = packet[PKT_PM10_HIGH] << 8 ;
   tmp2 = packet[PKT_PM10_LOW];
   tmp = tmp << sizeof(uint8_t);
   tmp = tmp | tmp2;
-  pm_data.pm10 = tmp;
+  pm_accum.pm10 += tmp;
 
-  pm_data.sample_count++;
-
+  pm_accum.sample_count++;
 
   return ESP_OK;
 }
@@ -287,57 +286,17 @@ static esp_err_t get_data_from_packet(uint8_t *packet)
 * @return
 *
 */
-static bool check_sum(uint8_t *buf)
+static uint8_t pm_checksum()
 {
-  uint16_t checksum;
-  uint16_t sum;
-  uint16_t i;
+	uint16_t checksum;
+	uint16_t sum = 0;
+	uint16_t i;
 
-  if(buf[0] != 'B' && buf[1] != 'M')
-  {
-    return false;
-  }
+	checksum = ((uint16_t) pm_buf[PM_PKT_LEN-2]) << 8;
+	checksum += (uint16_t) pm_buf[PM_PKT_LEN-1];
 
-  checksum = ((uint16_t) buf[PM_PKT_LEN-2]) << 8;
-  checksum += (uint16_t) buf[PM_PKT_LEN-1];
+	for(i = 0; i < PM_PKT_LEN-2 ; i++)
+		sum += pm_buf[i];
 
-  sum = 0;
-  for(i = 0; i < PM_PKT_LEN-2 ; i++)
-  {
-    sum += buf[i];
-  }
-
-  return (sum == checksum);
+	return (sum == checksum);
 }
-
-
-/*
-* @brief
-*
-* @param
-*
-* @return
-*
-*/
-/*
-static void print()
-{
-  int i;
-
-
-  printf("buffer: \n");
-  for(i = 0; i < BUF_SIZE; i++)
-  {
-    printf("%d", pm_buf[i]);
-  }
-  printf("\n");
-
-  printf("------------------\n");
-  printf("PM 1: %d\n", pm_data.pm1);
-  printf("PM 2.5: %d\n", pm_data.pm2_5);
-  printf("PM 10: %d\n", pm_data.pm10);
-  printf("------------------\n");
-}
-*/
-
-

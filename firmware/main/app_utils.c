@@ -51,18 +51,12 @@ void __attribute__((noreturn)) task_fatal_error(const char *TAG)
 */
 void app_initialize(void)
 {
-    uint8_t mac[6];
     uint8_t sha_256[SHA256_HASH_LEN] = { 0 };
 	esp_partition_t partition;
 
 	ESP_LOGI(TAG, "Startup..");
     ESP_LOGI(TAG, "Free memory: %d bytes", esp_get_free_heap_size());
     ESP_LOGI(TAG, "IDF version: %s", esp_get_idf_version());
-
-    ESP_ERROR_CHECK(esp_efuse_mac_get_default(mac));
-    sprintf(DEVICE_MAC, "%02X:%02X:%02X:%02X:%02X:%02X",
-    		mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
-    ESP_LOGI(TAG, "Device MAC: %s", DEVICE_MAC);
 
     esp_log_level_set("*", ESP_LOG_INFO);
     esp_log_level_set("MQTT_CLIENT", ESP_LOG_VERBOSE);

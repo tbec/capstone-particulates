@@ -2,7 +2,7 @@
 *	pm_if.h
 *	
 *	Last Modified: October 6, 2018
-*	 Author: tntay
+*	 Author: Trenton Taylor
 *
 */
 #ifndef _PM_IF_H
@@ -50,9 +50,9 @@ static const char *TAG_PM = "PM";
 typedef struct 
 {
   uint32_t sample_count;    // Number of valid data points recieved
-  uint16_t pm1;             // Most recent PM1 samples
-  uint16_t pm2_5;           // Most recent PM2.5 samples 
-  uint16_t pm10;            // Most recent PM10 samples
+  float pm1;             // Most recent PM1 samples
+  float pm2_5;           // Most recent PM2.5 samples
+  float pm10;            // Most recent PM10 samples
 } pm_data_t;
 
 
@@ -64,7 +64,7 @@ typedef struct
 * @return
 *
 */
-esp_err_t PM_init();
+esp_err_t PMS_Initialize();
 
 /*
 * @brief
@@ -74,7 +74,9 @@ esp_err_t PM_init();
 * @return
 *
 */
-esp_err_t PM_get_data();
+//esp_err_t PM_get_data();
+
+esp_err_t PMS_Poll(pm_data_t *dat);
 
 /*
 * @brief
@@ -84,7 +86,7 @@ esp_err_t PM_get_data();
 * @return
 *
 */
-esp_err_t PM_reset();
+esp_err_t PMS_reset();
 
 
 
