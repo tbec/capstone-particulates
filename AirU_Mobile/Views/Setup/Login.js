@@ -18,7 +18,7 @@ export default class Login extends Component<Props> {
     render() {
         return (
             <View style={{flex: 1}}>
-                <WebView style={{flex: 10}} source={{uri: 'https://github.com/facebook/react-native'}}/>
+                <WebView style={{flex: 10}} source={{uri: 'localhost:5000/login'}}/>
                 <View style={styles.navBar}>
                     <TouchableHighlight 
                             style={styles.previousButton}
