@@ -90,7 +90,7 @@ function scaleDataPercent(data){
         sum += data[d].percent;
     }
     for(var d in data){
-        data[d].percent = ((data[d].percent / sum) * 100).toPrecision(2);
+        data[d].percent = parseInt(((data[d].percent / sum) * 100).toFixed(2));
     }
     return data;
 }

@@ -24,7 +24,7 @@ IDS = []
 
 # InfluxDB Username and Password
 USERNAME = 'trentSenior'
-PASSWORD = ''
+PASSWORD = 'LnSwACNZPN5BLP95'
 
 client = DataFrameClient(host='air.eng.utah.edu',
                          port=8086,
