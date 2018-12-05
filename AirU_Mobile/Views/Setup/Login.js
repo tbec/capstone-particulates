@@ -18,7 +18,7 @@ export default class Login extends Component<Props> {
     render() {
         return (
             <View style={{flex: 1}}>
-                <WebView style={{flex: 10}} source={{uri: 'localhost:5000/login'}}/>
+                <WebView style={{flex: 10}} source={{uri: 'http://127.0.0.1:5002/login'}}/>
                 <View style={styles.navBar}>
                     <TouchableHighlight 
                             style={styles.previousButton}

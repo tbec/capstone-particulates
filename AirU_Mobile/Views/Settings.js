@@ -14,8 +14,8 @@ export default class Settings extends Component {
                         <Text>Settings</Text>
                     </View>
                     <View style={[styles.home, {flex: 10}]}>
-                        <Setting text="Adjust WiFi Network" action={() => this.props.navigation.navigate('ConnectionSetup')}/>
-                        <Setting text="Modify Privacy Setting" action={() => this.props.navigation.navigate('Privacy')}/>
+                        {/* <Setting text="Adjust WiFi Network" action={() => this.props.navigation.navigate('ConnectionSetup')}/>
+                        <Setting text="Modify Privacy Setting" action={() => this.props.navigation.navigate('Privacy')}/> */}
                         <Setting text="Contact AirU" action={() => Linking.openURL('mailto:aqandu@utah.edu')}/>
                     </View>
                 </ImageBackground>

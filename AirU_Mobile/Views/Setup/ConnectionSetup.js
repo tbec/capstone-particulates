@@ -26,7 +26,7 @@ export default class ConnectionSetup extends Component<Props> {
 
     connectToWiFi() {
         // if valid, navigate to Privacy. Otherwise mark as error
-        if (this.state.WiFiName == "Utah" && this.state.WiFiPassword == "password") {
+        if (this.state.WiFiName == "UGuest" && this.state.WiFiPassword == "password") {
            this.props.navigation.navigate("Privacy");
         }
         else {
