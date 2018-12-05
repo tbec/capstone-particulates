@@ -20,7 +20,7 @@ export default class TrackerGraph extends Component<Props>
                     pollution: data[selectedIndex]
                   }) }
             >
-                <G y={ 50 }>
+                <G y={ y(data[ selectedIndex ]) - 35 }>
                     <Rect
                         height={ 20 }
                         width={ 50 }
@@ -59,7 +59,7 @@ export default class TrackerGraph extends Component<Props>
                     stroke: 'rgb(0, 0, 255)',
                     strokeWidth: 2,
                 }}
-                contentInset={{ top: 20, bottom: 20, left: 25, right: 25 }}
+                contentInset={{ top: 40, bottom: 20, left: 25, right: 25 }}
                 curve={ shape.curveLinear }
             >
                 <Grid/>
