@@ -13,7 +13,7 @@
         <div class="nav-wrapper">
             <img class="logo" src="{{url_for('static', filename='red_cloud.jpeg')}}">
             {%if current_user.is_active%}
-            <a class="nav-text" href="{{url_for('account')}}"><img class="logo" src="{{url_for('static', filename='user2.png')}}">Account</a>
+            <a class="nav-text" href="{{url_for('account')}}"><img class="logo" src="{{url_for('static', filename='user2.png')}}">{{current_user.username}}</a>
             <a class="nav-text" href="{{url_for('graph')}}"><img class="logo" src="{{url_for('static', filename='bars-chart.png')}}">Graph</a>
             <a class="nav-text" href="{{url_for('map')}}"><img class="logo" src="{{url_for('static', filename='map-location.png')}}">Map</a>
 

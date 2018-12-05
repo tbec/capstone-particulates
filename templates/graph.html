@@ -1,39 +1,39 @@
 {% extends 'layout.html' %}
 
 {%block content%}
-<p>Logged in: {{ user.username }}</p>
+<!-- <p>Logged in: {{ user.username }}</p> -->
 <div class="outer-wrapper">
     <div class="inner-upper">
             <form class="nav-form" method="POST" action="/graph">
-                <select name="selected">
+                <select class="menu" name="selected">
                     <option value = "bar">Bar Graph</option>
                     <option value = "circle">Circle Graph</option>
                 </select>
-                <input type="submit" value="view">
+                <input class="button" type="submit" value="view">
             </form>
             <div class="header">Breakdown of CO(Carbon Monoxide), NO(Nitric Oxide), PM1, PM2.5, PM10 </div>
     </div>
 
     {%if bGraph%}    
     <div class="inner-bottom-b">    
-                <div class="bottom-top">
-                        <div class="bottom-top-left">
+                <!-- <div class="bottom-top"> -->
+                        <div class="bottom-top-left chart-element">
         
                         </div>
-                        <div class="bottom-top-right">
+                        <div class="bottom-top-right chart-element">
         
                         </div>
         
-                </div>
+                <!-- </div> -->
                 
-                <div class="bottom-bottom">
-                    <div class="bottom-bottom-left">
+                <!-- <div class="bottom-bottom"> -->
+                    <div class="bottom-bottom-left chart-element">
         
                     </div>
-                    <div class="bottom-bottom-right">
+                    <div class="bottom-bottom-right chart-element">
         
                     </div>
-                </div>
+                <!-- </div> -->
         
     {% elif cGraph%}
     <div class="inner-bottom-c">  

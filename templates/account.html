@@ -1,36 +1,46 @@
 {% extends 'layout.html' %}
 
 {%block content%}
-<p>Logged in: {{ user.username }}</p> 
+
+<!-- <p>Logged in: {{ user.username }}</p>  -->
+
 <div class="wrapper">
+        
+    <h2 class="acc-header">Account Details</h2>
     <div class="user-info">
-        <h2>Account Details</h2>
         <div class="info-element"> 
-            <label for="username">Username: </label>
+            <label class="label-text" for="username">Username: </label>
            <!-- <p id="username">{{current_user.username}}</p> -->
-            <input type="text" id ="username" disabled value="{{user.username}}">
+            <input class="text-input" type="text" id ="username" disabled value="{{user.username}}">
         </div>
         <div class="info-element"> 
-                <label for="email">Email: </label>
+                <label class="label-text" for="email">Email: </label>
                 <!-- <p id="email">{{current_user.email}}</p> -->
-                <input type="text" id ="email" disabled value="{{user.email}}">
+                <input class="text-input"  type="text" id ="email" disabled value="{{user.email}}">
         </div>
         <div class="info-element"> 
-                <label for="password">Password: </label>
-                <p id="password">{{user}}</p>
+                <label class="label-text" for="password">Password: </label>
+                <p id="password">{{user.password}}</p>
          </div>
     </div>
 
 
     <hr>   
+    <div class="add-device">
+        <h2 class="acc-header">Devices</h2>
+        <form method='POST' action="/addDevice">
+                <input class="text-input" name="add_device" type="text" placeholder="Device ID" ></input>
+                <input class="button" type="submit" value="Add new device"></input>
+        </form>
 
-    <h2>Devices</h2>
+        
+    </div>
 
     <div class="device-info">
         {%for device in ids %}
         <div class="info-element"> 
-                <label >Device ID: </label>
-                <input type="text" disabled value="{{device}}">
+                <label class="label-text">Device ID: </label>
+                <input class="text-input" type="text" disabled value="{{device}}">
         </div>
         {%endfor%}
 </div>

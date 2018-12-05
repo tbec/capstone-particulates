@@ -1,5 +1,10 @@
 body {
     margin: 0;
+    font-family: Lato,Helvetica Neue,Helvetica,Arial,sans-serif;
+}
+
+h2{
+    color:#f1171c;
 }
 
 #content p{
@@ -15,12 +20,13 @@ body {
     top: 0;
     left: 0;
     background-color: #d95350;
+    font-family: Lato,Helvetica Neue,Helvetica,Arial,sans-serif;
 }
 
 #content{
     height: 100vh;
     margin-left: 100px;
-    width: 100%;
+    width: 90vw;
 }
 
 .nav-wrapper{

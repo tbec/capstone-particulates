@@ -20,11 +20,11 @@ login_manager.init_app(app)
 login_manager.login_view = 'index'
 
 # Fake Device ID's to be used for account details and possibly graphs
-IDS = ['F3AF4FSAD4F','GSA43FASDF2','H6FD23ASF5G']
+IDS = []
 
 # InfluxDB Username and Password
 USERNAME = 'trentSenior'
-PASSWORD = 'LnSwACNZPN5BLP95'
+PASSWORD = ''
 
 client = DataFrameClient(host='air.eng.utah.edu',
                          port=8086,
@@ -64,6 +64,9 @@ def load_user(user_id):
 
 #Each of the functions below are used as endpoints for the /<html page>
 
+
+
+
 @app.route('/')
 def index():
     x = current_user
@@ -78,6 +81,13 @@ def index():
 @login_required
 def account():
     return render_template('account.html', user=current_user, ids = IDS)
+
+@app.route('/addDevice', methods=["POST"])
+@login_required
+def addDevice():
+    if request.form["add_device"] != "":
+        IDS.append(request.form["add_device"])
+    return redirect(url_for('account'))
 
 @app.route('/graph',methods=["GET","POST"])
 @login_required
@@ -124,6 +134,8 @@ def login():
                  # Checks the uniqueness of username and email, create one and direct back to the login screen
                 user_exists = userExists(reg_form.username.data)
                 email_exists = emailExists(reg_form.email.data)
+
+                # Validate that both the email and username are not taken, hash the password --> put the user in the db
                 if not user_exists and not email_exists:
                     hashed_password = generate_password_hash(reg_form.password.data, method='sha256')
                     new_user = User(username=reg_form.username.data, email=reg_form.email.data, password=hashed_password)

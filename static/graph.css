@@ -1,6 +1,7 @@
 /* Color of the bar graphs */
 .bar { 
-    fill: coral; 
+    /* fill: coral;  */
+    fill: #9ed971;
 }
 
 /* Creates the default size of the body */
@@ -13,8 +14,8 @@ body {
 .outer-wrapper{
     display: flex;
     flex-direction: column;
-    width: 120vw;
-    height: 110vh;
+    width: 90vw;
+    height: 100vh;
 }
 
 .inner-left svg, .inner-right svg{
@@ -38,6 +39,7 @@ body {
     flex-direction: column;
     height: 90%;
     width: 100%;
+    align-items: center;
 }
 
 .bottom-top{
@@ -53,9 +55,9 @@ body {
 
 }
 
-.bottom-top-left, .bottom-top-right, .bottom-bottom-left, .bottom-bottom-right{
+.chart-element{
     height: 100%;
-    width: 50%;
+    width: 100%;
 }
 
 .inner-bottom-c{
@@ -83,25 +85,26 @@ body {
     background-color: #d95350;
     height:40px;
     color:#fff;
-    width: 60%;
+    width: 80%;
     margin-left: 40px;
     text-align: center;
     line-height: 40px;
     border-top-left-radius: 7px;
     border-top-right-radius: 7px;
+    border-bottom-left-radius: 7px;
+    border-bottom-right-radius: 7px;
     font-weight: 400;
     font-size: 1.5em;
-    text-shadow: 1px 1px #06060d;
+    /* text-shadow: 1px 1px #06060d; */
     position: sticky;
-    left : 380px;
-    top : 70px;
+    left : 390px;
+    top : 10px;
 }
 
 /* Styles the select option, button and makes it sticky */
 .nav-form{
     position: sticky;
-    left : 180px;
-    top : 70px;
+    left : 150px;
 }
 
 /* not Used anymore */
@@ -118,3 +121,20 @@ body {
     -webkit-filter: drop-shadow( 0px 3px 3px rgba(0,0,0,.5) );
     filter: drop-shadow( 0px 3px 3px rgba(0,0,0,.5) );
 }
+
+
+.button {
+    background-color: #3880fd;
+    border: none;
+    color: white;
+    text-align: center;
+    font-size: 14px;
+    opacity: 0.6;
+    transition: 0.3s;
+    text-decoration: none;
+    cursor: pointer;
+    border-radius: 5px;
+    height: 20px;
+  }
+  
+  .button:hover {opacity: 1}

@@ -1,7 +1,13 @@
 {% extends 'layout.html' %}
 
 {%block content%}
-<p>Logged in: {{ user.username }}</p> 
+<style>
+    .mapouter{
+        margin-top: 63.17px;
+        position: fixed;
+    }
+</style>
+<!-- <p>Logged in: {{ user.username }}</p>  -->
 <div class="mapouter">
     <div class="gmap_canvas">
         <iframe width="1680" height="850" id="gmap_canvas" src="https://maps.google.com/maps?q=Salt%20Lake&t=&z=13&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
