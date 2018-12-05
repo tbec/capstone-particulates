@@ -5,21 +5,25 @@
 import React, {Component} from 'react';
 import {Text, View, TouchableHighlight, Image, AsyncStorage} from 'react-native';
 import styles from '../../StyleSheets/Styles'
-import {NavigationActions} from 'react-navigation'
+import {NavigationActions, StackActions} from 'react-navigation'
 
 export default class Confirmation extends Component<Props> {
+
+    // saves sensor after clicking final confirmation button, then navs to sensor screen
     saveSensor() {
-        _storeData = async () => {
-            try {
-              await AsyncStorage.setItem('@SensorName:key', 'Sensor');
-            } catch (error) {
-              // Error saving data
-            }
-          }
+          AsyncStorage.setItem('SensorName', 'Sensor');
+          let reset = StackActions.reset({
+              index: 0, 
+              actions:  [NavigationActions.navigate({
+                    routeName: 'Tabs',
+                    params: {},
+                    action: NavigationActions.navigate('Sensor', {sensor: 'sensor'})})]
+            });
+
+            this.props.navigation.dispatch(reset);
     }
 
     render() {
-        this.saveSensor();
         return (
             <View style={styles.mainView}>
                 <View style={{flex: 3}}>
@@ -33,10 +37,7 @@ export default class Confirmation extends Component<Props> {
                 </View>
                 <View style={[styles.home, {flex: 1}]}>
                     <TouchableHighlight style={styles.button} 
-                                        onPress={() => this.props.navigation.navigate({
-                                            routeName: 'Tabs',
-                                            params: {},
-                                            action: NavigationActions.navigate({routeName: 'Sensor'})})}>
+                                        onPress={() => this.saveSensor()}>
                         <Text>Complete Setup</Text>
                     </TouchableHighlight>
                 </View>

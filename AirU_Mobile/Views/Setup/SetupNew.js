@@ -3,38 +3,42 @@
  */
 
 import React, {Component} from 'react';
-import SetupNavigation from '../../Components/Navigation'
+import {AsyncStorage} from 'react-native'
 import Login from '../Setup/Login'
-import ReviewFirst from './ReviewFirst';
 
 export default class SetupNew extends Component<Props> {
 
     // checks if user has logged in previously
     constructor(Props) {
         super(Props);
-        const _retrieveData = async () => {
-            return await AsyncStorage.getItem('Login');
-          }
-
-          if (_retrieveData === null) {
-            this.state={ loggedIn: false}
-          }
-          else {
-              this.state={loggedIn: true}
-          }
+        this.state = {loggedIn: false}
+        this.checkLogin();
     }
 
-    componentWillMount() {
-        if(this.state.loggedIn){
-            this.props.navigation.navigate('ReviewFirst');
-            return null;
-        }
+    componentWillReceiveProps(props) {
+        this.checkLogin();
+    }
+
+    // checks if the user has logged in previously
+    checkLogin() {
+        AsyncStorage.getItem('Login').then((_retrieveData) => {
+            if (_retrieveData == null) {
+                this.setState({ loggedIn: false})
+            }
+            else {
+                this.setState({loggedIn: true})
+                this.props.navigation.navigate('ReviewFirst');
+            }
+        })
     }
 
     // If logged in already go to review via navigator, otherwise have login first
     render() {
-            return (<Login/>)
+        if (this.state.loggedIn) {            
+            return null;
         }
-    // need way to go to SetupNavigation after Login successful
-    // Change to navigation.push, when returned way to pass in variable back and logic off that?
+        else {
+            return (<Login navigation={this.props.navigation}/>)
+        }
+    }
 }

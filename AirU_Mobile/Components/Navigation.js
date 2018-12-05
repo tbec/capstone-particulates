@@ -39,7 +39,6 @@ import Sensor from '../Views/Sensor/Sensor'
 // Tabs across bottom of screens
 const TabNavigator = createBottomTabNavigator(
   {
-    Setup: {screen: Setup},
     Sensor: {screen: Sensor},
     Tracker: {screen: Tracker},
     Map: {screen: Map},
@@ -51,7 +50,7 @@ const TabNavigator = createBottomTabNavigator(
         const {routeName} = navigation.state
         
         // Icons for bottom page, if update above add image here as well
-        if (routeName == 'Setup') {
+        if (routeName == 'Sensor') {
           return <Icon name={Platform.OS === "ios" ? "ios-analytics" : "md-analytics"} size={20}/>
         }
         else if (routeName == 'Tracker') {
@@ -81,6 +80,7 @@ const Router = createStackNavigator(
     Tabs: {screen: TabNavigator, initalRouteName: 'Home'},
 
     // sensor setup
+    Setup: {screen: Setup},
     Login: {screen: Login},
     ReviewFirst: {screen: ReviewFirst}, 
     Privacy: {screen: Privacy}, 

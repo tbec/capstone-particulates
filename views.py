@@ -1,7 +1,11 @@
 # Holds all the routes but need to have access to the app.routes decorator
 # Grab the application from the myapp file
 from myapp import app, db
+<<<<<<< HEAD
 from flask import Flask, redirect, render_template, url_for, request, flash, abort, jsonify, json
+=======
+from flask import Flask, redirect, render_template, url_for, request, flash, abort
+>>>>>>> 686cb384c7dc58208cde06bf3e3b208dbb4fc255
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_user, login_required,logout_user, current_user
 
@@ -196,4 +200,7 @@ def userExists(name):
 # checks whether the email exists
 def emailExists(email):
     return User.query.filter_by(email=email).first()
+<<<<<<< HEAD
 
+=======
+>>>>>>> 686cb384c7dc58208cde06bf3e3b208dbb4fc255

@@ -49,29 +49,25 @@ export const styles = StyleSheet.create({
     }, 
     // next arrow used in setup
     nextButton: {
-        flex: 5,
+        flex: 1,
         padding: 10,
         borderColor: 'black',
-        width:  40,
-        height: 40, 
         alignItems: 'flex-end', 
         justifyContent: 'flex-end',
         backgroundColor: 'transparent'
     }, 
     // previous arrow used in setup
     previousButton: {
-        flex: 5,
+        flex: 1,
         padding: 10,
         borderColor: 'black',
-        width:  40,
-        height: 40, 
         alignItems: 'flex-start', 
         justifyContent: 'flex-start',
         backgroundColor: 'transparent'
     }, 
     // position for bottom NavBar.js
     navBar: {
-        flex: 1, 
+        height: 60, width: "100%",
         flexDirection: 'row', 
         justifyContent: 'flex-end', 
         alignContent: 'space-between'
