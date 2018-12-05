@@ -1,9 +1,12 @@
 # Holds all the routes but need to have access to the app.routes decorator
 # Grab the application from the myapp file
 from myapp import app, db
-from flask import Flask, redirect, render_template, url_for, request, flash, is_safe_url, abort
+from flask import Flask, redirect, render_template, url_for, request, flash, abort, jsonify, json
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_user, login_required,logout_user, current_user
+
+from influxdb import DataFrameClient, InfluxDBClient
+import pandas as pf
 
 # Import the models for forms so they can be validated
 from forms import LoginForm, RegisterForm
@@ -15,6 +18,38 @@ from models import User
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'index'
+
+# Fake Device ID's to be used for account details and possibly graphs
+IDS = []
+
+# InfluxDB Username and Password
+USERNAME = 'trentSenior'
+PASSWORD = 'LnSwACNZPN5BLP95'
+
+client = DataFrameClient(host='air.eng.utah.edu',
+                         port=8086,
+                         username=USERNAME,
+                         password=PASSWORD,
+                         database='airU',
+                         ssl=True,
+                         verify_ssl=True)
+
+
+def queryDB():
+        # Pandas DataFrame
+    df = client.query("select \"ID\",\"CO\",\"NO\",\"PM1\",\"PM10\",\"PM2.5\" from \"airQuality\" where time > now() - 1h AND \"ID\" = '606405AA0C73'", chunked=True)['airQuality']
+
+    # You can print DataFrame keys just like dict keys
+    # print('\033[92m \nDataFrame keys (column names): \033[0m')
+    # print(df.keys())
+
+    # Do some operation to the DataFrame -- Get a DataFrame for a single Sensor ID:
+    df2 = df[df['ID'] == '606405AA0C73']
+    # print('\033[92m \nPandas DataFrame where ID is "606405AA0C73": \033[0m')
+    # print(df2)
+    df2.to_csv('./static/pollution.csv')
+    # Option to return the dataframe
+    # return df
 
 # Hopefully this injects an object in to context of all templates
 @app.context_processor
@@ -29,6 +64,9 @@ def load_user(user_id):
 
 #Each of the functions below are used as endpoints for the /<html page>
 
+
+
+
 @app.route('/')
 def index():
     x = current_user
@@ -39,10 +77,35 @@ def index():
     return redirect(url_for('login'))
     
 
-@app.route('/graph')
+@app.route('/account')
+@login_required
+def account():
+    return render_template('account.html', user=current_user, ids = IDS)
+
+@app.route('/addDevice', methods=["POST"])
+@login_required
+def addDevice():
+    if request.form["add_device"] != "":
+        IDS.append(request.form["add_device"])
+    return redirect(url_for('account'))
+
+@app.route('/graph',methods=["GET","POST"])
 @login_required
 def graph():
-    return render_template('graph.html')
+    bar = False
+    circle = False
+    if request.method == "POST":
+        print(request.form['selected'])
+        if(request.form['selected'] == 'circle'):
+            circle = True
+            bar = False
+        else:
+            circle = False
+            bar = True
+        queryDB()
+        
+    return render_template('graph.html', cGraph = circle, bGraph = bar)
+
 @app.route('/login', methods=['GET','POST'])
 def login():
     # Create the two forms for login or create
@@ -71,6 +134,8 @@ def login():
                  # Checks the uniqueness of username and email, create one and direct back to the login screen
                 user_exists = userExists(reg_form.username.data)
                 email_exists = emailExists(reg_form.email.data)
+
+                # Validate that both the email and username are not taken, hash the password --> put the user in the db
                 if not user_exists and not email_exists:
                     hashed_password = generate_password_hash(reg_form.password.data, method='sha256')
                     new_user = User(username=reg_form.username.data, email=reg_form.email.data, password=hashed_password)
@@ -82,35 +147,6 @@ def login():
                 flash('Username taken!', category='alert alert-danger _reg')
             return render_template('login.html', form=form,reg=reg_form, active="signup")
     return render_template('login.html', form=form,reg=reg_form, active="login")
-
-    #     # If it was the login form: grab the user and validate it
-    #     if form.validate_on_submit():
-    #         user = userExists(form.username.data)
-    #         if user:
-    #             if check_password_hash(user.password, form.password.data):
-    #                 # Use login manager with the logged in user and redirect
-    #                 login_user(user, remember=form.remember.data)
-    #                 return redirect(url_for('check'))
-    #         flash('Invalid username or password', category='alert alert-danger _login')
-    #         # Else there was an error TODO: Check whether the reg form needs to be revalidated
-    #         return render_template('login.html', form=form, reg=reg_form, active="login")
-    #     # Check whether it was a registration form    
-    #     elif reg_form.validate_on_submit():
-    #         # form = LoginForm(prefix='log')
-    #         # Checks the uniqueness of username and email, create one and direct back to the login screen
-    #         user_exists = userExists(reg_form.username.data)
-    #         email_exists = emailExists(reg_form.email.data)
-    #         if not user_exists and not email_exists:
-    #             hashed_password = generate_password_hash(reg_form.password.data, method='sha256')
-    #             new_user = User(username=reg_form.username.data, email=reg_form.email.data, password=hashed_password)
-    #             db.session.add(new_user)
-    #             db.session.commit()
-    #             flash('User successfully created!', category='alert alert-success _login')
-    #             return render_template('login.html', form=form,reg=reg_form, active="login")
-    #         # refresh the login form so it doesn't error out
-    #         flash('Username taken.', category='alert alert-danger _reg')
-    #         return render_template('login.html', form=form,reg=reg_form, active="signup")
-    # return render_template('login.html', form=form,reg=reg_form, active="login")
 
 @app.route('/signup', methods=['GET','POST'])
 def signup():
@@ -128,20 +164,13 @@ def signup():
                 flash('User successfully created!', category='alert alert-success')
                 return redirect(url_for('login'))
     return redirect(url_for('login'))
-    # user = User.query.filter_by(username="John").first()
-    # if not user:
-    #     hashed_pwd = generate_password_hash('password', method='sha256')
-    #     user = User(id=1, username='John', email='John@gmail.com', password=hashed_pwd )
-    #     db.session.add(user)
-    #     db.session.commit()
-    #     return redirect(url_for('login'))
-    # return render_template('index.html', error=True)
+
 
  
-@app.route('/check')
+@app.route('/map')
 @login_required
-def check():
-    return render_template('check.html', user = current_user)
+def map():
+    return render_template('map.html', user = current_user)
 
 @app.route('/logout')
 @login_required
@@ -150,6 +179,10 @@ def logout():
     # db.session.commit()
     logout_user()
     return redirect(url_for('index'))
+
+@app.route('/download')
+def download():
+    pass
 
 @app.errorhandler(404)
 def page_not_found(e):
@@ -162,3 +195,4 @@ def userExists(name):
 # checks whether the email exists
 def emailExists(email):
     return User.query.filter_by(email=email).first()
+

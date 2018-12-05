@@ -11,6 +11,7 @@ const layout = {
                 window.location.href = '/'
             });
         })
+        
     }
 }
 
