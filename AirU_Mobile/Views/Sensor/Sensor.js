@@ -14,6 +14,8 @@ export default class Sensor extends Component<Props> {
         this.checkSensors();
     }
 
+    // checks if sensor has been registered already. If no goes to sensor page, if yes 
+    // displays information
     checkSensors() {
         AsyncStorage.getItem('SensorName').then((_retrieveData) => {
             if (_retrieveData == null) {
@@ -30,6 +32,7 @@ export default class Sensor extends Component<Props> {
     }
 
     render() {
+        // sensor page
         if (this.state.sensors) {
             sensorPage = <View style={{flex: 1}}>
                             <View style={styles.navBar}>
@@ -41,9 +44,10 @@ export default class Sensor extends Component<Props> {
                                     <Icon name={Platform.OS === "ios" ? "ios-add" : "md-add"} size={40}/>
                                 </TouchableHighlight>
                             </View>
-                            <WebView style={{flex: 10}} source={{uri: 'http://127.0.0.1:5002:/graph'}}/>
+                            <WebView style={{flex: 10}} source={{uri: 'http://10.0.2.2:5000:/graph'}}/>
                         </View>
         }
+        // prompt to setup sensor
         else {
             sensorPage = <View style={styles.home}>
                             <Text>You have not registered any sensors to view data.</Text>
@@ -53,7 +57,7 @@ export default class Sensor extends Component<Props> {
                                         activeOpacity={30}
                                         underlayColor="yellow"
                                         onPress={() => this.props.navigation.navigate('Setup')}>
-                                    <Text>Setup New Sensor</Text>
+                                    <Text style={styles.buttonText}>Setup New Sensor</Text>
                             </TouchableHighlight>
                         </View>;
 

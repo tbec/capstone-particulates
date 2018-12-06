@@ -4,6 +4,10 @@ import NavBar from '../../Components/NavBar'
 import styles from '../../StyleSheets/Styles'
 
 export default class ConnectionSetup extends Component<Props> {
+    static navigationOptions = {
+        title: 'Connection',
+    };
+
     constructor(props) {
         super(props)
         // timer for faking
@@ -96,6 +100,7 @@ export default class ConnectionSetup extends Component<Props> {
                     {/* connect button */}
                     <Button title="Connect"
                         onPress={() => this.connectToWiFi()}
+                        color='red' 
                         disabled={(this.state.WiFiPassword == "" || this.state.WiFiName == "")}
                     />
                 </View>

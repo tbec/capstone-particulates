@@ -38,7 +38,7 @@ export default class Confirmation extends Component<Props> {
                 <View style={[styles.home, {flex: 1}]}>
                     <TouchableHighlight style={styles.button} 
                                         onPress={() => this.saveSensor()}>
-                        <Text>Complete Setup</Text>
+                        <Text style={styles.buttonText}>Complete Setup</Text>
                     </TouchableHighlight>
                 </View>
             </View>

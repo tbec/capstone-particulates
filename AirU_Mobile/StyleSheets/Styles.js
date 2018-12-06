@@ -34,12 +34,16 @@ export const styles = StyleSheet.create({
         borderWidth: 2,
         padding: 1,
         borderColor: 'black',
-        backgroundColor: 'powderblue',
+        backgroundColor: 'red',
         width: 150,
         height: 50, 
         alignItems: 'center', 
         justifyContent: 'space-evenly'
     }, 
+    buttonText: {
+        color: 'white',
+        fontWeight: 'bold',
+    },
     mainView: {
         flex: 1,
         paddingTop: 30, 
