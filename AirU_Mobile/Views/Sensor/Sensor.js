@@ -44,7 +44,7 @@ export default class Sensor extends Component<Props> {
                                     <Icon name={Platform.OS === "ios" ? "ios-add" : "md-add"} size={40}/>
                                 </TouchableHighlight>
                             </View>
-                            <WebView style={{flex: 10}} source={{uri: 'http://127.0.0.1:5002:/graph'}}/>
+                            <WebView style={{flex: 10}} source={{uri: 'http://10.0.2.2:5000:/graph'}}/>
                         </View>
         }
         // prompt to setup sensor
