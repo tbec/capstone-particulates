@@ -86,7 +86,7 @@ def addDevice():
     return redirect(url_for('account'))
 
 @app.route('/graph',methods=["GET","POST"])
-@login_required
+# @login_required
 def graph():
     bar = False
     circle = False
