@@ -1,3 +1,4 @@
+var c;
 console.log("In the js file")
 function draw_graph(field_name, anchor){
     console.log("Called")
@@ -28,7 +29,10 @@ function draw_graph(field_name, anchor){
    d3.csv("../static/pollution.csv", function(error, data) {
    if (error) throw error;
    console.log(data);
-   console.log('--------------------------')
+   console.log('--------------------------')                    
+                                                                                    // From green to blue
+   var colors = d3.scaleLinear().domain([0,getMaxDataValue(data,field_name)]).range(['#2b9f2c','#3880fd']);
+   console.log(getMaxDataValue(data,field_name));
    var x = d3.scaleBand()
            .range([0, width])
            .padding(0.1);
@@ -45,6 +49,7 @@ function draw_graph(field_name, anchor){
        .attr("class", "bar")
        .attr("x", function(d,i) { return x(i); })
        .attr("width", x.bandwidth())
+       .attr('fill', function(d,i){return colors(d[field_name])})
        .attr("y", function(d) { return y(d[field_name]); })
        .attr("height", function(d) { return height - y(d[field_name]); });
    
@@ -68,6 +73,14 @@ function draw_graph(field_name, anchor){
            .text(field_name);
    
    });
+}
+
+function getMaxDataValue(d,name){
+    var temp = []
+    console.log(d);
+    c = d;
+    for(var key in d) { temp.push(parseInt(c[key][name]))};
+    return d3.max(temp);
 }
 
 // Extracts the data from the csv file into json format

@@ -1,11 +1,7 @@
 # Holds all the routes but need to have access to the app.routes decorator
 # Grab the application from the myapp file
 from myapp import app, db
-<<<<<<< HEAD
-from flask import Flask, redirect, render_template, url_for, request, flash, abort, jsonify, json
-=======
-from flask import Flask, redirect, render_template, url_for, request, flash, abort
->>>>>>> 686cb384c7dc58208cde06bf3e3b208dbb4fc255
+from flask import Flask, redirect, render_template, url_for, request, flash, abort, jsonify, json, send_file
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_user, login_required,logout_user, current_user
 
@@ -23,8 +19,8 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'index'
 
-# Fake Device ID's to be used for account details and possibly graphs
-IDS = []
+# One real and one Fake Device ID to be used for account details and possibly graphs
+IDS = ['606405AA0C73','30aea4e9ba4']
 
 # InfluxDB Username and Password
 USERNAME = 'trentSenior'
@@ -40,17 +36,13 @@ client = DataFrameClient(host='air.eng.utah.edu',
 
 
 def queryDB():
-        # Pandas DataFrame
+    # Pandas DataFrame
     df = client.query("select \"ID\",\"CO\",\"NO\",\"PM1\",\"PM10\",\"PM2.5\" from \"airQuality\" where time > now() - 1h AND \"ID\" = '606405AA0C73'", chunked=True)['airQuality']
-
-    # You can print DataFrame keys just like dict keys
-    # print('\033[92m \nDataFrame keys (column names): \033[0m')
-    # print(df.keys())
 
     # Do some operation to the DataFrame -- Get a DataFrame for a single Sensor ID:
     df2 = df[df['ID'] == '606405AA0C73']
-    # print('\033[92m \nPandas DataFrame where ID is "606405AA0C73": \033[0m')
-    # print(df2)
+
+    # Save the pollution data to a csv for later use from graphs or download
     df2.to_csv('./static/pollution.csv')
     # Option to return the dataframe
     # return df
@@ -181,13 +173,13 @@ def map():
 def logout():
     # db.session.delete(current_user)
     # db.session.commit()
-    IDS = []
+    IDS = ['606405AA0C73','30aea4e9ba4']
     logout_user()
     return redirect(url_for('index'))
 
 @app.route('/download')
 def download():
-    pass
+    return send_file('static/pollution.csv', mimetype="text/csv", attachment_filename="pollution.csv", as_attachment=True)
 
 @app.errorhandler(404)
 def page_not_found(e):
@@ -200,7 +192,3 @@ def userExists(name):
 # checks whether the email exists
 def emailExists(email):
     return User.query.filter_by(email=email).first()
-<<<<<<< HEAD
-
-=======
->>>>>>> 686cb384c7dc58208cde06bf3e3b208dbb4fc255

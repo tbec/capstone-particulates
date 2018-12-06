@@ -18,6 +18,9 @@
     align-items: center;
     height: 60px;
 }
+.info-element button{
+    margin-left: 5px;
+}
 
 .info-element label{
     margin: 0px 50px;
