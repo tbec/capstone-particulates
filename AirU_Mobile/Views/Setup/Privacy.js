@@ -34,10 +34,10 @@ export default class Privacy extends Component<Props> {
                 {/* choice section */}
                 <View style={[styles.home, {flex: 3}]}>
                     <TouchableHighlight style={styles.button} onPress={() => this.setPrivacy(true)}>
-                        <Text>Allow</Text>
+                        <Text style={styles.buttonText}>Allow</Text>
                     </TouchableHighlight>
                     <TouchableHighlight style={styles.button} onPress={() => this.setPrivacy(false)}>
-                        <Text>Deny</Text>
+                        <Text style={styles.buttonText}>Deny</Text>
                     </TouchableHighlight>
                 </View>
                 <NavBar navigation={this.props.navigation} previous='ConnectionSetup'/>

@@ -1,10 +1,29 @@
 // settings screen
 
 import React, {Component} from 'react';
-import {Text, View, TouchableHighlight, ImageBackground, Linking} from 'react-native';
+import {Text, View, TouchableHighlight, ImageBackground, Linking, Alert, AsyncStorage} from 'react-native';
+import {StackActions, NavigationActions} from 'react-navigation'
 import styles from '../StyleSheets/Styles'
 
 export default class Settings extends Component {
+    constructor(props) {
+        super(props);
+    }
+
+    reset() {
+        Alert.alert(
+            'Reset Settings',
+            'Are you sure you want to reset settings?',
+            [
+                {text: 'Cancel', style: 'cancel'},
+                {text: 'OK', onPress: () => {
+                    AsyncStorage.clear();
+                    this.props.navigation.navigate('Sensor', {sensor: false});
+                }},
+            ],
+          )
+    }
+
     render() {
         return (
             <View style={styles.container}>
@@ -14,8 +33,7 @@ export default class Settings extends Component {
                         <Text>Settings</Text>
                     </View>
                     <View style={[styles.home, {flex: 10}]}>
-                        {/* <Setting text="Adjust WiFi Network" action={() => this.props.navigation.navigate('ConnectionSetup')}/>
-                        <Setting text="Modify Privacy Setting" action={() => this.props.navigation.navigate('Privacy')}/> */}
+                        <Setting text="Reset Settings" action={() => this.reset()}/>
                         <Setting text="Contact AirU" action={() => Linking.openURL('mailto:aqandu@utah.edu')}/>
                     </View>
                 </ImageBackground>
@@ -23,7 +41,7 @@ export default class Settings extends Component {
         );
     }
 }
-
+// AsyncStorage.setItem('SensorName', null);
 /**
  * Corresponds to a setting button. 
  * Values: 
@@ -45,7 +63,7 @@ class Setting extends Component {
                         underlayColor="yellow"
                         onPress={this.state.action}
                         >
-                    <Text>{this.state.text}</Text>
+                    <Text style={styles.buttonText}>{this.state.text}</Text>
                 </TouchableHighlight>
             </View>
         )

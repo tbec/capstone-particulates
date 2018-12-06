@@ -19,7 +19,7 @@ export default class Home extends Component<Props> {
                                     routeName: 'Tabs',
                                     params: {},
                                     action: NavigationActions.navigate({routeName: 'Sensor'})})}>
-                                    <Text>Sensor</Text>
+                                    <Text style={styles.buttonText}>Sensor</Text>
                             </TouchableHighlight>
                             {/* Personal Exposure Tracker */}
                             <TouchableHighlight 
@@ -28,7 +28,7 @@ export default class Home extends Component<Props> {
                                     routeName: 'Tabs',
                                     params: {},
                                     action: NavigationActions.navigate({routeName: 'Tracker'})})}>
-                                    <Text>Personal Tracker</Text>
+                                    <Text style={styles.buttonText}>Personal Tracker</Text>
                             </TouchableHighlight>
                             {/* AQandU Map page */}
                             <TouchableHighlight 
@@ -37,7 +37,7 @@ export default class Home extends Component<Props> {
                                     routeName: 'Tabs',
                                     params: {},
                                     action: NavigationActions.navigate({routeName: 'Map'})})}>
-                                    <Text>Sensor Map</Text>
+                                    <Text style={styles.buttonText}>Sensor Map</Text>
                             </TouchableHighlight>
                             {/* Settings */}
                             <TouchableHighlight 
@@ -46,7 +46,7 @@ export default class Home extends Component<Props> {
                                     routeName: 'Tabs',
                                     params: {},
                                     action: NavigationActions.navigate({routeName: 'Settings'})})}>
-                                    <Text>Settings</Text>
+                                    <Text style={styles.buttonText}>Settings</Text>
                             </TouchableHighlight>
                             </View>
                         </ImageBackground>
