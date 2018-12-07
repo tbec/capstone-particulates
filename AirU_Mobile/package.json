@@ -9,6 +9,7 @@
   "dependencies": {
     "react": "16.6.1",
     "react-native": "0.57.5",
+    "react-native-cli": "^2.0.1",
     "react-native-maps": "^0.22.1",
     "react-native-svg": "^6.2.1",
     "react-native-svg-charts": "^5.2.0",

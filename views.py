@@ -20,7 +20,8 @@ login_manager.init_app(app)
 login_manager.login_view = 'index'
 
 # One real and one Fake Device ID to be used for account details and possibly graphs
-IDS = ['606405AA0C73','30aea4e9ba4']
+# IDS = ['606405AA0C73','30aea4e9ba4']
+IDS = ['30AEA4E9BA4']
 
 # InfluxDB Username and Password
 USERNAME = 'trentSenior'
@@ -173,7 +174,9 @@ def map():
 def logout():
     # db.session.delete(current_user)
     # db.session.commit()
-    IDS = ['606405AA0C73','30aea4e9ba4']
+    # IDS = ['606405AA0C73','30AEA4E9BA4']
+
+    IDS = ['30AEA4E9BA4']
     logout_user()
     return redirect(url_for('index'))
 

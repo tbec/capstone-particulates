@@ -31,7 +31,7 @@ function draw_graph(field_name, anchor){
    console.log(data);
    console.log('--------------------------')                    
                                                                                     // From green to blue
-   var colors = d3.scaleLinear().domain([0,getMaxDataValue(data,field_name)]).range(['#2b9f2c','#3880fd']);
+   var colors = d3.scaleLinear().domain([0,getMaxDataValue(data,field_name)]).range(['blue','orange']);
    console.log(getMaxDataValue(data,field_name));
    var x = d3.scaleBand()
            .range([0, width])
