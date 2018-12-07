@@ -1,1 +1,30 @@
 {% extends 'layout.html' %}
+
+{%block content%}
+        <div class="outer-wrapper">
+
+            <h1 id="welcome-h1"> Welcome: {{user.username}}</h1>
+
+            <div class="container">
+                    <h2 class="title inTheCenter">Project Goals</h2>
+                    <p class="description">
+                            Over the last few years, low-cost commodity sensors have hit the markets allowing — for the first time — the ability to measure hyperlocal air quality conditions outside of our homes. At the University of Utah, we are building infrastructure that utilizes these new sensors to create accurate measurements of air quality microclimates.
+
+                            <br><br>
+
+                            Our <span class="projectDescription">Outdoor Air Quality</span> project leverages existing government and community-based air quality efforts to build a dense network of sensors across Salt Lake City.
+
+                            <br><br>
+
+                            This project utilizes our research in sensor design, air quality science, computational modeling, and communication of data; furthermore, it relies on citizens to engage, promote, and facilitate science.
+
+                            We are currently looking for Salt Lake City residents to be part of building our outdoor network by hosting sensors at their homes. Thanks for getting involved!
+
+                            <br><br>
+
+                            This work is generously funded by grants from the National Science Foundation, the National Institutes of Health, Utah Ignite, Lawrence T. &amp; Janet T. Dee Foundation and UCAIR.
+                    </p>
+            </div>
+    </div>
+<link rel="stylesheet" href="{{url_for('static', filename='index.css')}}">
+{%endblock%}

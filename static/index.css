@@ -1,0 +1,28 @@
+.outer-wrapper{
+    display: flex;
+    flex-direction: column;
+}
+
+#welcome-h1{
+    margin-top: 5px;
+}
+
+.container{
+    border: 1px solid #cd221f;
+    border-radius: 5px;
+    width: 80%;
+    margin: 50 auto;
+    background-color: #cd221f;
+    padding: 30px;
+    color: #fff;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 20px;
+}
+
+.container h2 {
+    align-self: center;
+    width: 250px;
+    margin: 0 auto;
+    font-size: 32px;
+    color: #fff;
+}
