@@ -3,6 +3,7 @@
 from myapp import db
 from flask_login import UserMixin
 
+# Creates a Model for a User
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(15), unique=True)

@@ -4,9 +4,11 @@ from flask import Flask
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
 
-
+# Set up the configuration for the application
 app = Flask(__name__)
 app.config.from_pyfile('config.py')
+
+# Pulls in bootstrap and sqlite DB
 Bootstrap(app)
 db = SQLAlchemy(app)
 

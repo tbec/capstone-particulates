@@ -1,3 +1,4 @@
+// Resizes the map to be resizeable with the browser
 const map_view = {
     adjust_size : function(){
         var map = document.querySelector('iframe');

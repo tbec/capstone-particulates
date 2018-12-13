@@ -2,6 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import TextField, PasswordField, PasswordField, BooleanField, StringField
 from wtforms.validators import InputRequired, Email, Length
 
+# Create's different forms for LOGIN and SINGUP. This will validate the requirements for each input field
 class LoginForm(FlaskForm):
     username = TextField('Username', validators=[InputRequired(), Length(min=4, max=15)])
     password = PasswordField('Password', validators=[InputRequired(), Length(min=8, max=80)])

@@ -1,10 +1,9 @@
 var c;
-console.log("In the js file")
 function draw_graph(field_name, anchor){
-    console.log("Called")
-    console.log("In the js function")
-    console.log("Variable names: Field Name: " + field_name )
-    console.log("Variable names: anchor: " + anchor )
+    // console.log("Called")
+    // console.log("In the js function")
+    // console.log("Variable names: Field Name: " + field_name )
+    // console.log("Variable names: anchor: " + anchor )
 
 
     // set the dimensions and margins of the graph
@@ -42,6 +41,7 @@ function draw_graph(field_name, anchor){
    // Scale the range of the data in the domains
    x.domain(data.map(function(d,i) { return i; }));
    y.domain([0, d3.max(data, function(d) { return d[field_name]; })]);
+
    // append the rectangles for the bar chart
    svg.selectAll(".bar")
        .data(data)
@@ -75,6 +75,8 @@ function draw_graph(field_name, anchor){
    });
 }
 
+// Pulls all the fields of 'name' out of the csv file and returns the max of the field
+// used to create the color scales
 function getMaxDataValue(d,name){
     var temp = []
     console.log(d);
@@ -115,40 +117,34 @@ function draw_circle(field_names, anchor){
     document.querySelector(".outer-wrapper").style.height = "80vh";
 
     d3.csv("../static/pollution.csv", function(error, data) {
-        console.log("in circles")
-        console.log(data)
+        // console.log("in circles")
+        // console.log(data)
         var d;
         var dataset = [];
-        console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
-        console.log(data);
-        console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
+        // console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
+        // console.log(data);
+        // console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
         for(var field in field_names)
         {
             console.log("This is th current field: " + field);
             dataset.push(pullOutData(field_names[field], data));
         }
-        console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%% AFTER")
-        console.log(dataset);
-        console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
+        // console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%% AFTER")
+        // console.log(dataset);
+        // console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
         d= data;
         // dataset.push(pullOutData("PM1"));
         // dataset.push(pullOutData("PM10"));
         // dataset.push(pullOutData("PM2.5"));
         dataset = scaleDataPercent(dataset);
-        console.log("***************************")
-        console.log(dataset);
-        console.log("***************************")
+        // console.log("***************************")
+        // console.log(dataset);
+        // console.log("***************************")
         dataset = scaleDataPercent(dataset);
-        console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-        console.log(dataset);
-        console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-                // var dataset = [
-        //     { name: 'IE', percent: 39.10 },
-        //     { name: 'Chrome', percent: 32.51 },
-        //     { name: 'Safari', percent: 13.68 },
-        //     { name: 'Firefox', percent: 8.71 },
-        //     { name: 'Others', percent: 6.01 }
-        // ];
+        // console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        // console.log(dataset);
+        // console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+
 
         var pie=d3.pie().value(function(d){return d.percent;}).sort(null).padAngle(.03);
 

@@ -60,10 +60,6 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 #Each of the functions below are used as endpoints for the /<html page>
-
-
-
-
 @app.route('/')
 def index():
     x = current_user
@@ -172,14 +168,12 @@ def map():
 @app.route('/logout')
 @login_required
 def logout():
-    # db.session.delete(current_user)
-    # db.session.commit()
-    # IDS = ['606405AA0C73','30AEA4E9BA4']
-
+    # Reset the MAC ID for devices, log the user out
     IDS = ['30AEA4E9BA4']
     logout_user()
     return redirect(url_for('index'))
 
+#Fetches the pollutino csv and returns it as a file
 @app.route('/download')
 def download():
     return send_file('static/pollution.csv', mimetype="text/csv", attachment_filename="pollution.csv", as_attachment=True)

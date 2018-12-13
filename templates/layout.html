@@ -9,6 +9,7 @@
     {%endblock%}
 </head>
 <body>
+    <!-- The sidebar with all the links -->
     <div class="sidenav">
         <div class="nav-wrapper">
             <img class="logo" src="{{url_for('static', filename='red_cloud.jpeg')}}">
@@ -29,6 +30,7 @@
         </div>
     </div>
     <div id="content">
+        <!-- This is where all the other pages that inherit this layout will put their content -->
         {% block content %}
         {% endblock %}
     </div>
