@@ -40,11 +40,12 @@ export default class Sensor extends Component<Props> {
                                         style={styles.nextButton}
                                         activeOpacity={30}
                                         underlayColor="yellow"
-                                        onPress={() => this.props.navigation.navigate('SetupNew')}>
+                                        onPress={() => this.props.navigation.navigate('Setup')}>
                                     <Icon name={Platform.OS === "ios" ? "ios-add" : "md-add"} size={40}/>
                                 </TouchableHighlight>
                             </View>
-                            <WebView style={{flex: 10}} source={{uri: 'http://10.0.2.2:5000:/graph'}}/>
+                            <WebView style={{flex: 10}} source={{uri: Platform.OS === "ios" ? 'http://localhost:5000/graph' 
+                                                        : 'http://10.0.2.2:5000/graph'}}/>
                         </View>
         }
         // prompt to setup sensor

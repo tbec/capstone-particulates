@@ -18,7 +18,9 @@ export default class Login extends Component<Props> {
     render() {
         return (
             <View style={{flex: 1}}>
-                <WebView style={{flex: 10}} source={{uri: 'http://10.0.2.2:5000'}}/>
+                {/* iOS uses localhost, Android uses 10.0.2.2 */}
+                <WebView style={{flex: 10}} source={{uri: Platform.OS === "ios" ? 'http://localhost:5000' 
+                                                        : 'http://10.0.2.2:5000'}}/>
                 <View style={styles.navBar}>
                     <TouchableHighlight 
                             style={styles.previousButton}
