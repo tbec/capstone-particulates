@@ -2,4 +2,8 @@ source 'https://github.com/CocoaPods/Specs.git'
 target 'AirU_Mobile' do
        pod 'yoga', :path => '../node_modules/react-native/ReactCommon/yoga/Yoga.podspec'
        pod 'GoogleMaps'
+       pod 'RNSVG', :path => '../node_modules/react-native-svg'
+       pod 'React', :path => '../node_modules/react-native', :subspecs => [
+       	   'RCTImage'
+       ]
 end
