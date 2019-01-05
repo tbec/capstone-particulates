@@ -1,0 +1,100 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Snapshot test for Confirmation Setup 1`] = `
+<View
+  style={
+    Object {
+      "flex": 1,
+      "flexDirection": "column",
+      "height": "80%",
+      "justifyContent": "space-between",
+      "paddingTop": 30,
+    }
+  }
+>
+  <View
+    style={
+      Object {
+        "flex": 3,
+      }
+    }
+  >
+    <Text>
+      Sensor setup complete! If you have not finished mounting and securing your sensor already, please do so now.
+    </Text>
+    <Text />
+    <Text>
+      If you need to adjust the settings for your sensor, you can do so in the settings
+    </Text>
+    <Text />
+    <Text>
+      Thank you for purchasing an AirU Sensor!
+    </Text>
+    <Text />
+    <Image
+      source={
+        Object {
+          "testUri": "../../../Resources/Confirmation.jpg",
+        }
+      }
+      style={
+        Object {
+          "alignContent": "center",
+          "flex": 4,
+          "height": "100%",
+          "width": "100%",
+        }
+      }
+    />
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "alignItems": "center",
+          "flex": 100,
+          "flexDirection": "column",
+          "justifyContent": "space-evenly",
+        },
+        Object {
+          "flex": 1,
+        },
+      ]
+    }
+  >
+    <View
+      accessible={true}
+      isTVSelectable={true}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "alignItems": "center",
+          "backgroundColor": "red",
+          "borderColor": "black",
+          "borderWidth": 2,
+          "height": 50,
+          "justifyContent": "space-evenly",
+          "padding": 1,
+          "width": 150,
+        }
+      }
+    >
+      <Text
+        style={
+          Object {
+            "color": "white",
+            "fontWeight": "bold",
+          }
+        }
+      >
+        Complete Setup
+      </Text>
+    </View>
+  </View>
+</View>
+`;

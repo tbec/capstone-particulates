@@ -1,0 +1,189 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Snapshot ConnectionSetup Setup 1`] = `
+<RCTScrollView
+  contentContainerStyle={
+    Object {
+      "flex": 1,
+      "flexDirection": "column",
+      "height": "80%",
+      "justifyContent": "space-between",
+      "paddingTop": 30,
+    }
+  }
+  showsVerticalScrollIndicator={true}
+>
+  <View>
+    <Text>
+      Before proceeding, please confirm the following items were in your AirU box: 
+    </Text>
+    <Text />
+    <View
+      style={
+        Object {
+          "backgroundColor": "powderBlue",
+          "flex": 4,
+          "flexDirection": "row",
+        }
+      }
+    >
+      <View
+        style={
+          Object {
+            "flex": 2,
+            "flexDirection": "column",
+            "justifyContent": "center",
+          }
+        }
+      >
+        <Text
+          style={
+            Object {
+              "padding": 5,
+            }
+          }
+        >
+          * AirU Sensor
+        </Text>
+        <Text
+          style={
+            Object {
+              "padding": 5,
+            }
+          }
+        >
+          * 2 zip ties
+        </Text>
+        <Text
+          style={
+            Object {
+              "padding": 5,
+            }
+          }
+        >
+          * Power cord
+        </Text>
+      </View>
+      <Image
+        source={
+          Object {
+            "testUri": "../../../Resources/SensorBox.png",
+          }
+        }
+        style={
+          Object {
+            "flex": 3,
+            "height": "100%",
+            "width": "50%",
+          }
+        }
+      />
+    </View>
+    <Text />
+    <Text
+      style={
+        Object {
+          "flex": 1,
+        }
+      }
+    >
+      On the back of the sensor, make sure there are two stickers
+    </Text>
+    <Image
+      source={
+        Object {
+          "testUri": "../../../Resources/SensorStickers.png",
+        }
+      }
+      style={
+        Object {
+          "flex": 3,
+          "height": "50%",
+          "width": "60%",
+        }
+      }
+    />
+    <Text />
+    <Text
+      style={
+        Object {
+          "flex": 1,
+        }
+      }
+    >
+      The first is the MAC address which will be used to connect to the sensor
+    </Text>
+    <Text
+      style={
+        Object {
+          "flex": 1,
+        }
+      }
+    >
+      The second is the S-A-XXX label, which is the name of the sensor
+    </Text>
+    <Text
+      style={
+        Object {
+          "flex": 1,
+        }
+      }
+    >
+      After confirming everything, please proceed to connecting to the sensor
+    </Text>
+    <View
+      style={
+        Object {
+          "alignContent": "space-between",
+          "flexDirection": "row",
+          "height": 60,
+          "justifyContent": "flex-end",
+          "width": "100%",
+        }
+      }
+    >
+      <View
+        accessible={true}
+        isTVSelectable={true}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "alignItems": "flex-end",
+            "backgroundColor": "transparent",
+            "borderColor": "black",
+            "flex": 1,
+            "justifyContent": "flex-end",
+            "padding": 10,
+          }
+        }
+      >
+        <Text
+          allowFontScaling={false}
+          style={
+            Array [
+              Object {
+                "color": undefined,
+                "fontSize": 40,
+              },
+              null,
+              Object {
+                "fontFamily": "Ionicons",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              Object {},
+            ]
+          }
+        >
+          
+        </Text>
+      </View>
+    </View>
+  </View>
+</RCTScrollView>
+`;

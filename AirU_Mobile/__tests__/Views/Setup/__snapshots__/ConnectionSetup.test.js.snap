@@ -1,0 +1,240 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Snapshot ConnectionSetup Setup 1`] = `
+<RCTScrollView
+  contentContainerStyle={
+    Object {
+      "flexGrow": 1,
+      "justifyContent": "space-between",
+    }
+  }
+>
+  <View>
+    <View
+      style={
+        Object {
+          "flex": 2,
+        }
+      }
+    >
+      <Text>
+        Enable your Bluetooth and connect to the sensor. Once it is connected the device name will show below. Select your WiFi network to connect to, enter the password, then select 'Connect'.
+      </Text>
+    </View>
+    <View
+      style={
+        Object {
+          "alignContent": "flex-start",
+          "flex": 2,
+          "jusifyContent": "flex-start",
+        }
+      }
+    >
+      <Image
+        source={
+          Object {
+            "testUri": "../../../Resources/Loading.gif",
+          }
+        }
+        style={
+          Object {
+            "alignContent": "center",
+            "height": 100,
+            "justifyContent": "center",
+            "width": 100,
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Object {
+          "flex": 2,
+        }
+      }
+    >
+      <Text>
+        Confirm the MAC ID listed above matches the one on your sensor. If it is correct, enter WiFi information below to connect the sensor to your network.
+      </Text>
+    </View>
+    <View
+      onLayout={[Function]}
+      style={
+        Object {
+          "alignContent": "flex-start",
+          "flex": 3,
+          "justifyContent": "flex-start",
+          "paddingLeft": 30,
+        }
+      }
+    >
+      <TextInput
+        allowFontScaling={true}
+        autoCorrect={false}
+        editable={true}
+        keyboardType="default"
+        onChangeText={[Function]}
+        placeholder="SSID"
+        secureTextEntry={false}
+        style={
+          Object {
+            "alignContent": "center",
+            "borderColor": "black",
+            "borderWidth": 2,
+            "height": 40,
+            "justifyContent": "center",
+            "paddingBottom": 10,
+            "width": "50%",
+          }
+        }
+        underlineColorAndroid="transparent"
+      />
+      <Text />
+      <TextInput
+        allowFontScaling={true}
+        autoCorrect={false}
+        editable={true}
+        keyboardType="default"
+        onChangeText={[Function]}
+        placeholder="Password"
+        secureTextEntry={true}
+        style={
+          Object {
+            "alignContent": "center",
+            "borderColor": "black",
+            "borderWidth": 2,
+            "height": 40,
+            "justifyContent": "center",
+            "paddingBottom": 10,
+            "width": "50%",
+          }
+        }
+        underlineColorAndroid="transparent"
+      />
+    </View>
+    <View>
+      <View
+        accessibilityRole="button"
+        accessibilityStates={
+          Array [
+            "disabled",
+          ]
+        }
+        accessible={true}
+        isTVSelectable={true}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "opacity": 1,
+          }
+        }
+      >
+        <View
+          style={
+            Array [
+              Object {},
+              Object {},
+            ]
+          }
+        >
+          <Text
+            disabled={true}
+            style={
+              Array [
+                Object {
+                  "color": "#007AFF",
+                  "fontSize": 18,
+                  "padding": 8,
+                  "textAlign": "center",
+                },
+                Object {
+                  "color": "red",
+                },
+                Object {
+                  "color": "#cdcdcd",
+                },
+              ]
+            }
+          >
+            Connect
+          </Text>
+        </View>
+      </View>
+    </View>
+    <View
+      style={
+        Object {
+          "flex": 1,
+        }
+      }
+    >
+      <Text
+        style={
+          Object {
+            "color": "red",
+            "fontSize": 12,
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Object {
+          "alignContent": "space-between",
+          "flexDirection": "row",
+          "height": 60,
+          "justifyContent": "flex-end",
+          "width": "100%",
+        }
+      }
+    >
+      <View
+        accessible={true}
+        isTVSelectable={true}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "alignItems": "flex-start",
+            "backgroundColor": "transparent",
+            "borderColor": "black",
+            "flex": 1,
+            "justifyContent": "flex-start",
+            "padding": 10,
+          }
+        }
+      >
+        <Text
+          allowFontScaling={false}
+          style={
+            Array [
+              Object {
+                "color": undefined,
+                "fontSize": 40,
+              },
+              null,
+              Object {
+                "fontFamily": "Ionicons",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              Object {},
+            ]
+          }
+        >
+          
+        </Text>
+      </View>
+    </View>
+  </View>
+</RCTScrollView>
+`;
