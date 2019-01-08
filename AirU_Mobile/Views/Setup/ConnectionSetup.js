@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Text, View, Image, TextInput, Button, KeyboardAvoidingView, ScrollView} from 'react-native';
-import NavBar from '../../Components/NavBar'
-import styles from '../../StyleSheets/Styles'
+import NavBar from '../../Components/NavBar';
+import { BleManager } from 'react-native-ble-plx';
 
 export default class ConnectionSetup extends Component<Props> {
     static navigationOptions = {
@@ -11,21 +11,18 @@ export default class ConnectionSetup extends Component<Props> {
     constructor(props) {
         super(props)
         // timer for faking
-        this.updateTimer = this.updateTimer.bind(this);
+        this.connectToBluetooth = this.connectToBluetooth.bind(this);
         this.connectToWiFi = this.connectToWiFi.bind(this);
-        let _timer = setInterval(this.updateTimer, 5000);
+        let _timer = setInterval(this.connectToBluetooth, 5000);
 
         this.state={bleConnected: false, MAC: null, wifiConnected: false, 
                     WiFiName: "", WiFiPassword: "", WiFiError: false, timer: _timer};
     }
 
-    // used to fake connecting to BT
-    updateTimer() {
-        this.setState({MAC: 'MAC ADDRESS'});
-      }
-
     connectToBluetooth() {
-        // dummy code, make me actually work
+        const manager = new BleManager();
+        this.setState({MAC: 'ADDRESS', bleConnected: true})
+        manager.destroy();
     }
 
     connectToWiFi() {
@@ -40,6 +37,7 @@ export default class ConnectionSetup extends Component<Props> {
 
     componentWillUnmount() {
         clearInterval(this.state.timer);
+        this.manager.destroy();
     }
 
     render() {
@@ -105,8 +103,6 @@ export default class ConnectionSetup extends Component<Props> {
                     />
                 </View>
                 <View style={{flex: 1}}>
-                    {/* <Text>{this.state.WiFiName}</Text>
-                    <Text>{this.state.WiFiPassword}</Text> */}
                     {error}
                 </View>
                 <NavBar navigation={this.props.navigation} previous='MountingSensor'/>
