@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Text, View, Image, TextInput, Button, KeyboardAvoidingView, ScrollView} from 'react-native';
+import {Text, View, Image, TextInput, Button, KeyboardAvoidingView, ScrollView, Alert} from 'react-native';
 import NavBar from '../../Components/NavBar';
 import { BleManager } from 'react-native-ble-plx';
 
@@ -12,20 +12,63 @@ export default class ConnectionSetup extends Component<Props> {
         super(props)
         // timer for faking
         this.connectToBluetooth = this.connectToBluetooth.bind(this);
-        this.connectToWiFi = this.connectToWiFi.bind(this);
+        this.connectDeviceToWiFi = this.connectDeviceToWiFi.bind(this);
         let _timer = setInterval(this.connectToBluetooth, 5000);
 
         this.state={bleConnected: false, MAC: null, wifiConnected: false, 
                     WiFiName: "", WiFiPassword: "", WiFiError: false, timer: _timer};
     }
 
+    // displays alert to user if BT or WiFi is disabled on device
+    alertSetupSettings(value) {
+        if (value == 0) {
+            Alert.alert(
+                'Could not connect to Bluetooth',
+                'Could not connect to Bluetooth to use sensor. Please make sure it is enabled',
+                [
+                    {text: 'Cancel', style: 'cancel'},
+                    {text: 'OK'}
+                ],
+              )
+        }
+        else if (value == 1) {
+            // WiFi
+        }
+        else {
+            // other
+        }
+    }
+
+    // used to get MAC Address in connection step
     connectToBluetooth() {
+        // code use taken from https://polidea.github.io/react-native-ble-plx/ documentation
         const manager = new BleManager();
-        this.setState({MAC: 'ADDRESS', bleConnected: true})
+        if (manager.state != 'PoweredOn') {
+            this.alertSetupSettings(0);
+            return
+        }
+
+        manager.startDeviceScan(null, null, (error, device) => {
+            if (error) {
+                return
+            }
+            // adjust name to match sensor
+            if (device.name === 'TI BLE Sensor Tag') {
+                manager.stopDeviceScan();
+                device.connect()
+                .then((device) => {
+                    return device.discoverAllServicesAndCharacteristics()
+                })
+                // device id = MAC Address; set and return
+                .then((device) => {
+                    this.setState({MAC: device.id, bleConnected: true})
+                })
+            }
+        });
         manager.destroy();
     }
 
-    connectToWiFi() {
+    connectDeviceToWiFi() {
         // if valid, navigate to Privacy. Otherwise mark as error
         if (this.state.WiFiName == "UGuest" && this.state.WiFiPassword == "password") {
            this.props.navigation.navigate("Privacy");
