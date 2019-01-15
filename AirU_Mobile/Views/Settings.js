@@ -41,7 +41,7 @@ export default class Settings extends Component {
         );
     }
 }
-// AsyncStorage.setItem('SensorName', null);
+
 /**
  * Corresponds to a setting button. 
  * Values: 

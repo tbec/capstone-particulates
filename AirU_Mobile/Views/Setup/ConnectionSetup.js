@@ -13,29 +13,38 @@ export default class ConnectionSetup extends Component<Props> {
         // timer for faking
         this.connectToBluetooth = this.connectToBluetooth.bind(this);
         this.connectDeviceToWiFi = this.connectDeviceToWiFi.bind(this);
-        let _timer = setInterval(this.connectToBluetooth, 5000);
+        let _timer = setInterval(this.connectToBluetooth, 2000);
 
         this.state={bleConnected: false, MAC: null, wifiConnected: false, 
                     WiFiName: "", WiFiPassword: "", WiFiError: false, timer: _timer};
     }
 
     // displays alert to user if BT or WiFi is disabled on device
+    // 0 = BT error, 1 = WiFi error
     alertSetupSettings(value) {
         if (value == 0) {
             Alert.alert(
                 'Could not connect to Bluetooth',
-                'Could not connect to Bluetooth to use sensor. Please make sure it is enabled',
+                'Could not connect to Bluetooth to use sensor. Please make sure it is enabled, and select OK to try again',
                 [
                     {text: 'Cancel', style: 'cancel'},
-                    {text: 'OK'}
+                    {text: 'OK', onPress: () => {
+                        this.connectToBluetooth()
+                    }}
                 ],
               )
         }
         else if (value == 1) {
-            // WiFi
-        }
-        else {
-            // other
+            Alert.alert(
+                'Could not connect to WiFi',
+                'Could not connect to WiFi. Please make sure it is enabled, and select OK to try again',
+                [
+                    {text: 'Cancel', style: 'cancel'},
+                    {text: 'OK', onPress: () => {
+                        this.connectToWiFi()
+                    }}
+                ],
+              )
         }
     }
 
@@ -53,23 +62,25 @@ export default class ConnectionSetup extends Component<Props> {
                 return
             }
             // adjust name to match sensor
-            if (device.name === 'TI BLE Sensor Tag') {
+            if (device.name === 'SENSOR') {
                 manager.stopDeviceScan();
                 device.connect()
-                .then((device) => {
-                    return device.discoverAllServicesAndCharacteristics()
-                })
-                // device id = MAC Address; set and return
-                .then((device) => {
-                    this.setState({MAC: device.id, bleConnected: true})
-                })
+                    .then((device) => {
+                        return device.discoverAllServicesAndCharacteristics()
+                    })
+                    // device id = MAC Address; set and return
+                    .then((device) => {
+                        this.setState({MAC: device.id, bleConnected: true})
+                    })
             }
         });
+
         manager.destroy();
     }
 
     connectDeviceToWiFi() {
         // if valid, navigate to Privacy. Otherwise mark as error
+        // adjust in future to actually send to WiFi
         if (this.state.WiFiName == "UGuest" && this.state.WiFiPassword == "password") {
            this.props.navigation.navigate("Privacy");
         }
@@ -80,7 +91,6 @@ export default class ConnectionSetup extends Component<Props> {
 
     componentWillUnmount() {
         clearInterval(this.state.timer);
-        this.manager.destroy();
     }
 
     render() {
