@@ -1,0 +1,62 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Snapshot ConnectionSetup Setup 1`] = `
+<View
+  style={
+    Object {
+      "flex": 1,
+    }
+  }
+>
+  <View
+    style={
+      Object {
+        "alignItems": "center",
+        "flex": 100,
+        "flexDirection": "column",
+        "justifyContent": "space-evenly",
+      }
+    }
+  >
+    <Text>
+      You have not registered any sensors to view data.
+    </Text>
+    <Text>
+      Select below to register one now
+    </Text>
+    <View
+      accessible={true}
+      isTVSelectable={true}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "alignItems": "center",
+          "backgroundColor": "red",
+          "borderColor": "black",
+          "borderWidth": 2,
+          "height": 50,
+          "justifyContent": "space-evenly",
+          "padding": 1,
+          "width": 150,
+        }
+      }
+    >
+      <Text
+        style={
+          Object {
+            "color": "white",
+            "fontWeight": "bold",
+          }
+        }
+      >
+        Setup New Sensor
+      </Text>
+    </View>
+  </View>
+</View>
+`;

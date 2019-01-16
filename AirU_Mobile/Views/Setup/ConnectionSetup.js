@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import {Text, View, Image, TextInput, Button, KeyboardAvoidingView, ScrollView} from 'react-native';
-import NavBar from '../../Components/NavBar'
-import styles from '../../StyleSheets/Styles'
+import {Text, View, Image, TextInput, Button, KeyboardAvoidingView, ScrollView, Alert} from 'react-native';
+import NavBar from '../../Components/NavBar';
+import { BleManager } from 'react-native-ble-plx';
 
 export default class ConnectionSetup extends Component<Props> {
     static navigationOptions = {
@@ -10,26 +10,86 @@ export default class ConnectionSetup extends Component<Props> {
 
     constructor(props) {
         super(props)
+
         // timer for faking
-        this.updateTimer = this.updateTimer.bind(this);
-        this.connectToWiFi = this.connectToWiFi.bind(this);
-        let _timer = setInterval(this.updateTimer, 5000);
+        this.connectToBluetooth = this.connectToBluetooth.bind(this);
+        this.connectDeviceToWiFi = this.connectDeviceToWiFi.bind(this);
+        let _timer = setInterval(this.connectToBluetooth, 2000);
 
+        // ADJUST ME FOR TEST MODE!
         this.state={bleConnected: false, MAC: null, wifiConnected: false, 
-                    WiFiName: "", WiFiPassword: "", WiFiError: false, timer: _timer};
+                    WiFiName: "", WiFiPassword: "", WiFiError: false, timer: _timer, testMode: true};
     }
 
-    // used to fake connecting to BT
-    updateTimer() {
-        this.setState({MAC: 'MAC ADDRESS'});
-      }
+    // displays alert to user if BT or WiFi is disabled on device
+    // 0 = BT error, 1 = WiFi error
+    alertSetupSettings(value) {
+        // TEST MODE
+        if (this.state.testMode) {
+            this.setState({MAC: 'TEST MODE', bleConnected: true})
+            return
+        }
 
+        if (value == 0) {
+            Alert.alert(
+                'Could not connect to Bluetooth',
+                'Could not connect to Bluetooth to use sensor. Please make sure it is enabled, and select OK to try again',
+                [
+                    {text: 'Cancel', style: 'cancel'},
+                    {text: 'OK', onPress: () => {
+                        this.connectToBluetooth()
+                    }}
+                ],
+              )
+        }
+        else if (value == 1) {
+            Alert.alert(
+                'Could not connect to WiFi',
+                'Could not connect to WiFi. Please make sure it is enabled, and select OK to try again',
+                [
+                    {text: 'Cancel', style: 'cancel'},
+                    {text: 'OK', onPress: () => {
+                        this.connectDeviceToWiFi()
+                    }}
+                ],
+              )
+        }
+    }
+
+    // used to get MAC Address in connection step
     connectToBluetooth() {
-        // dummy code, make me actually work
+        // code use taken from https://polidea.github.io/react-native-ble-plx/ documentation
+        const manager = new BleManager();
+        if (manager.state != 'PoweredOn') {
+            this.alertSetupSettings(0);
+            return
+        }
+
+        manager.startDeviceScan(null, null, (error, device) => {
+            if (error) {
+                return
+            }
+            // adjust name to match sensor
+            if (device.name === 'SENSOR') {
+                manager.stopDeviceScan();
+                device.connect()
+                    .then((device) => {
+                        return device.discoverAllServicesAndCharacteristics()
+                    })
+                    // device id = MAC Address; set and return
+                    .then((device) => {
+                        this.setState({MAC: device.id, bleConnected: true})
+                    })
+            }
+        });
+
+        manager.destroy();
     }
 
-    connectToWiFi() {
+    // Tries to connect to WiFi to make sure valid. If works, sends information to sensor
+    connectDeviceToWiFi() {
         // if valid, navigate to Privacy. Otherwise mark as error
+        // adjust in future to actually send to WiFi
         if (this.state.WiFiName == "UGuest" && this.state.WiFiPassword == "password") {
            this.props.navigation.navigate("Privacy");
         }
@@ -99,14 +159,12 @@ export default class ConnectionSetup extends Component<Props> {
                 <View>
                     {/* connect button */}
                     <Button title="Connect"
-                        onPress={() => this.connectToWiFi()}
+                        onPress={() => this.connectDeviceToWiFi()}
                         color='red' 
                         disabled={(this.state.WiFiPassword == "" || this.state.WiFiName == "")}
                     />
                 </View>
                 <View style={{flex: 1}}>
-                    {/* <Text>{this.state.WiFiName}</Text>
-                    <Text>{this.state.WiFiPassword}</Text> */}
                     {error}
                 </View>
                 <NavBar navigation={this.props.navigation} previous='MountingSensor'/>

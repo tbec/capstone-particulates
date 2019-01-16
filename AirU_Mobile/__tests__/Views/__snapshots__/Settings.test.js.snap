@@ -1,0 +1,146 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Snapshot ConnectionSetup Setup 1`] = `
+<View
+  style={
+    Object {
+      "flex": 1,
+    }
+  }
+>
+  <View
+    accessibilityIgnoresInvertColors={true}
+    style={
+      Object {
+        "height": "100%",
+        "width": "100%",
+      }
+    }
+  >
+    <Image
+      source={
+        Object {
+          "testUri": "../../../Resources/home_background.jpg",
+        }
+      }
+      style={
+        Array [
+          Object {
+            "bottom": 0,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          },
+          Object {
+            "height": "100%",
+            "width": "100%",
+          },
+          undefined,
+        ]
+      }
+    />
+    <View
+      style={
+        Object {
+          "alignContent": "flex-start",
+          "flex": 1,
+          "flexDirection": "row",
+          "justifyContent": "center",
+          "paddingTop": 20,
+        }
+      }
+    >
+      <Text>
+        Settings
+      </Text>
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 100,
+            "flexDirection": "column",
+            "justifyContent": "space-evenly",
+          },
+          Object {
+            "flex": 10,
+          },
+        ]
+      }
+    >
+      <View>
+        <View
+          accessible={true}
+          isTVSelectable={true}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "alignItems": "center",
+              "backgroundColor": "red",
+              "borderColor": "black",
+              "borderWidth": 2,
+              "height": 50,
+              "justifyContent": "space-evenly",
+              "padding": 1,
+              "width": 150,
+            }
+          }
+        >
+          <Text
+            style={
+              Object {
+                "color": "white",
+                "fontWeight": "bold",
+              }
+            }
+          >
+            Reset Settings
+          </Text>
+        </View>
+      </View>
+      <View>
+        <View
+          accessible={true}
+          isTVSelectable={true}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "alignItems": "center",
+              "backgroundColor": "red",
+              "borderColor": "black",
+              "borderWidth": 2,
+              "height": 50,
+              "justifyContent": "space-evenly",
+              "padding": 1,
+              "width": 150,
+            }
+          }
+        >
+          <Text
+            style={
+              Object {
+                "color": "white",
+                "fontWeight": "bold",
+              }
+            }
+          >
+            Contact AirU
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>
+</View>
+`;

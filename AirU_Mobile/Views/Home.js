@@ -14,6 +14,7 @@ export default class Home extends Component<Props> {
                         <View style={[styles.home, {flex: 100}]}>
                             {/* Setup/Sensor */}
                             <TouchableHighlight 
+                                testID={'SensorButton'}
                                 style={styles.button}
                                 onPress={() => this.props.navigation.navigate({
                                     routeName: 'Tabs',
@@ -23,6 +24,7 @@ export default class Home extends Component<Props> {
                             </TouchableHighlight>
                             {/* Personal Exposure Tracker */}
                             <TouchableHighlight 
+                                testID={'TrackerButton'}
                                 style={styles.button}
                                 onPress={() => this.props.navigation.navigate({
                                     routeName: 'Tabs',
@@ -32,6 +34,7 @@ export default class Home extends Component<Props> {
                             </TouchableHighlight>
                             {/* AQandU Map page */}
                             <TouchableHighlight 
+                                testID={'MapButton'}
                                 style={styles.button}
                                 onPress={() => this.props.navigation.navigate({
                                     routeName: 'Tabs',
@@ -41,6 +44,7 @@ export default class Home extends Component<Props> {
                             </TouchableHighlight>
                             {/* Settings */}
                             <TouchableHighlight 
+                                testID={'SettingsButton'}
                                 style={styles.button}
                                 onPress={() => this.props.navigation.navigate({
                                     routeName: 'Tabs',
