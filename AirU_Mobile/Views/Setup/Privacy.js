@@ -10,13 +10,11 @@ import styles from '../../StyleSheets/Styles'
 export default class Privacy extends Component<Props> {
     constructor(props) {
         super(props);
-        this.state = {privacy: null}
     }
 
     // after selecting option, sets as appropriate 
     setPrivacy(value) {
-        this.setState({privacy: value})
-        this.props.navigation.navigate('Confirmation');
+        this.props.navigation.navigate('Confirmation', { privacy: value, });
     }
 
     render() {

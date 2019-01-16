@@ -1,0 +1,14 @@
+forms.pyc
+AirU_Mobile/ios/Pods/*
+AirU_Mobile/ios/AirGoogleMaps/*
+AirU_Mobile/package_lock.json
+*.*~
+AirU_Mobile/ios/Podfile.lock
+AirU_Mobile/package-lock.json
+AirU_Mobile/ios/Podfile.lock
+AirU_Mobile/ios/Podfile~
+AirU_Mobile/package-lock.json
+.DS_Store
+*.pyc
+AirU_Mobile/ios/Podfile.lock
+AirU_Mobile/ios/Podfile~

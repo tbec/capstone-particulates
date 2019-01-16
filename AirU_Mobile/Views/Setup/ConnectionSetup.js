@@ -10,18 +10,26 @@ export default class ConnectionSetup extends Component<Props> {
 
     constructor(props) {
         super(props)
+
         // timer for faking
         this.connectToBluetooth = this.connectToBluetooth.bind(this);
         this.connectDeviceToWiFi = this.connectDeviceToWiFi.bind(this);
         let _timer = setInterval(this.connectToBluetooth, 2000);
 
+        // ADJUST ME FOR TEST MODE!
         this.state={bleConnected: false, MAC: null, wifiConnected: false, 
-                    WiFiName: "", WiFiPassword: "", WiFiError: false, timer: _timer};
+                    WiFiName: "", WiFiPassword: "", WiFiError: false, timer: _timer, testMode: true};
     }
 
     // displays alert to user if BT or WiFi is disabled on device
     // 0 = BT error, 1 = WiFi error
     alertSetupSettings(value) {
+        // TEST MODE
+        if (this.state.testMode) {
+            this.setState({MAC: 'TEST MODE', bleConnected: true})
+            return
+        }
+
         if (value == 0) {
             Alert.alert(
                 'Could not connect to Bluetooth',
@@ -41,7 +49,7 @@ export default class ConnectionSetup extends Component<Props> {
                 [
                     {text: 'Cancel', style: 'cancel'},
                     {text: 'OK', onPress: () => {
-                        this.connectToWiFi()
+                        this.connectDeviceToWiFi()
                     }}
                 ],
               )
@@ -78,6 +86,7 @@ export default class ConnectionSetup extends Component<Props> {
         manager.destroy();
     }
 
+    // Tries to connect to WiFi to make sure valid. If works, sends information to sensor
     connectDeviceToWiFi() {
         // if valid, navigate to Privacy. Otherwise mark as error
         // adjust in future to actually send to WiFi
@@ -150,7 +159,7 @@ export default class ConnectionSetup extends Component<Props> {
                 <View>
                     {/* connect button */}
                     <Button title="Connect"
-                        onPress={() => this.connectToWiFi()}
+                        onPress={() => this.connectDeviceToWiFi()}
                         color='red' 
                         disabled={(this.state.WiFiPassword == "" || this.state.WiFiName == "")}
                     />

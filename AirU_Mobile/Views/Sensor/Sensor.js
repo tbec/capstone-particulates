@@ -1,5 +1,4 @@
 // shows sensor data
-
 import React, {Component} from 'react';
 import {Text, View, WebView, TouchableHighlight, AsyncStorage, Platform} from 'react-native';
 import styles from '../../StyleSheets/Styles'
@@ -10,14 +9,15 @@ export default class Sensor extends Component<Props> {
     // checks if user has logged in previously
     constructor(Props) {
         super(Props);
-        this.state = {sensors: false}
+        this.getSensorData.bind(this);
+        this.state = {sensors: false, data: []};
         this.checkSensors();
     }
 
     // checks if sensor has been registered already. If no goes to sensor page, if yes 
     // displays information
     checkSensors() {
-        AsyncStorage.getItem('SensorName').then((_retrieveData) => {
+        AsyncStorage.getItem('Sensors').then((_retrieveData) => {
             if (_retrieveData == null) {
                 this.setState({ sensors: false})
             }
@@ -25,6 +25,11 @@ export default class Sensor extends Component<Props> {
                 this.setState({sensors: true})
             }
         })
+    }
+
+    // pulls sensor data from web
+    getSensorData(sensor) {
+
     }
 
     componentWillReceiveProps(newProps) {

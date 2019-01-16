@@ -5,22 +5,42 @@
 import React, {Component} from 'react';
 import {Text, View, TouchableHighlight, Image, AsyncStorage} from 'react-native';
 import styles from '../../StyleSheets/Styles'
-import {NavigationActions, StackActions} from 'react-navigation'
+import { NavigationActions, StackActions } from 'react-navigation'
 
 export default class Confirmation extends Component<Props> {
-
     // saves sensor after clicking final confirmation button, then navs to sensor screen
     saveSensor() {
-          AsyncStorage.setItem('SensorName', 'Sensor');
-          let reset = StackActions.reset({
-              index: 0, 
-              actions:  [NavigationActions.navigate({
-                    routeName: 'Tabs',
-                    params: {},
-                    action: NavigationActions.navigate('Sensor', {sensor: 'sensor'})})]
-            });
+        // get sensor information if already saved any previously
+        var sensors = []
+        AsyncStorage.getItem('Sensors').then((_retrieveData) => {
+            if (_retrieveData == null) {
+                sensors = []
+            }
+            else {
+                sensors = _retrieveData
+            }
+        })
 
-            this.props.navigation.dispatch(reset);
+        // get privacy, get array, JSON, save
+        let privacy = this.props.navigation.getParam('privacy', 'false');
+        let name = this.props.navigation.getParam('sensorName', 'NewSensor');
+        let sensor = {sensorName: name, sensorPrivacy: privacy}
+        sensors.push(sensor);
+
+        // send JSON to server to add to profile
+
+        // save sensors again to local storage
+        AsyncStorage.setItem('Sensors', JSON.stringify(sensors));
+
+        // navigate back to Sensor page
+        let reset = StackActions.reset({
+            index: 0, 
+            actions:  [NavigationActions.navigate({
+                routeName: 'Tabs',
+                params: {},
+                action: NavigationActions.navigate('Sensor', {sensor: 'sensor'})})]
+        });
+        this.props.navigation.dispatch(reset);
     }
 
     render() {
