@@ -1,4 +1,4 @@
-forms.pyc
+# ignore Pods and ios/ sub directories added as part of podfiles
 AirU_Mobile/ios/Pods/*
 AirU_Mobile/ios/AirGoogleMaps/*
 AirU_Mobile/package_lock.json
