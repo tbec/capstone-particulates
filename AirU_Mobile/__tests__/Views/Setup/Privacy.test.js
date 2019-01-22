@@ -21,6 +21,12 @@ let findById = function(tree, testID) {
     }
 }
 
+  jest.mock('TouchableHighlight', () => {
+    const mockComponent = require('react-native/jest/mockComponent');
+    return mockComponent('TouchableHighlight');
+  });
+  
+/* Tests */
 test('Snapshot ConnectionSetup Setup', () => {
     const snap = renderer.create(<Privacy/>).toJSON();
     expect(snap).toMatchSnapshot();

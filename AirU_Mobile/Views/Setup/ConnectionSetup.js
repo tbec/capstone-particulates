@@ -91,7 +91,7 @@ export default class ConnectionSetup extends Component<Props> {
         // if valid, navigate to Privacy. Otherwise mark as error
         // adjust in future to actually send to WiFi
         if (this.state.WiFiName == "UGuest" && this.state.WiFiPassword == "password") {
-           this.props.navigation.navigate("Privacy");
+            this.props.navigation.navigate('Privacy', { sensorName: "name", });
         }
         else {
             this.setState({WiFiError: true})

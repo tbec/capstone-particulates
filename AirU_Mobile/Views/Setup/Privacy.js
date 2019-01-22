@@ -14,7 +14,8 @@ export default class Privacy extends Component<Props> {
 
     // after selecting option, sets as appropriate 
     setPrivacy(value) {
-        this.props.navigation.navigate('Confirmation', { privacy: value, });
+        this.props.navigation.navigate('Confirmation', {sensorName: this.props.navigation.getParam('sensorName', 'NewSensor')
+                                                            , privacy: value});
     }
 
     render() {
@@ -31,10 +32,12 @@ export default class Privacy extends Component<Props> {
                 </View>
                 {/* choice section */}
                 <View style={[styles.home, {flex: 3}]}>
-                    <TouchableHighlight style={styles.button} onPress={() => this.setPrivacy(true)}>
+                    <TouchableHighlight style={styles.button} testID={'setPrivacyTrue'}
+                            onPress={() => this.setPrivacy(true)}>
                         <Text style={styles.buttonText}>Allow</Text>
                     </TouchableHighlight>
-                    <TouchableHighlight style={styles.button} onPress={() => this.setPrivacy(false)}>
+                    <TouchableHighlight style={styles.button} testID={'setPrivacyFalse'}
+                        onPress={() => this.setPrivacy(false)}>
                         <Text style={styles.buttonText}>Deny</Text>
                     </TouchableHighlight>
                 </View>

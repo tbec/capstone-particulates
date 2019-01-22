@@ -3,14 +3,14 @@ import React, {Component} from 'react';
 import {Text, View, WebView, TouchableHighlight, AsyncStorage, Platform} from 'react-native';
 import styles from '../../StyleSheets/Styles'
 import Icon from 'react-native-vector-icons/Ionicons'
+import SensorDisplay from './SensorDisplay';
 
 export default class Sensor extends Component<Props> {
 
     // checks if user has logged in previously
     constructor(Props) {
         super(Props);
-        this.getSensorData.bind(this);
-        this.state = {sensors: false, data: []};
+        this.state = {sensors: false};
         this.checkSensors();
     }
 
@@ -25,11 +25,6 @@ export default class Sensor extends Component<Props> {
                 this.setState({sensors: true})
             }
         })
-    }
-
-    // pulls sensor data from web
-    getSensorData(sensor) {
-
     }
 
     componentWillReceiveProps(newProps) {
@@ -49,8 +44,7 @@ export default class Sensor extends Component<Props> {
                                     <Icon name={Platform.OS === "ios" ? "ios-add" : "md-add"} size={40}/>
                                 </TouchableHighlight>
                             </View>
-                            <WebView style={{flex: 10}} source={{uri: Platform.OS === "ios" ? 'http://localhost:5000/graph' 
-                                                        : 'http://10.0.2.2:5000/graph'}}/>
+                            <SensorDisplay/>
                         </View>
         }
         // prompt to setup sensor
