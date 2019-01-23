@@ -68,7 +68,7 @@ export default class Login extends Component<Props> {
                         {this.state.error}
                     </Text>
                     <Button title="Register a new account"
-                        onPress={() => this.props.navigation.navigate('Register')}
+                        onPress={() => this.props.navigation.navigate('RegisterAccount')}
                         color='red' 
                     />
                 </View>
