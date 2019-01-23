@@ -6,6 +6,7 @@ import React, {Component} from 'react';
 import {Text, View, TouchableHighlight, Image, AsyncStorage} from 'react-native';
 import styles from '../../StyleSheets/Styles'
 import { NavigationActions, StackActions } from 'react-navigation'
+import { SENSOR_ARRAY } from '../../Components/Constants'
 
 export default class Confirmation extends Component<Props> {
     constructor(props) {
@@ -16,7 +17,7 @@ export default class Confirmation extends Component<Props> {
     async saveSensor() {
         // get sensor information if already saved any previously
         var sensors = []
-        await AsyncStorage.getItem('Sensors').then((_retrieveData) => {
+        await AsyncStorage.getItem(SENSOR_ARRAY).then((_retrieveData) => {
             if (_retrieveData == null) {
                 sensors = []
             }

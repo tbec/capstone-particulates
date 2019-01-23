@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Text, View, Image, TextInput, Button, KeyboardAvoidingView, ScrollView, Alert} from 'react-native';
 import NavBar from '../../Components/NavBar';
 import { BleManager } from 'react-native-ble-plx';
+import { TEST_MODE } from '../../Components/Constants'
 
 export default class ConnectionSetup extends Component<Props> {
     static navigationOptions = {
@@ -18,7 +19,7 @@ export default class ConnectionSetup extends Component<Props> {
 
         // ADJUST ME FOR TEST MODE!
         this.state={bleConnected: false, MAC: null, wifiConnected: false, 
-                    WiFiName: "", WiFiPassword: "", WiFiError: false, timer: _timer, testMode: true};
+                    WiFiName: "", WiFiPassword: "", WiFiError: false, timer: _timer, testMode: TEST_MODE};
     }
 
     // displays alert to user if BT or WiFi is disabled on device

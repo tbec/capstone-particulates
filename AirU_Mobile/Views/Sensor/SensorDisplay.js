@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 import {Text, View, WebView, TouchableHighlight, AsyncStorage, Platform, Picker} from 'react-native';
 import styles from '../../StyleSheets/Styles'
 import Icon from 'react-native-vector-icons/Ionicons'
+import { SENSOR_ARRAY } from '../../Components/Constants'
 
 // component should never be called if AsyncStorage.getItem('Sensor') is not already set
 export default class SensorDisplay extends Component<Props> {
@@ -18,7 +19,7 @@ export default class SensorDisplay extends Component<Props> {
     }
 
     async getSensorList() {
-        return await AsyncStorage.getItem('Sensors').then(res => JSON.parse(res))
+        return await AsyncStorage.getItem(SENSOR_ARRAY).then(res => JSON.parse(res))
     }
 
     selectSensor(item, index) {

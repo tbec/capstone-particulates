@@ -4,6 +4,7 @@ import {Text, View, WebView, TouchableHighlight, AsyncStorage, Platform} from 'r
 import styles from '../../StyleSheets/Styles'
 import Icon from 'react-native-vector-icons/Ionicons'
 import SensorDisplay from './SensorDisplay';
+import { SENSOR_ARRAY } from '../../Components/Constants'
 
 export default class Sensor extends Component<Props> {
 
@@ -17,7 +18,7 @@ export default class Sensor extends Component<Props> {
     // checks if sensor has been registered already. If no goes to sensor page, if yes 
     // displays information
     checkSensors() {
-        AsyncStorage.getItem('Sensors').then((_retrieveData) => {
+        AsyncStorage.getItem(SENSOR_ARRAY).then((_retrieveData) => {
             if (_retrieveData == null) {
                 this.setState({ sensors: false})
             }
