@@ -25,6 +25,7 @@ import PollutionInfo from '../Views/Tracker/PollutionInfo'
 import Sensor from '../Views/Sensor/Sensor'
 
 // sensor if needed
+import RegisterAccount from '../Views/Setup/RegisterAccount'
 
 // tracker if needed
 
@@ -82,6 +83,7 @@ const Router = createStackNavigator(
     // sensor setup
     Setup: {screen: Setup},
     Login: {screen: Login},
+    RegisterAccount: {screen: RegisterAccount}, 
     ReviewFirst: {screen: ReviewFirst}, 
     Privacy: {screen: Privacy}, 
     Confirmation: {screen: Confirmation}, 

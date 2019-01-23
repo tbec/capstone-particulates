@@ -19,7 +19,10 @@ export default class Login extends Component<Props> {
 
     login() {
         // make API call to login passing in login/password
-
+        if (TEST_MODE == true && this.state.login != "TEST") {
+            this.setState({ error: "Invalid username or password" })
+            return
+        }
         // check information
 
         // if success:
@@ -32,28 +35,31 @@ export default class Login extends Component<Props> {
     render() {
         return (
             <View style={styles.container}>
-                <View style={styles.home}>
-                <Image source={require('../../Resources/red_cloud.jpeg')} 
-                                style={{flex: 2, width: 100, height: 50, alignContent: 'center', justifyContent: 'center'}}/>
-                    <KeyboardAvoidingView style={{flex: 5}}>
-                        <Text>Username</Text>
+                <View style={{flex: 20}}>
+                    <View style={{flex: 2, alignItems: 'center', justifyContent: 'center', paddingTop: 20, flexDirection: 'column'}}>
+                        <Image source={require('../../Resources/red_cloud.jpeg')} 
+                                        style={{width: '50%', height: '60%'}}/>
+                    </View>
+                    <KeyboardAvoidingView style={{flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+                    <Text color='red' style={{paddingBottom: 5}}>Username</Text>
                         <TextInput editable={true} keyboardType='default' 
                                 autoCorrect={false} placeholder='Login' secureTextEntry={false} 
-                                style={{borderWidth: 2, borderColor: 'black', 
-                                width: '100%', height: 40, alignContent: 'center', justifyContent: 'center', paddingBottom: 10}}
+                                style={{borderWidth: 1, borderColor: 'black',
+                                width: '50%', height: 40, alignContent: 'center', justifyContent: 'center', paddingBottom: 10}}
                                 onChangeText={(value) => {this.setState({login: value})}}
                                 />
                     </KeyboardAvoidingView>
-                    <KeyboardAvoidingView style={{flex: 5}}>
-                        <Text>Password</Text>
+                    <KeyboardAvoidingView style={{flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+                        <Text color='red' style={{paddingBottom: 5}}>Password</Text>
                         <TextInput editable={true} keyboardType='default' 
                                 autoCorrect={false} placeholder='Password' secureTextEntry={true} 
-                                style={{borderWidth: 2, borderColor: 'black', 
-                                width: '100%', height: 40, alignContent: 'center', justifyContent: 'center', paddingBottom: 10}}
+                                style={{borderWidth: 1, borderColor: 'black',
+                                width: '50%', height: 40, alignContent: 'center', justifyContent: 'center', paddingBottom: 10}}
                                 onChangeText={(value) => {this.setState({password: value})}}
                                 />
                     </KeyboardAvoidingView>
-                    <Button title="Connect"
+                    <Text/>
+                    <Button title="Login"
                         onPress={() => this.login()}
                         color='red' 
                         disabled={(this.state.login == "" || this.state.password == "")}
@@ -61,6 +67,10 @@ export default class Login extends Component<Props> {
                     <Text style={{flex: 2, color: "red"}}>
                         {this.state.error}
                     </Text>
+                    <Button title="Register a new account"
+                        onPress={() => this.props.navigation.navigate('Register')}
+                        color='red' 
+                    />
                 </View>
             </View>
         );
