@@ -11,6 +11,7 @@ exports[`Snapshot ConnectionSetup Setup 1`] = `
   <View
     style={
       Object {
+        "backgroundColor": "#b3e6ff",
         "flex": 20,
       }
     }
@@ -52,9 +53,10 @@ exports[`Snapshot ConnectionSetup Setup 1`] = `
       }
     >
       <Text
-        color="red"
         style={
           Object {
+            "color": "red",
+            "fontWeight": "bold",
             "paddingBottom": 5,
           }
         }
@@ -72,6 +74,7 @@ exports[`Snapshot ConnectionSetup Setup 1`] = `
         style={
           Object {
             "alignContent": "center",
+            "backgroundColor": "white",
             "borderColor": "black",
             "borderWidth": 1,
             "height": 40,
@@ -95,9 +98,10 @@ exports[`Snapshot ConnectionSetup Setup 1`] = `
       }
     >
       <Text
-        color="red"
         style={
           Object {
+            "color": "red",
+            "fontWeight": "bold",
             "paddingBottom": 5,
           }
         }
@@ -115,6 +119,7 @@ exports[`Snapshot ConnectionSetup Setup 1`] = `
         style={
           Object {
             "alignContent": "center",
+            "backgroundColor": "white",
             "borderColor": "black",
             "borderWidth": 1,
             "height": 40,
@@ -167,7 +172,7 @@ exports[`Snapshot ConnectionSetup Setup 1`] = `
                 "textAlign": "center",
               },
               Object {
-                "color": "red",
+                "color": "blue",
               },
               Object {
                 "color": "#cdcdcd",
@@ -223,7 +228,7 @@ exports[`Snapshot ConnectionSetup Setup 1`] = `
                 "textAlign": "center",
               },
               Object {
-                "color": "red",
+                "color": "crimson",
               },
             ]
           }

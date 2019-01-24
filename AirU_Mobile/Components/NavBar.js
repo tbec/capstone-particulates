@@ -25,6 +25,7 @@ export default class NavBar extends Component<Props>
                             style={navStyles.styles.previousButton}
                             activeOpacity={30}
                             underlayColor="yellow"
+                            testID={'prevButton'}
                             onPress={() => this.props.navigation.navigate(this.state.previous, this.props.navProps)}>
                                 <Icon name={Platform.OS === "ios" ? "ios-arrow-dropleft" : "md-arrow-dropleft"} size={40}/>
                         </TouchableHighlight>;
@@ -36,6 +37,7 @@ export default class NavBar extends Component<Props>
                     style={navStyles.styles.nextButton}
                     activeOpacity={30}
                     underlayColor="yellow"
+                    testID={'nextButton'}
                     onPress={() => this.props.navigation.navigate(this.state.next, this.props.navProps)}>
                         <Icon name={Platform.OS === "ios" ? "ios-arrow-dropright" : "md-arrow-dropright"} size={40}/>
                 </TouchableHighlight>;

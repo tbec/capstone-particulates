@@ -38,4 +38,8 @@ test ('Is Not Logged In', () => {
     expect(login.state.loggedIn).toEqual(false)        
 })
 
-// need test for loggedIn; since navigates away though is tricky
+test ('Is Logged In', () => {
+    let login = renderer.create(<SetupNew/>).getInstance();
+    login.checkLogin();
+    expect(login.state.loggedIn).toEqual(false)        
+})

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Snapshot ConnectionSetup Setup 1`] = `
+exports[`Snapshot test for Confirmation Setup 1`] = `
 <View
   style={
     Object {
@@ -35,7 +35,7 @@ exports[`Snapshot ConnectionSetup Setup 1`] = `
         }
         style={
           Object {
-            "height": "60%",
+            "height": "70%",
             "width": "50%",
           }
         }
@@ -69,8 +69,53 @@ exports[`Snapshot ConnectionSetup Setup 1`] = `
         editable={true}
         keyboardType="default"
         onChangeText={[Function]}
-        placeholder="Login"
+        placeholder="Username"
         secureTextEntry={false}
+        style={
+          Object {
+            "alignContent": "center",
+            "backgroundColor": "white",
+            "borderColor": "black",
+            "borderWidth": 1,
+            "height": 40,
+            "justifyContent": "center",
+            "paddingBottom": 10,
+            "width": "50%",
+          }
+        }
+        underlineColorAndroid="transparent"
+      />
+    </View>
+    <View
+      onLayout={[Function]}
+      style={
+        Object {
+          "alignItems": "center",
+          "flex": 1,
+          "flexDirection": "column",
+          "justifyContent": "center",
+        }
+      }
+    >
+      <Text
+        style={
+          Object {
+            "color": "red",
+            "fontWeight": "bold",
+            "paddingBottom": 5,
+          }
+        }
+      >
+        Email
+      </Text>
+      <TextInput
+        allowFontScaling={true}
+        autoCorrect={false}
+        editable={true}
+        keyboardType="default"
+        onChangeText={[Function]}
+        placeholder="Email"
+        secureTextEntry={true}
         style={
           Object {
             "alignContent": "center",
@@ -172,7 +217,7 @@ exports[`Snapshot ConnectionSetup Setup 1`] = `
                 "textAlign": "center",
               },
               Object {
-                "color": "blue",
+                "color": "red",
               },
               Object {
                 "color": "#cdcdcd",
@@ -180,13 +225,15 @@ exports[`Snapshot ConnectionSetup Setup 1`] = `
             ]
           }
         >
-          Login
+          Register
         </Text>
       </View>
     </View>
+    <Text />
     <Text
       style={
         Object {
+          "alignContent": "center",
           "color": "red",
           "flex": 2,
         }
@@ -194,49 +241,6 @@ exports[`Snapshot ConnectionSetup Setup 1`] = `
     >
       
     </Text>
-    <View
-      accessibilityRole="button"
-      accessibilityStates={Array []}
-      accessible={true}
-      isTVSelectable={true}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
-      style={
-        Object {
-          "opacity": 1,
-        }
-      }
-    >
-      <View
-        style={
-          Array [
-            Object {},
-          ]
-        }
-      >
-        <Text
-          style={
-            Array [
-              Object {
-                "color": "#007AFF",
-                "fontSize": 18,
-                "padding": 8,
-                "textAlign": "center",
-              },
-              Object {
-                "color": "crimson",
-              },
-            ]
-          }
-        >
-          Register a new account
-        </Text>
-      </View>
-    </View>
   </View>
 </View>
 `;

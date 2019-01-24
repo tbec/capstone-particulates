@@ -12,19 +12,40 @@ export default class RegisterAccount extends Component<Props> {
         this.state = ({username: '', password: '', email: '', error: ''})
     }
 
-    register() {
+    async register() {
         // make API call to login passing in login/password
         if (TEST_MODE == true && this.state.username != "TEST") {
             this.setState({ error: "Invalid username or password" })
             return
         }
         // check information
+        let result = await JSON.parse(webCall());
+
+        // check results
 
         // if success:
         AsyncStorage.setItem(LOGIN_NAME, this.state.login);
         this.props.navigation.navigate('ReviewFirst');
 
         // if failed, updated message and display on screen
+    }
+
+    async webCall() {
+        return fetch('https://neat-environs-205720.appspot.com/ENDPOINT', {
+            method: 'POST',
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              login: this.state.login,
+              email: this.state.email,
+              password: this.state.password
+            }),
+          })
+          .then((response) => response.json())
+          .then((json) => { return json })
+          .catch((error) => { console.error(error)})
     }
 
     render() {

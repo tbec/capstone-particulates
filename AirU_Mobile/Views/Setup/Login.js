@@ -17,21 +17,40 @@ export default class Login extends Component<Props> {
         this.state = ({login: '', password: '', error: ''})
     }
 
-    login() {
+    async login() {
         if (TEST_MODE == true && this.state.login != "TEST") {
             this.setState({ error: "Invalid username or password" })
             return
         }
 
         // make API call to login passing in login/password
+        let result = await JSON.parse(webCall());
 
-        // check information
+        // parse information and check validity
+
 
         // if success:
         AsyncStorage.setItem(LOGIN_NAME, this.state.login);
         this.props.navigation.navigate('ReviewFirst');
 
         // if failed, updated message and display on screen
+    }
+
+    async webCall() {
+        return fetch('https://neat-environs-205720.appspot.com/ENDPOINT', {
+            method: 'POST',
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              firstParam: this.state.login,
+              secondParam: this.state.password,
+            }),
+          })
+          .then((response) => response.json())
+          .then((json) => { return json })
+          .catch((error) => { console.error(error)})
     }
 
     render() {

@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Snapshot NavBar Setup 1`] = `
+<View
+  style={
+    Object {
+      "alignContent": "space-between",
+      "flexDirection": "row",
+      "height": 60,
+      "justifyContent": "flex-end",
+      "width": "100%",
+    }
+  }
+/>
+`;
