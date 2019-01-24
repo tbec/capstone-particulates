@@ -49,8 +49,7 @@ export default class ReviewFirst extends Component<Props> {
                     <Text>Enter a name for your sensor</Text>
                     <TextInput editable={true} keyboardType='default' 
                                 autoCorrect={false} placeholder='Sensor Name' secureTextEntry={false}
-                                style={{borderWidth: 2, borderColor: 'black', 
-                                width: '50%', height: 40, alignContent: 'center', justifyContent: 'center', paddingBottom: 10}}
+                                style={styles.textInput}
                                 onChangeText={(value) => {this.setState({sensorName: value})}}
                     />
                 </KeyboardAvoidingView>

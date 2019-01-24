@@ -13,7 +13,18 @@ export default class RegisterAccount extends Component<Props> {
     }
 
     register() {
+        // make API call to login passing in login/password
+        if (TEST_MODE == true && this.state.username != "TEST") {
+            this.setState({ error: "Invalid username or password" })
+            return
+        }
+        // check information
 
+        // if success:
+        AsyncStorage.setItem(LOGIN_NAME, this.state.login);
+        this.props.navigation.navigate('ReviewFirst');
+
+        // if failed, updated message and display on screen
     }
 
     render() {
@@ -22,14 +33,13 @@ export default class RegisterAccount extends Component<Props> {
                 <View style={{flex: 20}}>
                     <View style={{flex: 2, alignItems: 'center', justifyContent: 'center', paddingTop: 20, flexDirection: 'column'}}>
                         <Image source={require('../../Resources/red_cloud.jpeg')} 
-                                        style={{width: '50%', height: '60%'}}/>
+                                        style={{width: '50%', height: '70%'}}/>
                     </View>
                     <KeyboardAvoidingView style={{flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
                     <Text color='red' style={{paddingBottom: 5}}>Username</Text>
                         <TextInput editable={true} keyboardType='default' 
                                 autoCorrect={false} placeholder='Username' secureTextEntry={false} 
-                                style={{borderWidth: 1, borderColor: 'black',
-                                width: '50%', height: 40, alignContent: 'center', justifyContent: 'center', paddingBottom: 10}}
+                                style={styles.textInput}
                                 onChangeText={(value) => {this.setState({login: value})}}
                                 />
                     </KeyboardAvoidingView>
@@ -37,8 +47,7 @@ export default class RegisterAccount extends Component<Props> {
                         <Text color='red' style={{paddingBottom: 5}}>Email</Text>
                         <TextInput editable={true} keyboardType='default' 
                                 autoCorrect={false} placeholder='Email' secureTextEntry={true} 
-                                style={{borderWidth: 1, borderColor: 'black',
-                                width: '50%', height: 40, alignContent: 'center', justifyContent: 'center', paddingBottom: 10}}
+                                style={styles.textInput}
                                 onChangeText={(value) => {this.setState({email: value})}}
                                 />
                     </KeyboardAvoidingView>
@@ -46,18 +55,18 @@ export default class RegisterAccount extends Component<Props> {
                         <Text color='red' style={{paddingBottom: 5}}>Password</Text>
                         <TextInput editable={true} keyboardType='default' 
                                 autoCorrect={false} placeholder='Password' secureTextEntry={true} 
-                                style={{borderWidth: 1, borderColor: 'black',
-                                width: '50%', height: 40, alignContent: 'center', justifyContent: 'center', paddingBottom: 10}}
+                                style={styles.textInput}
                                 onChangeText={(value) => {this.setState({password: value})}}
                                 />
                     </KeyboardAvoidingView>
                     <Text/>
                     <Button title="Register"
                         onPress={() => this.register()}
-                        color='red' 
+                        color='blue' 
                         disabled={(this.state.login == "" || this.state.password == "" || this.state.email == "")}
                     />
-                    <Text style={{flex: 2, color: "red"}}>
+                    <Text/>
+                    <Text style={{flex: 2, color: "red", alignContent: 'center'}}>
                         {this.state.error}
                     </Text>
                 </View>

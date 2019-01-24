@@ -81,98 +81,40 @@ exports[`Snapshot ConnectionSetup Setup 1`] = `
     </View>
   </View>
   <View
+    onLayout={[Function]}
     style={
       Object {
-        "alignContent": "space-between",
-        "flexDirection": "row",
-        "height": 60,
-        "justifyContent": "flex-end",
-        "width": "100%",
+        "alignContent": "flex-start",
+        "flex": 1,
+        "justifyContent": "flex-start",
+        "paddingLeft": 30,
       }
     }
   >
-    <View
-      accessible={true}
-      isTVSelectable={true}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
+    <Text>
+      Enter a name for your sensor
+    </Text>
+    <TextInput
+      allowFontScaling={true}
+      autoCorrect={false}
+      editable={true}
+      keyboardType="default"
+      onChangeText={[Function]}
+      placeholder="Sensor Name"
+      secureTextEntry={false}
       style={
         Object {
-          "alignItems": "flex-start",
-          "backgroundColor": "transparent",
+          "alignContent": "center",
           "borderColor": "black",
-          "flex": 1,
-          "justifyContent": "flex-start",
-          "padding": 10,
+          "borderWidth": 2,
+          "height": 40,
+          "justifyContent": "center",
+          "paddingBottom": 10,
+          "width": "50%",
         }
       }
-    >
-      <Text
-        allowFontScaling={false}
-        style={
-          Array [
-            Object {
-              "color": undefined,
-              "fontSize": 40,
-            },
-            null,
-            Object {
-              "fontFamily": "Ionicons",
-              "fontStyle": "normal",
-              "fontWeight": "normal",
-            },
-            Object {},
-          ]
-        }
-      >
-        
-      </Text>
-    </View>
-    <View
-      accessible={true}
-      isTVSelectable={true}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
-      style={
-        Object {
-          "alignItems": "flex-end",
-          "backgroundColor": "transparent",
-          "borderColor": "black",
-          "flex": 1,
-          "justifyContent": "flex-end",
-          "padding": 10,
-        }
-      }
-    >
-      <Text
-        allowFontScaling={false}
-        style={
-          Array [
-            Object {
-              "color": undefined,
-              "fontSize": 40,
-            },
-            null,
-            Object {
-              "fontFamily": "Ionicons",
-              "fontStyle": "normal",
-              "fontWeight": "normal",
-            },
-            Object {},
-          ]
-        }
-      >
-        
-      </Text>
-    </View>
+      underlineColorAndroid="transparent"
+    />
   </View>
 </View>
 `;

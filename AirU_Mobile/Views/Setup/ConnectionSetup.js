@@ -3,6 +3,7 @@ import {Text, View, Image, TextInput, Button, KeyboardAvoidingView, ScrollView, 
 import NavBar from '../../Components/NavBar';
 import { BleManager } from 'react-native-ble-plx';
 import { TEST_MODE } from '../../Components/Constants'
+import styles from '../../StyleSheets/Styles'
 
 export default class ConnectionSetup extends Component<Props> {
     static navigationOptions = {
@@ -19,7 +20,7 @@ export default class ConnectionSetup extends Component<Props> {
 
         // ADJUST ME FOR TEST MODE!
         this.state={bleConnected: false, MAC: null, wifiConnected: false, 
-                    WiFiName: "", WiFiPassword: "", WiFiError: false, timer: _timer, testMode: TEST_MODE};
+                    WiFiName: '', WiFiPassword: '', WiFiError: false, timer: _timer, testMode: TEST_MODE};
     }
 
     // displays alert to user if BT or WiFi is disabled on device
@@ -144,16 +145,14 @@ export default class ConnectionSetup extends Component<Props> {
                     {/* network */}
                     <TextInput editable={true} keyboardType='default' 
                                 autoCorrect={false} placeholder='SSID' secureTextEntry={false}
-                                style={{borderWidth: 2, borderColor: 'black', 
-                                width: '50%', height: 40, alignContent: 'center', justifyContent: 'center', paddingBottom: 10}}
+                                style={styles.textInput}
                                 onChangeText={(value) => {this.setState({WiFiName: value})}}
                                 />
                     <Text/>
                     {/* password */}
                     <TextInput editable={true} keyboardType='default' 
                                 autoCorrect={false} placeholder='Password' secureTextEntry={true} 
-                                style={{borderWidth: 2, borderColor: 'black', 
-                                width: '50%', height: 40, alignContent: 'center', justifyContent: 'center', paddingBottom: 10}}
+                                style={styles.textInput}
                                 onChangeText={(value) => {this.setState({WiFiPassword: value})}}
                                 />
                 </KeyboardAvoidingView>

@@ -75,6 +75,11 @@ export const styles = StyleSheet.create({
         flexDirection: 'row', 
         justifyContent: 'flex-end', 
         alignContent: 'space-between'
+    }, 
+    // used for text input fields
+    textInput: {
+        borderWidth: 1, borderColor: 'black', backgroundColor: 'white',
+        width: '50%', height: 40, alignContent: 'center', justifyContent: 'center', paddingBottom: 10
     }
 });
 
