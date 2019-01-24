@@ -80,6 +80,9 @@ export const styles = StyleSheet.create({
     textInput: {
         borderWidth: 1, borderColor: 'black', backgroundColor: 'white',
         width: '50%', height: 40, alignContent: 'center', justifyContent: 'center', paddingBottom: 10
+    }, 
+    textInputLabel: {
+        color: 'red', fontWeight: 'bold', paddingBottom: 5
     }
 });
 

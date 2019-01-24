@@ -13,12 +13,11 @@ export default class ConnectionSetup extends Component<Props> {
     constructor(props) {
         super(props)
 
-        // timer for faking
+        // functions and timer in case cannot connect or find BT
         this.connectToBluetooth = this.connectToBluetooth.bind(this);
         this.connectDeviceToWiFi = this.connectDeviceToWiFi.bind(this);
         let _timer = setInterval(this.connectToBluetooth, 2000);
 
-        // ADJUST ME FOR TEST MODE!
         this.state={bleConnected: false, MAC: null, wifiConnected: false, 
                     WiFiName: '', WiFiPassword: '', WiFiError: false, timer: _timer, testMode: TEST_MODE};
     }

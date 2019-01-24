@@ -30,13 +30,13 @@ export default class RegisterAccount extends Component<Props> {
     render() {
         return (
             <View style={styles.container}>
-                <View style={{flex: 20}}>
+                <View style={{flex: 20, backgroundColor: '#b3e6ff'}}>
                     <View style={{flex: 2, alignItems: 'center', justifyContent: 'center', paddingTop: 20, flexDirection: 'column'}}>
                         <Image source={require('../../Resources/red_cloud.jpeg')} 
                                         style={{width: '50%', height: '70%'}}/>
                     </View>
                     <KeyboardAvoidingView style={{flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
-                    <Text color='red' style={{paddingBottom: 5}}>Username</Text>
+                    <Text style={styles.textInputLabel}>Username</Text>
                         <TextInput editable={true} keyboardType='default' 
                                 autoCorrect={false} placeholder='Username' secureTextEntry={false} 
                                 style={styles.textInput}
@@ -44,7 +44,7 @@ export default class RegisterAccount extends Component<Props> {
                                 />
                     </KeyboardAvoidingView>
                     <KeyboardAvoidingView style={{flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
-                        <Text color='red' style={{paddingBottom: 5}}>Email</Text>
+                        <Text style={styles.textInputLabel}>Email</Text>
                         <TextInput editable={true} keyboardType='default' 
                                 autoCorrect={false} placeholder='Email' secureTextEntry={true} 
                                 style={styles.textInput}
@@ -52,7 +52,7 @@ export default class RegisterAccount extends Component<Props> {
                                 />
                     </KeyboardAvoidingView>
                     <KeyboardAvoidingView style={{flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
-                        <Text color='red' style={{paddingBottom: 5}}>Password</Text>
+                        <Text style={styles.textInputLabel}>Password</Text>
                         <TextInput editable={true} keyboardType='default' 
                                 autoCorrect={false} placeholder='Password' secureTextEntry={true} 
                                 style={styles.textInput}
@@ -62,7 +62,7 @@ export default class RegisterAccount extends Component<Props> {
                     <Text/>
                     <Button title="Register"
                         onPress={() => this.register()}
-                        color='blue' 
+                        color='red' 
                         disabled={(this.state.login == "" || this.state.password == "" || this.state.email == "")}
                     />
                     <Text/>
