@@ -2,7 +2,6 @@
 import React, {Component} from 'react';
 import {Text, View, WebView, TouchableHighlight, AsyncStorage, Platform, Picker} from 'react-native';
 import styles from '../../StyleSheets/Styles'
-import Icon from 'react-native-vector-icons/Ionicons'
 import { SENSOR_ARRAY } from '../../Components/Constants'
 
 // component should never be called if AsyncStorage.getItem('Sensor') is not already set
@@ -10,12 +9,13 @@ export default class SensorDisplay extends Component<Props> {
     constructor(Props) {
         super(Props);
         this.getSensors.bind(this);
-        this.state = {sensorList: [], data: [], selected: "AB-CD-EF-GF"}
+        this.sensorPicker.bind(this);
+        this.state = {sensorList: [], data: [], selected: '', period: 'hour', connected: true, error: ''}
     }
 
     async getSensors() {
         let sensorsList = await this.getSensorList();
-        this.setState({sensorList: sensorsList})
+        this.setState({sensorList: sensorsList, selected: sensorsList[0]})
     }
 
     async getSensorList() {
@@ -31,11 +31,25 @@ export default class SensorDisplay extends Component<Props> {
     }
 
     render() {
+        let Pickers = this.sensorPicker();
+        let periods = this.periodButtons();
+        
+        
+        return (
+            <View style={styles.container}>
+                <Text style={{alignContent: 'center', justifyContent: 'center',
+                             alignItems: 'center', paddingBottom: 10}}>
+                Connected
+                </Text>
+                {periods}
+            </View>
+        )
+    }
+
+    sensorPicker() {
         let sensors = this.state.sensorList;
-        let pickerItems
-        let Pickers
         if(sensors == undefined || sensors == null) {
-            Picker = <Text>undefined</Text>
+             return <Text>undefined</Text>
         }
         else {
             pickerItems = this.state.sensorList.map(sensor => {
@@ -44,17 +58,36 @@ export default class SensorDisplay extends Component<Props> {
                 )
               })
           
-              Pickers =
+              return (
                   <Picker
                        selectedValue={this.state.selected}
                        mode={"dialog"}
                        onValueChange={value => this.setState({ selectedValue: value })}>
                        {pickerItems}                  
                   </Picker>
+              )
         }
+    }
+
+    periodButtons() {
         return (
-            <View>
-                {Pickers}
+            <View style={{flex: 1, flexDirection: 'row', alignContent: 'center', justifyContent: 'center'}}>
+                <TouchableHighlight testID={'Hour'} style={[styles.button, 
+                                        {paddingLeft: 20, paddingRight: 20, width: '25%', height: 40}]}
+                                    onPress={() => this.setState({period: 'hour'})}>
+                    <Text style={styles.buttonText}>Hour</Text>
+                </TouchableHighlight>
+                <Text/>
+                <TouchableHighlight testID={'Day'} style={[styles.button, 
+                                            {paddingLeft: 10, paddingRight: 10, width: '25%', height: 40}]}
+                                    onPress={() => this.setState({period: 'day'})}>
+                    <Text style={styles.buttonText}>Day</Text>
+                </TouchableHighlight>
+                <TouchableHighlight testID={'Week'} style={[styles.button, 
+                                {paddingLeft: 10, paddingRight: 10, width: '25%', height: 40}]}
+                                onPress={() => this.setState({period: 'week'})}>
+                    <Text style={styles.buttonText}>Week</Text>
+                </TouchableHighlight>
             </View>
         )
     }

@@ -18,13 +18,20 @@ export default class Login extends Component<Props> {
     }
 
     async login() {
-        if (TEST_MODE == true && this.state.login != "TEST") {
-            this.setState({ error: "Invalid username or password" })
-            return
+        if (TEST_MODE) {
+            if (this.state.login != "TEST") {
+                this.setState({ error: "Invalid username or password" })
+                return
+            }
+            else {
+                this.props.navigation.navigate('ReviewFirst');
+                return
+            }
         }
 
         // make API call to login passing in login/password
-        let result = await JSON.parse(webCall());
+        let result = await this.webCall();
+        let json = JSON.parse(result);
 
         // parse information and check validity
 
