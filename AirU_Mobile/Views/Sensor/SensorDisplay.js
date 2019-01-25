@@ -10,9 +10,12 @@ export default class SensorDisplay extends Component<Props> {
         super(Props);
         this.getSensors.bind(this);
         this.sensorPicker.bind(this);
-        this.state = {sensorList: [], data: [], selected: '', period: 'hour', connected: true, error: ''}
+        this.typePicker.bind(this);
+        this.state = {sensorList: [], data: [], selected: '', 
+                        pickingType: false, period: 'hour', connected: true, error: ''}
     }
 
+    // gets list of saved sensors
     async getSensors() {
         let sensorsList = await this.getSensorList();
         this.setState({sensorList: sensorsList, selected: sensorsList[0]})
@@ -32,16 +35,30 @@ export default class SensorDisplay extends Component<Props> {
 
     render() {
         let Pickers = this.sensorPicker();
-        let periods = this.periodButtons();
-        
+        let dataType = this.typePicker();
         
         return (
             <View style={styles.container}>
-                <Text style={{alignContent: 'center', justifyContent: 'center',
-                             alignItems: 'center', paddingBottom: 10}}>
+                <Text style={{textAlign: 'center', paddingBottom: 10}}>
                 Connected
                 </Text>
-                {periods}
+                <Period/>
+                {dataType}
+            </View>
+        )
+    }
+
+    typePicker() {
+        return (
+            <View style={{flex: 1}}>
+                <Picker
+                    mode={"dialog"}
+                    selectedValue={this.state.selected} 
+                    onValueChange={(itemValue, itemIndex) => this.setState({selected: itemValue})}>
+                    <Picker.Item label="Pollution" value="Pollution"/>
+                    <Picker.Item label="Temperature" value="Temperature"/>
+                    <Picker.Item label="Humidity" value="Humidity"/>
+                </Picker>
             </View>
         )
     }
@@ -61,15 +78,17 @@ export default class SensorDisplay extends Component<Props> {
               return (
                   <Picker
                        selectedValue={this.state.selected}
-                       mode={"dialog"}
+                       mode={"dropdown"}
                        onValueChange={value => this.setState({ selectedValue: value })}>
                        {pickerItems}                  
                   </Picker>
               )
         }
     }
+}
 
-    periodButtons() {
+class Period extends Component<Props> {
+    render() {
         return (
             <View style={{flex: 1, flexDirection: 'row', alignContent: 'center', justifyContent: 'center'}}>
                 <TouchableHighlight testID={'Hour'} style={[styles.button, 
@@ -91,4 +110,12 @@ export default class SensorDisplay extends Component<Props> {
             </View>
         )
     }
+}
+
+class Graphs extends Component<Props> {
+
+}
+
+class Information extends Component<Props> {
+
 }
