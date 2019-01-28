@@ -36,7 +36,7 @@ export default class Sensor extends Component<Props> {
         // sensor page
         if (this.state.sensors) {
             sensorPage = <View style={{flex: 1}}>
-                            <View style={styles.navBar}>
+                            <View style={[styles.navBar, {height: 50}]}>
                                 <TouchableHighlight 
                                         style={styles.nextButton}
                                         activeOpacity={30}

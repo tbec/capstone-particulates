@@ -214,6 +214,7 @@ exports[`Snapshot ConnectionSetup Setup 1`] = `
             "padding": 10,
           }
         }
+        testID="prevButton"
       >
         <Text
           allowFontScaling={false}
