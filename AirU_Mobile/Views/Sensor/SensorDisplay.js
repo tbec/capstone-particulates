@@ -4,7 +4,7 @@ import {Text, View, TouchableHighlight, AsyncStorage, Platform, Picker} from 're
 import styles from '../../StyleSheets/Styles'
 import { SENSOR_ARRAY } from '../../Components/Constants'
 import { BarChart, Grid} from 'react-native-svg-charts'
-import {Text as TextChart} from 'react-native-svg'
+import {Text as TextChart, G} from 'react-native-svg'
 
 
 // component should never be called if AsyncStorage.getItem('Sensor') is not already set
@@ -14,6 +14,7 @@ export default class SensorDisplay extends Component<Props> {
         this.getSensors.bind(this);
         this.sensorPicker.bind(this);
         this.dataTypeHandler = this.dataTypeHandler.bind(this)
+        this.periodHandler = this.periodHandler.bind(this)
         this.state = {sensorList: [], data: [], selected: '', selectedType: 'Pollution', 
                         pickingType: false, period: 'hour', connected: true, error: ''}
     }
@@ -36,6 +37,10 @@ export default class SensorDisplay extends Component<Props> {
         this.getSensors()
     }
 
+    periodHandler(periodRange) {
+        this.setState({period: periodRange})
+    }
+
     dataTypeHandler(dataType) {
         this.setState({selectedType: dataType})
     }
@@ -48,14 +53,14 @@ export default class SensorDisplay extends Component<Props> {
                 <Text style={{textAlign: 'center', paddingBottom: 10}}>
                     Connected
                 </Text>
-                <Period/>
+                <Period period={this.state.period} handler={this.periodHandler}/>
                 <TouchableHighlight testID='dataTypePicker'
                         onPress={() => this.setState({pickingType: true})}
                         style={{height: 20, width: 120, alignSelf: 'center',
                             alignContent: 'center', borderColor: 'black', borderWidth: 2}}
                         >
                     <Text style={{alignContent: 'flex-start', textAlign: 'center', paddingBottom: 10}}>
-                    Pollution
+                    {this.state.selectedType}
                     </Text>
                 </TouchableHighlight>
                 {/* <DataType handler={this.dataTypeHandler} selected={this.state.selected}/> */}
@@ -102,6 +107,7 @@ class Graph extends Component<Props> {
         const CUT_OFF = 20
         const Labels = ({ x, y, bandwidth, data }) => (
             data.map((value, index) => (
+                <G key = { index }>
                 <TextChart
                     key={ index }
                     x={ x(index) + (bandwidth / 2) }
@@ -113,6 +119,7 @@ class Graph extends Component<Props> {
                 >
                     {value}
                 </TextChart>
+                </G>
             ))
         )
 
@@ -138,24 +145,31 @@ class Graph extends Component<Props> {
 }
 
 class Period extends Component<Props> {
+    constructor(Props) {
+        super(Props);
+    }
+
     render() {
         return (
             <View style={{height: 30, flexDirection: 'row', alignContent: 'center', 
                             justifyContent: 'center', paddingBottom: 5}}>
-                <TouchableHighlight testID={'Hour'} style={[styles.button, 
-                                        {paddingLeft: 20, paddingRight: 20, width: '25%', height: 25}]}
-                                    onPress={() => this.setState({period: 'hour'})}>
+                <TouchableHighlight testID={'hour'} style={[styles.button, 
+                                        {paddingLeft: 20, paddingRight: 20, width: '25%', height: 25,
+                                    backgroundColor: this.props.period == 'hour' ? 'blue' : 'red'}]}
+                                    onPress={() => this.props.handler('hour')}>
                     <Text style={styles.buttonText}>Hour</Text>
                 </TouchableHighlight>
                 <Text/>
-                <TouchableHighlight testID={'Day'} style={[styles.button, 
-                                            {paddingLeft: 10, paddingRight: 10, width: '25%', height: 25}]}
-                                    onPress={() => this.setState({period: 'day'})}>
+                <TouchableHighlight testID={'day'} style={[styles.button, 
+                                        {paddingLeft: 20, paddingRight: 20, width: '25%', height: 25,
+                                    backgroundColor: this.props.period == 'day' ? 'blue' : 'red'}]}
+                                    onPress={() => this.props.handler('day')}>
                     <Text style={styles.buttonText}>Day</Text>
                 </TouchableHighlight>
-                <TouchableHighlight testID={'Week'} style={[styles.button, 
-                                {paddingLeft: 10, paddingRight: 10, width: '25%', height: 25}]}
-                                onPress={() => this.setState({period: 'week'})}>
+                <TouchableHighlight testID={'week'} style={[styles.button, 
+                                        {paddingLeft: 20, paddingRight: 20, width: '25%', height: 25,
+                                    backgroundColor: this.props.period == 'week' ? 'blue' : 'red'}]}
+                                onPress={() => this.props.handler('week')}>
                     <Text style={styles.buttonText}>Week</Text>
                 </TouchableHighlight>
             </View>
