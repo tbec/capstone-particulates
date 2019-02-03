@@ -27,9 +27,9 @@ export default class Confirmation extends Component<Props> {
         })
 
         // get privacy, get array, JSON, save
-        let privacy = this.props.navigation.getParam('privacy', 'false');
+        let privacySetting = this.props.navigation.getParam('privacy', 'false');
         let name = this.props.navigation.getParam('sensorName', 'NewSensor');
-        let sensor = {id: 'AB-CD-EF-GF', sensorName: name};
+        let sensor = {id: 'AB-CD-EF-GF', sensorName: name, privacy: privacySetting};
         sensors.push(sensor);
         var json = JSON.stringify(sensors);
 

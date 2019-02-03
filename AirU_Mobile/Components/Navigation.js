@@ -6,7 +6,7 @@ import {Image} from 'react-native'
 
 // home
 import Home from '../Views/Home'
-import Settings from '../Views/Settings'
+import Settings from '../Views/Settings/Settings'
 import Map from '../Views/Map'
 import Tracker from '../Views/Tracker/Tracker'
 import Setup from '../Views/Setup/SetupNew'
@@ -30,6 +30,7 @@ import RegisterAccount from '../Views/Setup/RegisterAccount'
 // tracker if needed
 
 // settings if needed
+import EditDevice from '../Views/Settings/EditDevice'
 
 /**
  * Navigator used for moving between screens using react-navigation library. 
@@ -94,7 +95,10 @@ const Router = createStackNavigator(
     PollutionInfo: {screen: PollutionInfo},
 
     //sensor screens
-    Sensor: {screen: Sensor}
+    Sensor: {screen: Sensor},
+
+    // Settings
+    EditDevice: {screen: EditDevice},
   },
   {
     initalRouteName: 'Home',
