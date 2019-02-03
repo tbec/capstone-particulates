@@ -13,7 +13,7 @@ export default class Settings extends Component {
         super(props);
         this.getSensorList = this.getSensorList.bind(this)
         this.getSensors = this.getSensors.bind(this)
-        this.state = ({devices: false})
+        this.state = ({devices: false, deviceList: []})
     }
 
     componentWillMount() {
@@ -23,7 +23,7 @@ export default class Settings extends Component {
     async getSensors() {
         let sensorsList = await this.getSensorList();
         if (sensorsList != null) {
-            this.setState({devices: true})
+            this.setState({devices: true, deviceList: sensorsList})
         } else {
             this.setState({devices: false})
         }
@@ -50,7 +50,9 @@ export default class Settings extends Component {
     render() {
         let settings;
         if (this.state.devices == true) {
-            settings = <Setting text="Edit Device Settings" action={() => this.props.navigation.navigate('EditDevice')}/>
+            settings = <Setting text="Edit Devices" 
+                action={() => this.props.navigation.navigate('EditDevice', 
+                                    { sensorList: this.state.deviceList})}/>
         }
 
         return (

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Text, View, TouchableHighlight, ImageBackground, Linking, Alert, AsyncStorage} from 'react-native';
+import {Text, View, Image, KeyboardAvoidingView, Linking, TextInput, Button} from 'react-native';
 import styles from '../../StyleSheets/Styles'
 
 /**
@@ -8,23 +8,11 @@ import styles from '../../StyleSheets/Styles'
 export default class EditDevice extends Component<Props> {
     constructor(props) {
         super(props);
-        this.getSensors = this.getDevice.bind(this)
         this.editDevice = this.editDevice.bind(this)
-        this.state=({sensorList: null, selectedSensor: null})
-    }
-
-    componentWillMount() {
-        this.getSensors()
-    }
-
-    // gets list of saved sensors
-    async getSensors() {
-        let sensorsList = await this.getSensorList();
-        this.setState({sensorList: sensorsList, selectedSensor: sensorsList[0]})
-    }
-
-    async getSensorList() {
-        return await AsyncStorage.getItem(SENSOR_ARRAY).then(res => JSON.parse(res))
+        sensorsList = this.props.navigation.getParam('sensorList', 'NewSensor')
+        this.state=({sensorList: sensorsList, 
+                        selectedSensor: sensorsList[0], name: sensorsList[0].sensorName, 
+                        id: sensorsList[0].id, privacy: sensorsList[0].privacy})
     }
     
     // edits device info locally and in web database
@@ -32,6 +20,9 @@ export default class EditDevice extends Component<Props> {
         // make web call
 
         // update settings locally
+
+        // navigate back
+        this.props.navigation.goBack();
     }
 
     render() {
@@ -42,16 +33,22 @@ export default class EditDevice extends Component<Props> {
                         <Image source={require('../../Resources/red_cloud.jpeg')} 
                                         style={{width: '50%', height: '60%'}}/>
                     </View>
+                    <Text>{this.state.id}</Text>
                     <KeyboardAvoidingView style={{flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
                     <Text style={styles.textInputLabel}>Device Name</Text>
                         <TextInput editable={true} keyboardType='default' 
-                                autoCorrect={false} placeholder={this.state.selectedSensor.sensorName} secureTextEntry={false} 
+                                autoCorrect={false} secureTextEntry={false} 
                                 style={styles.textInput}
                                 onChangeText={(value) => {this.setState({login: value})}}
+                                value={this.state.name}
                                 />
                     </KeyboardAvoidingView>
                     <View style={[styles.home, {flex: 3}]}>
                     </View>
+                    <Button title="Update Settings"
+                            onPress={() => this.editDevice()}
+                            color='crimson' 
+                        />
                 </View>
             </View>
         )
