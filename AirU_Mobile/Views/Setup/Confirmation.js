@@ -36,7 +36,7 @@ export default class Confirmation extends Component<Props> {
         // send JSON to server to add to profile
 
         // save sensors again to local storage
-        await AsyncStorage.setItem('Sensors', json);
+        await AsyncStorage.setItem(SENSOR_ARRAY, json);
 
         // navigate back to Sensor page
         let reset = StackActions.reset({

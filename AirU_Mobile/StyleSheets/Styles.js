@@ -83,6 +83,9 @@ export const styles = StyleSheet.create({
     }, 
     textInputLabel: {
         color: 'red', fontWeight: 'bold', paddingBottom: 5
+    },
+    textGroupBox: {
+        flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'
     }
 });
 

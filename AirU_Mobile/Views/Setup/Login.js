@@ -68,7 +68,7 @@ export default class Login extends Component<Props> {
                             <Image source={require('../../Resources/red_cloud.jpeg')} 
                                             style={{width: '50%', height: '60%'}}/>
                         </View>
-                        <KeyboardAvoidingView style={{flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+                        <KeyboardAvoidingView style={styles.textGroupBox}>
                         <Text style={styles.textInputLabel}>Username</Text>
                             <TextInput editable={true} keyboardType='default' 
                                     autoCorrect={false} placeholder='Login' secureTextEntry={false} 
@@ -76,7 +76,7 @@ export default class Login extends Component<Props> {
                                     onChangeText={(value) => {this.setState({login: value})}}
                                     />
                         </KeyboardAvoidingView>
-                        <KeyboardAvoidingView style={{flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+                        <KeyboardAvoidingView style={styles.textGroupBox}>
                             <Text style={styles.textInputLabel}>Password</Text>
                             <TextInput editable={true} keyboardType='default' 
                                     autoCorrect={false} placeholder='Password' secureTextEntry={true} 
