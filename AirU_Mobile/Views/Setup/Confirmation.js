@@ -22,7 +22,7 @@ export default class Confirmation extends Component<Props> {
                 sensors = []
             }
             else {
-                sensors = _retrieveData
+                sensors = JSON.parse(_retrieveData)
             }
         })
 

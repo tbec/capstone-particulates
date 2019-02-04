@@ -5,16 +5,20 @@ import styles from '../../StyleSheets/Styles'
 import { SENSOR_ARRAY } from '../../Components/Constants'
 import { BarChart, Grid} from 'react-native-svg-charts'
 import {Text as TextChart, G} from 'react-native-svg'
+import { Dropdown } from 'react-native-material-dropdown';
 
 // component should never be called if AsyncStorage.getItem('Sensor') is not already set
 export default class SensorDisplay extends Component<Props> {
     constructor(Props) {
         super(Props);
+        
+        // bindings
         this.getSensors.bind(this);
-        this.sensorPicker.bind(this);
         this.dataTypeHandler = this.dataTypeHandler.bind(this)
         this.periodHandler = this.periodHandler.bind(this)
         this.graphDataHandler = this.graphDataHandler.bind(this)
+        this.sensorHandler = this.sensorHandler.bind(this)
+
         this.state = {sensorList: [], data: [], selectedSensor: '', selectedType: 'Pollution', 
                         pickingType: false, period: 'hour', connected: true, error: '', dataPoint: 0}
     }
@@ -50,52 +54,24 @@ export default class SensorDisplay extends Component<Props> {
         this.setState({dataPoint: data})
     }
 
+    sensorHandler(index) {
+        this.setState({selectedSensor: this.state.sensorList[index]})
+    }
+
     render() {
-        let Pickers = this.sensorPicker();
-        
         return (
             <View style={{flex: 3}}>
                 <Text style={{textAlign: 'center', paddingBottom: 10}}>
                     Not Connected
                 </Text>
                 <Period period={this.state.period} handler={this.periodHandler}/>
-                <TouchableHighlight testID='dataTypePicker'
-                        onPress={() => this.setState({pickingType: true})}
-                        style={{height: 20, width: 120, alignSelf: 'center',
-                            alignContent: 'center', borderColor: 'black', borderWidth: 2}}
-                        >
-                    <Text style={{alignContent: 'flex-start', textAlign: 'center', paddingBottom: 10}}>
-                    {this.state.selectedType}
-                    </Text>
-                </TouchableHighlight>
-                {/* <DataType handler={this.dataTypeHandler} selectedSensor={this.state.selectedSensor}/> */}
+                <DataType value={this.state.selectedType} handler={this.dataTypeHandler}/>
+                <SensorPicker selected={this.state.selectedSensor.sensorName} data={this.state.sensorList} 
+                                handler={this.sensorHandler}/>
                 <Graph data={this.state.data} handler={this.graphDataHandler}/>
                 <Information dataPoint={this.state.dataPoint} selectedType={this.state.selectedType}/>
             </View>
         )
-    }
-
-    sensorPicker() {
-        let sensors = this.state.sensorList;
-        if(sensors == undefined || sensors == null) {
-             return <Text>undefined</Text>
-        }
-        else {
-            pickerItems = this.state.sensorList.map(sensor => {
-                return (
-                  <Picker.Item key={sensor.id} label={sensor.sensorName} value={sensor.sensorName} />
-                )
-              })
-          
-              return (
-                  <Picker
-                       selectedValue={this.state.selected}
-                       mode={"dropdown"}
-                       onValueChange={value => this.setState({ selectedValue: value })}>
-                       {pickerItems}                  
-                  </Picker>
-              )
-        }
     }
 }
 
@@ -209,16 +185,34 @@ class DataType extends Component<Props> {
     }
 
     render() {
+        let data = [{value: 'Pollution'}, {value: 'Temperature'}]
+
         return (
-        <View style={{flex: 1}}>
-                <Picker
-                    mode={"dialog"}
-                    selectedSensor={this.props.selectedSensor} 
-                    onValueChange={(itemValue, itemIndex) => this.props.handler(itemValue)}>
-                    <Picker.Item label="Pollution" value="Pollution"/>
-                    <Picker.Item label="Temperature" value="Temperature"/>
-                    <Picker.Item label="Humidity" value="Humidity"/>
-                </Picker>
+            <View style={{flex: 1}}>
+                <Dropdown label='Data Type' data={data} value={this.props.value} 
+                            onChangeText={(index) => this.props.handler(index)}
+                            overlayStyle={{alignContent: 'center'}}/>
+            </View>
+        )
+    }
+}
+
+class SensorPicker extends Component<Props> {
+    constructor(props) {
+        super(props)
+    }
+
+    render() {
+        const list = this.props.data.map((value, index) => ({
+            value: this.props.data[index].sensorName
+        }))
+
+        return (
+            <View style={{flex: 1}}>
+                <Dropdown label='Sensor' data={list}
+                            onChangeText={(value, index) => this.props.handler(index)}
+                            value={this.props.selected}
+                            overlayStyle={{alignContent: 'center'}}/>
             </View>
         )
     }
