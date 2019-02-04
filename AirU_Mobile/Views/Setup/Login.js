@@ -25,6 +25,7 @@ export default class Login extends Component<Props> {
             }
             else {
                 this.props.navigation.navigate('ReviewFirst');
+                AsyncStorage.setItem(LOGIN_NAME, this.state.login);
                 return
             }
         }

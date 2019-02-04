@@ -70,7 +70,7 @@ export default class SensorDisplay extends Component<Props> {
                 <DataType value={this.state.selectedType} handler={this.dataTypeHandler}/>
                 <SensorPicker selected={this.state.selectedSensor.sensorName} data={this.state.sensorList} 
                                 handler={this.sensorHandler}/>
-                <Graph data={this.state.data} handler={this.graphDataHandler}/>
+                <Graph data={this.state.data} handler={this.graphDataHandler} period={this.state.period}/>
                 <Information dataPoint={this.state.dataPoint} selectedType={this.state.selectedType}/>
             </View>
         )
@@ -101,7 +101,14 @@ class Graph extends Component<Props> {
     }
 
     render() {
-        const data = [ 0, 10, 50, 99, 139, 205, 301, 266, 187, 92, 45]
+        let data = [ 0, 10, 50, 99, 139, 205, 301, 266, 187, 92, 45, 12, 65, 43, 180]
+
+        // period to show for data
+        if (this.props.period == 'hour') {
+            data = data.slice(10, 16);
+        } else if (this.props.period == 'day') {
+            data = data.slice(5, 16);
+        }
 
         const CUT_OFF = 20
         const Labels = ({ x, y, bandwidth, colorData }) => (
@@ -126,7 +133,7 @@ class Graph extends Component<Props> {
             value,
             svg: {
                 fill: this.pollutionColor(value),
-                onPress: () => this.props.handler(value)
+                onPress: () => this.props.handler(value), 
             },
         }))
 
