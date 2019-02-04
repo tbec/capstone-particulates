@@ -1,11 +1,13 @@
 // shows sensor data
 import React, {Component} from 'react';
-import {Text, View, TouchableHighlight, AsyncStorage, Platform, Picker} from 'react-native';
+import {Text, View, TouchableHighlight, AsyncStorage, Platform} from 'react-native';
 import styles from '../../StyleSheets/Styles'
 import { SENSOR_ARRAY } from '../../Components/Constants'
 import { BarChart, Grid} from 'react-native-svg-charts'
 import {Text as TextChart, G} from 'react-native-svg'
 import { Dropdown } from 'react-native-material-dropdown';
+import { COLOR_GOOD, COLOR_HAZARDOUS, COLOR_MODERATE, COLOR_SENSITVE, COLOR_UNHEALTHY, COLOR_VERY_UNHEALTHY } from '../../Components/Constants'
+
 
 // component should never be called if AsyncStorage.getItem('Sensor') is not already set
 export default class SensorDisplay extends Component<Props> {
@@ -83,21 +85,23 @@ class Graph extends Component<Props> {
     }
 
     pollutionColor(pollution) {
-        if (pollution >= 0 && pollution < 25) {
-            return "#00ff00";
-        } else if (pollution >= 25 && pollution < 50) {
-            return "#ffff00";
-        } else if (pollution >= 50 && pollution < 75) {
-            return "#ffa500";
-        } else if (pollution >= 75 && pollution <= 100) {
-            return "#ff0000";
+        if (pollution >= 0 && pollution < 50) {
+            return COLOR_GOOD;
+        } else if (pollution >= 50 && pollution < 100) {
+            return COLOR_MODERATE
+        } else if (pollution >= 100 && pollution < 150) {
+            return COLOR_SENSITVE
+        } else if (pollution >= 150 && pollution < 200) {
+            return COLOR_UNHEALTHY
+        } else if (pollution >= 200 && pollution < 300 ) {
+            return COLOR_VERY_UNHEALTHY
         } else {
-            return "ff0000";
+            return COLOR_HAZARDOUS
         }
     }
 
     render() {
-        const data = [ 50, 10, 40, 95, 4, 24, 85, 91, 35, 53, 53, 24, 50, 20, 80]
+        const data = [ 0, 10, 50, 99, 139, 205, 301, 266, 187, 92, 45]
 
         const CUT_OFF = 20
         const Labels = ({ x, y, bandwidth, colorData }) => (
@@ -223,10 +227,51 @@ class Information extends Component<Props> {
         super(props)
     }
 
+    dataGood() {
+        return "Air quality is satisfactory with little to no risk"
+    }
+
+    dataModerate() {
+        return "Air quality is acceptable; however, for some pollutants there may be a moderate health concern" +
+        "for a very small number of people."
+    }
+
+    dataSensitive() {
+        return "Persons with heart and lung disease, older adults and children are at greater risk from the presence of particles in the air."
+    }
+
+    dataUnhealthy() {
+        return "Everyone may begin to experience some adverse health effects, and members of the sensitive groups may experience more serious effects."
+    }
+
+    dataVeryUnhealthy() {
+        return "This would trigger a health alert signifying that everyone may experience more serious health effects."
+    }
+
+    dataHazardous() {
+        return "This would trigger a health warnings of emergency conditions. The entire population is more likely to be affected."
+    }
+
     render() {
+        let dataText;
+        let pollution = this.props.dataPoint;
+        if (pollution >= 0 && pollution < 50) {
+            dataText = this.dataGood();
+        } else if (pollution >= 50 && pollution < 100) {
+            dataText = this.dataModerate();
+        } else if (pollution >= 100 && pollution < 150) {
+            dataText = this.dataSensitive();
+        } else if (pollution >= 150 && pollution < 200) {
+            dataText = this.dataUnhealthy();
+        } else if (pollution >= 200 && pollution < 300 ) {
+            dataText = this.dataVeryUnhealthy();
+        } else {
+            dataText = this.dataHazardous();
+        }
+
         return(
             <View style={{flex: 1, borderColor: 'black', borderWidth: 1}}>
-                <Text>{this.props.dataPoint}</Text>
+                <Text>{pollution}: {dataText}</Text>
             </View>
         )
     }
