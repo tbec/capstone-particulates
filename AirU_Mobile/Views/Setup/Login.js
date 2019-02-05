@@ -7,7 +7,7 @@ import {TouchableHighlight, View, Text, AsyncStorage,
          TextInput, Platform, KeyboardAvoidingView, Button, Image, ImageBackground} from 'react-native';
 import styles from '../../StyleSheets/Styles'
 import Icon from 'react-native-vector-icons/Ionicons'
-import { LOGIN_NAME, LOGIN_TOKEN, TEST_MODE } from '../../Components/Constants'
+import { LOGIN_NAME, PASSWORD, TEST_MODE, WEB_URL} from '../../Components/Constants'
 
 // WIP. Will need to go to correct URL, save token after login, and navigate to next page after done
 export default class Login extends Component<Props> {
@@ -37,15 +37,16 @@ export default class Login extends Component<Props> {
         let json = JSON.parse(result);
 
         if (json.success) {
-            AsyncStorage.setItem(LOGIN_NAME, this.state.login);
-            this.props.navigation.navigate('ReviewFirst');
+            AsyncStorage.setItem(LOGIN_NAME, this.state.login)
+            AsyncStorage.setItem(PASSWORD, this.state.password)
+            this.props.navigation.navigate('ReviewFirst')
         } else {
             this.setState({error: json.error[0]})
         }
     }
 
     async webCall() {
-        let urlBase = 'https://neat-environs-205720.appspot.com/mobile/login?'
+        let urlBase = WEB_URL + '/login?'
         let user = 'username=' + this.state.login
         let password = '&password=' + this.state.password
 
