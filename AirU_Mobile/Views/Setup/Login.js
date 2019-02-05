@@ -14,11 +14,13 @@ export default class Login extends Component<Props> {
     constructor(props) {
         super(props);
         this.login.bind(this)
+        this.webCall = this.webCall.bind(this)
+
         this.state = ({login: '', password: '', error: ''})
     }
 
     async login() {
-        if (TEST_MODE) {
+        if (!TEST_MODE) {
             if (this.state.login != "TEST") {
                 this.setState({ error: "Invalid username or password" })
                 return
@@ -34,30 +36,27 @@ export default class Login extends Component<Props> {
         let result = await this.webCall();
         let json = JSON.parse(result);
 
-        // parse information and check validity
-
-
-        // if success:
-        AsyncStorage.setItem(LOGIN_NAME, this.state.login);
-        this.props.navigation.navigate('ReviewFirst');
-
-        // if failed, updated message and display on screen
+        if (json.success) {
+            AsyncStorage.setItem(LOGIN_NAME, this.state.login);
+            this.props.navigation.navigate('ReviewFirst');
+        } else {
+            this.setState({error: json.error[0]})
+        }
     }
 
     async webCall() {
-        return fetch('https://neat-environs-205720.appspot.com/ENDPOINT', {
-            method: 'POST',
-            headers: {
-              Accept: 'application/json',
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              firstParam: this.state.login,
-              secondParam: this.state.password,
-            }),
-          })
-          .then((response) => response.json())
-          .then((json) => { return json })
+        let urlBase = 'https://neat-environs-205720.appspot.com/mobile/login?'
+        let user = 'username=' + this.state.login
+        let password = '&password=' + this.state.password
+
+        let url = urlBase + user + password
+
+        console.log('URL: ' + url)
+
+        return fetch(url, {method: 'POST'})
+            .then((response) => response.json())
+            .then((responseJson) => {
+            return responseJson })
           .catch((error) => { console.error(error)})
     }
 
