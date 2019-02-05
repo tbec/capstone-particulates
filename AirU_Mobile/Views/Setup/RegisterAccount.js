@@ -1,15 +1,14 @@
 import React, {Component} from 'react';
-import {TouchableHighlight, View, Text, AsyncStorage,
-         TextInput, Platform, KeyboardAvoidingView, Button, Image, ImageBackground} from 'react-native';
+import {View, Text, AsyncStorage,
+         TextInput, KeyboardAvoidingView, Button, Image} from 'react-native';
 import styles from '../../StyleSheets/Styles'
-import Icon from 'react-native-vector-icons/Ionicons'
 import { LOGIN_NAME, LOGIN_TOKEN, TEST_MODE } from '../../Components/Constants'
 
 export default class RegisterAccount extends Component<Props> {
     constructor(props) {
         super(props)
         this.register.bind(this)
-        this.state = ({username: '', password: '', email: '', error: ''})
+        this.state = ({firstName: '', lastName: '', username: '', password: '', email: '', error: ''})
     }
 
     async register() {
@@ -57,6 +56,22 @@ export default class RegisterAccount extends Component<Props> {
                                         style={{width: '50%', height: '70%'}}/>
                     </View>
                     <KeyboardAvoidingView style={{flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+                    <Text style={styles.textInputLabel}>First Name</Text>
+                        <TextInput editable={true} keyboardType='default' 
+                                autoCorrect={false} placeholder='First Name' secureTextEntry={false} 
+                                style={styles.textInput}
+                                onChangeText={(value) => {this.setState({firstName: value})}}
+                                />
+                    </KeyboardAvoidingView>
+                    <KeyboardAvoidingView style={{flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+                    <Text style={styles.textInputLabel}>Last Name</Text>
+                        <TextInput editable={true} keyboardType='default' 
+                                autoCorrect={false} placeholder='Last Name' secureTextEntry={false} 
+                                style={styles.textInput}
+                                onChangeText={(value) => {this.setState({lastName: value})}}
+                                />
+                    </KeyboardAvoidingView>
+                    <KeyboardAvoidingView style={{flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
                     <Text style={styles.textInputLabel}>Username</Text>
                         <TextInput editable={true} keyboardType='default' 
                                 autoCorrect={false} placeholder='Username' secureTextEntry={false} 
@@ -87,7 +102,7 @@ export default class RegisterAccount extends Component<Props> {
                         disabled={(this.state.login == "" || this.state.password == "" || this.state.email == "")}
                     />
                     <Text/>
-                    <Text style={{flex: 2, color: "red", alignContent: 'center'}}>
+                    <Text style={{flex: 1, color: "red", alignContent: 'center'}}>
                         {this.state.error}
                     </Text>
                 </View>
