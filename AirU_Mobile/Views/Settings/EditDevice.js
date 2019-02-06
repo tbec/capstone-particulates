@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Text, View, Image, KeyboardAvoidingView, TextInput, Button, AsyncStorage} from 'react-native';
 import RadioForm from 'react-native-simple-radio-button';
 import styles from '../../StyleSheets/Styles'
-import { SENSOR_ARRAY, SENSOR_NAME WEB_URL, LOGIN, PASSWORD } from '../../Components/Constants'
+import { SENSOR_ARRAY, SENSOR_NAME, WEB_URL, LOGIN, PASSWORD } from '../../Components/Constants'
 import { Dropdown } from 'react-native-material-dropdown'
 
 /**
@@ -106,9 +106,9 @@ export default class EditDevice extends Component<Props> {
 
         let urlBase = WEB_URL + '/login?'
         let user = 'username=' + username
-        let password = '&password=' + password
+        let passwordParam = '&password=' + password
 
-        let url = urlBase + user + password
+        let url = urlBase + user + passwordParam
 
         console.log('URL: ' + url)
 

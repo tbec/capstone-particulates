@@ -106,9 +106,9 @@ export default class Confirmation extends Component<Props> {
 
         let urlBase = WEB_URL + '/login?'
         let user = 'username=' + username
-        let password = '&password=' + password
+        let passwordParam = '&password=' + password
 
-        let url = urlBase + user + password
+        let url = urlBase + user + passwordParam
 
         console.log('URL: ' + url)
 
