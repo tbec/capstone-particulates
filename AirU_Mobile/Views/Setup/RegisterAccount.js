@@ -34,7 +34,7 @@ export default class RegisterAccount extends Component<Props> {
     }
 
     async webCall() {
-        let urlBase = WEB_URL + '/user?'
+        let urlBase = WEB_URL + '/register/user?'
         let user = 'username=' + this.state.username
         let firstName = '&firstname=' + this.state.firstName
         let lastName = '&lastname=' + this.state.lastName
@@ -44,12 +44,8 @@ export default class RegisterAccount extends Component<Props> {
         let url = urlBase + user + firstName + lastName + email + password
 
         console.log('URL: ' + url)
-
-        return fetch(url, {method: 'POST', credentials: 'include'})
-            .then((response) => response.json())
-            .then((responseJson) => {
-            return responseJson })
-          .catch((error) => { console.error(error)})
+        let res = await fetch(url, {method: 'POST', credentials: 'include'})
+        return res.json()
     }
 
     render() {
@@ -107,7 +103,7 @@ export default class RegisterAccount extends Component<Props> {
                         disabled={(this.state.login == "" || this.state.password == "" || this.state.email == "")}
                     />
                     <Text/>
-                    <Text style={{flex: 1, color: "red", alignContent: 'center'}}>
+                    <Text style={{flex: 1, color: "red", textAlign: 'center'}}>
                         {this.state.error}
                     </Text>
                 </View>

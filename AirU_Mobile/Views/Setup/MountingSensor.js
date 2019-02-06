@@ -13,19 +13,13 @@ export default class ReviewFirst extends Component<Props> {
     }
 
     render() {
-        let navBar
-        if (this.state.sensorName != '') {
-            navBar = <NavBar navigation={this.props.navigation} next='ConnectionSetup' previous='ReviewFirst' 
+        let navBar = <NavBar navigation={this.props.navigation} next='ConnectionSetup' previous='ReviewFirst' 
                         navProps={{sensorName: this.state.sensorName}}/>
-        }
-        else {
-            
-        }
 
         return (
             <View style={styles.mainView}>
-                <View style={{flex: 10}}>
-                    <View style={{flex: 1}}>
+                <View style={{flex: 8}}>
+                    <View style={{flex: 2}}>
                         <Text>Find a suitible spot to mount the sensor outside. The location you choose should be: </Text>
                         <Text/>
                         <Text> 1. Near a power outlet</Text>
@@ -37,15 +31,14 @@ export default class ReviewFirst extends Component<Props> {
                         <Text>Once a spot is found, use the zip ties to fix to the location and plug in the sensor</Text>
                     </View>
                     <Image source={require('../../Resources/SensorMounting.png')} 
-                            style={{width: '40%', height: '10%', flex: 1, alignContent: 'center', justifyContent: 'center'}}/>
+                            style={{width: '40%', height: '10%', flex: 2, alignContent: 'center', justifyContent: 'center'}}/>
                     <View style={{flex: 1}}>
                         <Text/>
                         <Text>After this is complete and the sensor has powered on, proceed to the next step</Text>
-                        <Text/>
                     </View>
                 </View>
                 <KeyboardAvoidingView style={{flex: 1, alignContent: 'flex-start', justifyContent: 'flex-start',
-                        paddingLeft: 30}}>
+                        paddingLeft: 30, alignContent: 'center'}}>
                     <Text>Enter a name for your sensor</Text>
                     <TextInput editable={true} keyboardType='default' 
                                 autoCorrect={false} placeholder='Sensor Name' secureTextEntry={false}

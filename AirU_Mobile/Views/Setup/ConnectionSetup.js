@@ -27,7 +27,13 @@ export default class ConnectionSetup extends Component<Props> {
     alertSetupSettings(value) {
         // TEST MODE
         if (this.state.testMode) {
-            this.setState({sensorID: '123456789014', bleConnected: true})
+            let num = Math.floor(Math.random() * Math.floor(999))
+            if (num < 100) { 
+                num = num + 100 
+            }
+            let id = '123456789' + num
+            this.setState({sensorID: id, bleConnected: true})
+            clearInterval(this.state.timer);
             return
         }
 
@@ -91,7 +97,7 @@ export default class ConnectionSetup extends Component<Props> {
     connectDeviceToWiFi() {
         // if valid, navigate to Privacy. Otherwise mark as error
         // adjust in future to actually send to WiFi
-        if (this.state.WiFiName == "UGuest" && this.state.WiFiPassword == "password") {
+        if (this.state.WiFiName == "MyWiFi" && this.state.WiFiPassword == "password") {
             const name = this.props.navigation.getParam(SENSOR_NAME, 'NewSensor')
             const id = this.state.sensorID
             this.props.navigation.navigate('Privacy', { sensorName: name, sensorID: id});
@@ -118,7 +124,7 @@ export default class ConnectionSetup extends Component<Props> {
 
         // faking loading
         if (this.state.sensorID != null) {
-            sensID=<Text style={{alignContent: 'center', fontWeight: 'bold'}}>{this.state.sensorID}</Text>
+            sensID=<Text style={{textAlign: 'center', fontWeight: 'bold'}}>{this.state.sensorID}</Text>
         }
         else {
             sensID=<Image source={require('../../Resources/Loading.gif')} 
@@ -127,7 +133,7 @@ export default class ConnectionSetup extends Component<Props> {
         
         return (
             <ScrollView contentContainerStyle={{flexGrow: 1, justifyContent: 'space-between'}}>
-                <View style={{flex: 2, paddingTop: 20}}>
+                <View style={{flex: 2, paddingTop: 30}}>
                     <Text>Enable your Bluetooth and connect to the sensor. Once it is connected the device name will show below. 
                         Select your WiFi network to connect to, enter the password, then select 'Connect'.
                     </Text>

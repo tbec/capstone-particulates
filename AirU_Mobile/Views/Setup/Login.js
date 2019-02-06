@@ -47,9 +47,14 @@ export default class Login extends Component<Props> {
         if (json.success) {
             AsyncStorage.setItem(LOGIN_NAME, this.state.login)
             AsyncStorage.setItem(PASSWORD, this.state.password)
-            this.props.navigation.navigate('ReviewFirst')
+            let toReturn = this.props.navigation.getParam('return', false);
+            if (toReturn) {
+                this.props.navigation.goBack()
+            } else {
+                this.props.navigation.navigate(navWindow) 
+            }
         } else {
-            this.setState({error: json.error[0]})
+            this.setState({error: 'Invalid username or password'})
         }
     }
 
@@ -102,12 +107,12 @@ export default class Login extends Component<Props> {
                             color='blue' 
                             disabled={(this.state.login == '' || this.state.password == '')}
                         />
-                        <Text style={{flex: 2, color: 'red'}}>
+                        <Text style={{flex: 2, color: 'red', textAlign: 'center'}}>
                             {this.state.error}
                         </Text>
                         <Button title="Register a new account"
                             onPress={() => this.props.navigation.navigate('RegisterAccount')}
-                            color='crimson' 
+                            color='blue' 
                         />
                     </View>
             </View>

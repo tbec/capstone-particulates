@@ -164,6 +164,7 @@ export default class Confirmation extends Component<Props> {
                                         onPress={() => this.saveSensor()}>
                         <Text style={styles.buttonText}>Complete Setup</Text>
                     </TouchableHighlight>
+                    <Text>{this.state.error}</Text>
                 </View>
             </View>
         );
