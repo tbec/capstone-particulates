@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { Platform, Alert, StyleSheet, Text, View, Button, Slider } from 'react-native';
+import { Platform, Alert, StyleSheet, Text, View, Button, Slider, ActivityIndicator } from 'react-native';
 import NavBar from '../../Components/NavBar';
 import TrackerGraph from './TrackerGraph';
 import MapView, { Polyline, Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import styles from '../../StyleSheets/Styles';
-import {NavigationActions} from 'react-navigation'
+import { NavigationActions } from 'react-navigation'
 
 
 export default class Tracker extends Component {
@@ -16,21 +16,51 @@ export default class Tracker extends Component {
             pollutionData: [50, 10, 40, 95, -4, -24, 85, 91, 35, 53, -53, 24, 50, -20, -80],
             sliderValue: 0,
             markerPos: { latitude: 37.8025259, longitude: -122.4351431 },
+            currentPosition: { latitude: 37.8025259, longitude: -122.4351431 },
+            gettingLocation: true,
             startTracking: true,
             stopTracking: false,
             viewData: false,
             graph: false
         };
     }
+
+    componentWillMount() {
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                this.animateToRegion(position.coords.latitude, position.coords.longitude);
+                this.setState({currentPosition: {latitude: position.coords.latitude, longitude: position.coords.longitude},
+                    gettingLocation: false});
+            },
+            (error) => { alert(error.message) },
+            { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
+        );
+    }
+
+    componentWillUnmount() {
+        navigator.geolocation.clearWatch(this.watchId);
+    }
+
     render() {
-        let button, trackerGraph, slider, icon;
+        let button, trackerGraph, slider, icon, currentPosition, gettingLocation;
         const sliderValue = this.state.sliderValue;
+        if(this.state.gettingLocation){
+            gettingLocation = <ActivityIndicator size="large" color="#0000ff" style={{position: 'absolute', left: 0,
+            right: 0,
+            top: 0,
+            bottom: 0,
+            alignItems: 'center',
+            justifyContent: 'center'}} />
+        }
         if (this.state.startTracking) {
             button = <Button title="Start Tracking" onPress={this.startTracking.bind(this)}></Button>
         }
         else if (this.state.stopTracking) {
             button = <Button title="Stop" onPress={this.stopTracking.bind(this)}></Button>
-
+            currentPosition = <Marker
+                coordinate={this.state.currentPosition}
+                image={require('./pin.png')}
+            />
         } else if (this.state.viewData) {
             button = <Button title="View Data" onPress={this.viewData.bind(this)}></Button>
         }
@@ -57,12 +87,6 @@ export default class Tracker extends Component {
                         ref={(ref) => this.mapView = ref}
                         provider={PROVIDER_GOOGLE} // remove if not using Google Maps
                         style={styles.map}
-                        initialRegion={{
-                            latitude: 37.8025259,
-                            longitude: -122.4351431,
-                            latitudeDelta: 0.03,
-                            longitudeDelta: 0.03,
-                        }}
                     >
                         {this.state.pathArray.map((path, index) =>
                             <MapView.Polyline
@@ -73,7 +97,9 @@ export default class Tracker extends Component {
                                 onPress={() => this.linePressed(path.path[0].pollution)} />
                         )}
                         {icon}
+                        {currentPosition}
                     </MapView>
+                    {gettingLocation}
                     {slider}
                     {button}
                 </View>
@@ -83,31 +109,42 @@ export default class Tracker extends Component {
     }
     startTracking() {
         this.setState({ startTracking: false, stopTracking: true });
-        path = this.generateCoordinates();
-        pollutionArray = this.pollutionFromPath(path);
-        this.setState({ pollutionData: pollutionArray });
-        this.setState({ allPoints: path });
-        var count = 0;
-        for (var i = 0; i < path.length - 1; i++) {
-            setTimeout(() => {
-                this.setState((prevState) => {
-                    color = this.averageTwoColors(path[count].color, path[count + 1].color);
-                    newPathCoords = { color: color, path: [path[count], path[count + 1]] };
-                    oldPathArray = [...prevState.pathArray];
-                    oldPathArray.push(newPathCoords);
-                    return { pathArray: oldPathArray };
-                });
-                let r = {
-                    latitude: path[count + 1].latitude,
-                    longitude: path[count + 1].longitude,
-                    latitudeDelta: .03,
-                    longitudeDelta: .03,
-                };
-                count++;
-                this.mapView.animateToRegion(r, 50);
-            }, 50 * i);
-        }
+        this.watchId = navigator.geolocation.watchPosition(
+            (position) => {
+                this.animateToRegion(position.coords.latitude, position.coords.longitude);
+                let newPoint = {
+                    latitude: position.coords.latitude,
+                    longitude: position.coords.longitude,
+                    pollution: .1,
+                    color: this.pollutionColor(.1)
+                }
+                let path = this.state.allPoints;
+                path.push(newPoint);
+                if (path.length > 1) {
+                    this.setState((prevState) => {
+                        color = this.averageTwoColors(path[path.length - 1].color, path[path.length - 2].color);
+                        newPathCoords = { color: color, path: [path[path.length - 1], path[path.length - 2]] };
+                        oldPathArray = [...prevState.pathArray];
+                        oldPathArray.push(newPathCoords);
+                        return { pathArray: oldPathArray, allPoints: path, currentPosition: {latitude: position.coords.latitude, longitude: position.coords.longitude} };
+                    });
+                }
+            },
+            (error) => { alert(error.message) },
+            { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000, distanceFilter: 10 },
+        );
     }
+
+    animateToRegion(lat, lng) {
+        let r = {
+            latitude: lat,
+            longitude: lng,
+            latitudeDelta: .01,
+            longitudeDelta: .01,
+        };
+        this.mapView.animateToRegion(r, 50);
+    }
+
     generateCoordinates() {
         fakePath = [
             { latitude: 37.8025259, longitude: -122.4351431, pollution: .1, color: this.pollutionColor(.1) },
@@ -143,7 +180,7 @@ export default class Tracker extends Component {
     linePressed(pollution) {
         this.props.navigation.navigate('PollutionInfo', {
             pollution: pollution
-          });
+        });
     }
 
     pollutionFromPath(path) {
@@ -162,25 +199,22 @@ export default class Tracker extends Component {
             longitude: pathData.longitude
         }
         this.setState({ sliderValue: num, markerPos: markerCoord });
-        let r = {
-            latitude: markerCoord.latitude,
-            longitude: markerCoord.longitude,
-            latitudeDelta: .03,
-            longitudeDelta: .03,
-        };
-        this.mapView.animateToRegion(r, 50);
+        this.animateToRegion(markerCoord.latitude, markerCoord.longitude);
     }
 
     stopTracking() {
-        this.setState({ stopTracking: false, viewData: true })
+        navigator.geolocation.clearWatch(this.watchId);
+        this.setState({ stopTracking: false, viewData: true });
     }
 
     viewData() {
+        pollutionArray = this.pollutionFromPath(this.state.allPoints);
+        this.setState({ pollutionData: pollutionArray });
         this.setState({ viewData: false, graph: true });
     }
 
     dismissGraph() {
-        this.setState({graph:false, startTracking: true, pathArray: []});
+        this.setState({ graph: false, startTracking: true, pathArray: [] });
     }
 
     //estimates the pollution level between two data points
