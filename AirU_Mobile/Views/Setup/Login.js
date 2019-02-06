@@ -9,7 +9,10 @@ import styles from '../../StyleSheets/Styles'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { LOGIN_NAME, PASSWORD, TEST_MODE, WEB_URL} from '../../Components/Constants'
 
-// WIP. Will need to go to correct URL, save token after login, and navigate to next page after done
+/**
+ * Logs into system
+ * @param navigator - React Navigator used to move between screens after login
+ */
 export default class Login extends Component<Props> {
     constructor(props) {
         super(props);
@@ -19,8 +22,12 @@ export default class Login extends Component<Props> {
         this.state = ({login: '', password: '', error: ''})
     }
 
+    /**
+     * Logs into server
+     */
     async login() {
-        if (!TEST_MODE) {
+        // used for testing only
+        if (TEST_MODE) {
             if (this.state.login != "TEST") {
                 this.setState({ error: "Invalid username or password" })
                 return
@@ -36,6 +43,7 @@ export default class Login extends Component<Props> {
         let result = await this.webCall();
         let json = JSON.parse(result);
 
+        // if success, save locally and continue
         if (json.success) {
             AsyncStorage.setItem(LOGIN_NAME, this.state.login)
             AsyncStorage.setItem(PASSWORD, this.state.password)
@@ -45,6 +53,9 @@ export default class Login extends Component<Props> {
         }
     }
 
+    /**
+     * Attempts to call server to log in with specified credentials
+     */
     async webCall() {
         let urlBase = WEB_URL + '/login?'
         let user = 'username=' + this.state.login

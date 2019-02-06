@@ -71,7 +71,7 @@ export default class ConnectionSetup extends Component<Props> {
                 return
             }
             // adjust name to match sensor
-            if (device.name === 'SENSOR') {
+            if (device.name === 'ESP_GATTS_DEMO') {
                 manager.stopDeviceScan();
                 device.connect()
                     .then((device) => {
