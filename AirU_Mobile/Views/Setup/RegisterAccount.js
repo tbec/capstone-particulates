@@ -45,7 +45,7 @@ export default class RegisterAccount extends Component<Props> {
 
         console.log('URL: ' + url)
 
-        return fetch(url, {method: 'POST'})
+        return fetch(url, {method: 'POST', credentials: 'include'})
             .then((response) => response.json())
             .then((responseJson) => {
             return responseJson })

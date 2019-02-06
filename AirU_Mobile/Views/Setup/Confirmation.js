@@ -6,11 +6,18 @@ import React, {Component} from 'react';
 import {Text, View, TouchableHighlight, Image, AsyncStorage} from 'react-native';
 import styles from '../../StyleSheets/Styles'
 import { NavigationActions, StackActions } from 'react-navigation'
-import { SENSOR_ARRAY, WEB_URL, LOGIN, PASSWORD, SENSOR_NAME, SENSOR_PRIVACY, SENSOR_ID } from '../../Components/Constants'
+import { SENSOR_ARRAY, WEB_URL, LOGIN_NAME, PASSWORD, SENSOR_NAME, SENSOR_PRIVACY, SENSOR_ID } from '../../Components/Constants'
 
 export default class Confirmation extends Component<Props> {
     constructor(props) {
         super(props)
+
+        this.saveSensor = this.saveSensor.bind(this)
+        this.webCall = this.webCall.bind(this)
+        this.login = this.login.bind(this)
+        this.addDevice = this.addDevice.bind(this)
+
+        this.state = {error: ''}
     }
 
     /**
@@ -32,15 +39,16 @@ export default class Confirmation extends Component<Props> {
         // get privacy, get array, JSON, save
         let privacySetting = this.props.navigation.getParam(SENSOR_PRIVACY, 'false');
         let name = this.props.navigation.getParam(SENSOR_NAME, 'NewSensor');
-        let sensor = {id: 'ABCDEFGH', sensorName: name, privacy: privacySetting};
-        var json = JSON.stringify(sensors);
+        let sensorID = this.props.navigation.getParam(SENSOR_ID, '0123456789ABC')
+        let sensor = {id: sensorID, sensorName: name, privacy: privacySetting};
 
         // send JSON to server to add to profile
-        let success = this.webCall();
+        let success = await this.webCall();
 
         if (success) {
             // save sensor if added successfully
             sensors.push(sensor);
+            var json = JSON.stringify(sensors);
 
             // save sensors again to local storage
             await AsyncStorage.setItem(SENSOR_ARRAY, json);
@@ -55,7 +63,7 @@ export default class Confirmation extends Component<Props> {
             });
             this.props.navigation.dispatch(reset);
         } else {
-
+            this.setState({error: 'Could not save sensor to server'})
         }
     }
 
@@ -65,7 +73,7 @@ export default class Confirmation extends Component<Props> {
     async webCall() {
         // get username
         let username
-        await AsyncStorage.getItem(LOGIN).then((_retrieveData) => {
+        await AsyncStorage.getItem(LOGIN_NAME).then((_retrieveData) => {
             if (_retrieveData == null) {
                 // error
             }
@@ -75,16 +83,18 @@ export default class Confirmation extends Component<Props> {
         })
 
         // login
-        result = this.login(username)
-        let res = result.json()
+        result = await this.login(username)
+        let res = JSON.parse(result)
+
         if (!res.success) {
             // display error
             return false
         }
 
         // add the device and return result
-        result = this.addDevice(username)
-        res = result.json()
+
+        result = await this.addDevice(username)
+        res = JSON.parse(result)
         
         return res.success
     }
@@ -105,14 +115,14 @@ export default class Confirmation extends Component<Props> {
         })
 
         let urlBase = WEB_URL + '/login?'
-        let user = 'username=' + username
+        let user = 'username=' + login
         let passwordParam = '&password=' + password
 
         let url = urlBase + user + passwordParam
 
         console.log('URL: ' + url)
 
-        return fetch(url, {method: 'POST'})
+        return fetch(url, {method: 'POST', credentials: 'include' })
             .then((response) => response.json())
             .then((responseJson) => {
             return responseJson })
@@ -123,14 +133,14 @@ export default class Confirmation extends Component<Props> {
         let urlBase = WEB_URL + '/device/add?'
         let user = 'username=' + username
         let name = '&devicename=' + this.props.navigation.getParam(SENSOR_NAME, 'NewSensor')
-        let privacy = '&visable=' + this.props.navigation.getParam(SENSOR_PRIVACY, 'NewSensor')
-        let id = '&deviceid=' + this.props.navigation.getParam(SENSOR_ID, 'NewSensor')
+        let privacy = '&visable=' + this.props.navigation.getParam(SENSOR_PRIVACY, true)
+        let id = '&deviceid=' + this.props.navigation.getParam(SENSOR_ID, 'ABCDEFGH')
 
-        let url = urlBase + user + name + id + privacy
+        let url = urlBase + user + id + name
 
         console.log('URL: ' + url)
 
-        return fetch(url, {method: 'POST'})
+        return fetch(url, {method: 'POST', credentials: 'include' })
             .then((response) => response.json())
             .then((responseJson) => {
             return responseJson })

@@ -61,6 +61,96 @@ exports[`Snapshot test for Confirmation Setup 1`] = `
           }
         }
       >
+        First Name
+      </Text>
+      <TextInput
+        allowFontScaling={true}
+        autoCorrect={false}
+        editable={true}
+        keyboardType="default"
+        onChangeText={[Function]}
+        placeholder="First Name"
+        secureTextEntry={false}
+        style={
+          Object {
+            "alignContent": "center",
+            "backgroundColor": "white",
+            "borderColor": "black",
+            "borderWidth": 1,
+            "height": 40,
+            "justifyContent": "center",
+            "paddingBottom": 10,
+            "width": "50%",
+          }
+        }
+        underlineColorAndroid="transparent"
+      />
+    </View>
+    <View
+      onLayout={[Function]}
+      style={
+        Object {
+          "alignItems": "center",
+          "flex": 1,
+          "flexDirection": "column",
+          "justifyContent": "center",
+        }
+      }
+    >
+      <Text
+        style={
+          Object {
+            "color": "red",
+            "fontWeight": "bold",
+            "paddingBottom": 5,
+          }
+        }
+      >
+        Last Name
+      </Text>
+      <TextInput
+        allowFontScaling={true}
+        autoCorrect={false}
+        editable={true}
+        keyboardType="default"
+        onChangeText={[Function]}
+        placeholder="Last Name"
+        secureTextEntry={false}
+        style={
+          Object {
+            "alignContent": "center",
+            "backgroundColor": "white",
+            "borderColor": "black",
+            "borderWidth": 1,
+            "height": 40,
+            "justifyContent": "center",
+            "paddingBottom": 10,
+            "width": "50%",
+          }
+        }
+        underlineColorAndroid="transparent"
+      />
+    </View>
+    <View
+      onLayout={[Function]}
+      style={
+        Object {
+          "alignItems": "center",
+          "flex": 1,
+          "flexDirection": "column",
+          "justifyContent": "center",
+        }
+      }
+    >
+      <Text
+        style={
+          Object {
+            "color": "red",
+            "fontWeight": "bold",
+            "paddingBottom": 5,
+          }
+        }
+      >
         Username
       </Text>
       <TextInput
@@ -115,7 +205,7 @@ exports[`Snapshot test for Confirmation Setup 1`] = `
         keyboardType="default"
         onChangeText={[Function]}
         placeholder="Email"
-        secureTextEntry={true}
+        secureTextEntry={false}
         style={
           Object {
             "alignContent": "center",
@@ -235,7 +325,7 @@ exports[`Snapshot test for Confirmation Setup 1`] = `
         Object {
           "alignContent": "center",
           "color": "red",
-          "flex": 2,
+          "flex": 1,
         }
       }
     >

@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Text, View, Image, TextInput, Button, KeyboardAvoidingView, ScrollView, Alert} from 'react-native';
 import NavBar from '../../Components/NavBar';
 import { BleManager } from 'react-native-ble-plx';
-import { TEST_MODE } from '../../Components/Constants'
+import { TEST_MODE, SENSOR_NAME, SENSOR_ID } from '../../Components/Constants'
 import styles from '../../StyleSheets/Styles'
 
 export default class ConnectionSetup extends Component<Props> {
@@ -18,7 +18,7 @@ export default class ConnectionSetup extends Component<Props> {
         this.connectDeviceToWiFi = this.connectDeviceToWiFi.bind(this);
         let _timer = setInterval(this.connectToBluetooth, 2000);
 
-        this.state={bleConnected: false, MAC: null, wifiConnected: false, 
+        this.state={bleConnected: false, sensorID: null, wifiConnected: false, 
                     WiFiName: '', WiFiPassword: '', WiFiError: false, timer: _timer, testMode: TEST_MODE};
     }
 
@@ -27,7 +27,7 @@ export default class ConnectionSetup extends Component<Props> {
     alertSetupSettings(value) {
         // TEST MODE
         if (this.state.testMode) {
-            this.setState({MAC: 'TEST MODE', bleConnected: true})
+            this.setState({sensorID: '123456789014', bleConnected: true})
             return
         }
 
@@ -57,7 +57,7 @@ export default class ConnectionSetup extends Component<Props> {
         }
     }
 
-    // used to get MAC Address in connection step
+    // used to get Sensor ID in connection step
     connectToBluetooth() {
         // code use taken from https://polidea.github.io/react-native-ble-plx/ documentation
         const manager = new BleManager();
@@ -79,7 +79,7 @@ export default class ConnectionSetup extends Component<Props> {
                     })
                     // device id = MAC Address; set and return
                     .then((device) => {
-                        this.setState({MAC: device.id, bleConnected: true})
+                        this.setState({sensorID: device.id, bleConnected: true})
                     })
             }
         });
@@ -92,7 +92,9 @@ export default class ConnectionSetup extends Component<Props> {
         // if valid, navigate to Privacy. Otherwise mark as error
         // adjust in future to actually send to WiFi
         if (this.state.WiFiName == "UGuest" && this.state.WiFiPassword == "password") {
-            this.props.navigation.navigate('Privacy', { sensorName: "name", });
+            const name = this.props.navigation.getParam(SENSOR_NAME, 'NewSensor')
+            const id = this.state.sensorID
+            this.props.navigation.navigate('Privacy', { sensorName: name, sensorID: id});
         }
         else {
             this.setState({WiFiError: true})
@@ -104,7 +106,7 @@ export default class ConnectionSetup extends Component<Props> {
     }
 
     render() {
-        var error, macAddress
+        var error, sensID
 
         // after trying to connect will set state, renders error text if true
         if (this.state.WiFiError == true) {
@@ -115,24 +117,24 @@ export default class ConnectionSetup extends Component<Props> {
         }
 
         // faking loading
-        if (this.state.MAC != null) {
-            macAddress=<Text>{this.state.MAC}</Text>
+        if (this.state.sensorID != null) {
+            sensID=<Text style={{alignContent: 'center', fontWeight: 'bold'}}>{this.state.sensorID}</Text>
         }
         else {
-            macAddress=<Image source={require('../../Resources/Loading.gif')} 
+            sensID=<Image source={require('../../Resources/Loading.gif')} 
                                 style={{width: 100, height: 100, alignContent: 'center', justifyContent: 'center'}}/>
         }
         
         return (
             <ScrollView contentContainerStyle={{flexGrow: 1, justifyContent: 'space-between'}}>
-                <View style={{flex: 2}}>
+                <View style={{flex: 2, paddingTop: 20}}>
                     <Text>Enable your Bluetooth and connect to the sensor. Once it is connected the device name will show below. 
                         Select your WiFi network to connect to, enter the password, then select 'Connect'.
                     </Text>
                 </View>
                 {/* BLE name goes here */}
                 <View style={{flex: 2, jusifyContent: 'flex-start', alignContent: 'flex-start'}}>
-                    {macAddress}
+                    {sensID}
                 </View>
                 <View style={{flex: 2}}>
                     <Text>Confirm the MAC ID listed above matches the one on your sensor. If it is correct, 

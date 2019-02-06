@@ -27,7 +27,7 @@ export default class Login extends Component<Props> {
      */
     async login() {
         // used for testing only
-        if (TEST_MODE) {
+        if (!TEST_MODE) {
             if (this.state.login != "TEST") {
                 this.setState({ error: "Invalid username or password" })
                 return
@@ -65,7 +65,7 @@ export default class Login extends Component<Props> {
 
         console.log('URL: ' + url)
 
-        return fetch(url, {method: 'POST'})
+        return fetch(url, {method: 'POST', credentials: 'include' })
             .then((response) => response.json())
             .then((responseJson) => {
             return responseJson })

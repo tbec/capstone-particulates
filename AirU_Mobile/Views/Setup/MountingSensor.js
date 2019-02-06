@@ -16,7 +16,7 @@ export default class ReviewFirst extends Component<Props> {
         let navBar
         if (this.state.sensorName != '') {
             navBar = <NavBar navigation={this.props.navigation} next='ConnectionSetup' previous='ReviewFirst' 
-                        navProps={this.state.sensorName}/>
+                        navProps={{sensorName: this.state.sensorName}}/>
         }
         else {
             
