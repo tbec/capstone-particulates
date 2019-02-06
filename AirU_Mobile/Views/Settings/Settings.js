@@ -20,6 +20,9 @@ export default class Settings extends Component {
         this.getSensors()
     }
 
+    /**
+     * Returns list of saved sensors
+     */
     async getSensors() {
         let sensorsList = await this.getSensorList();
         if (sensorsList != null) {
@@ -33,6 +36,9 @@ export default class Settings extends Component {
         return await AsyncStorage.getItem(SENSOR_ARRAY).then(res => JSON.parse(res))
     }
 
+    /**
+     * Used to reset all settings, removing logins and sensor by callign AsyncStorage.clear()
+     */
     reset() {
         Alert.alert(
             'Reset Settings',
@@ -75,9 +81,9 @@ export default class Settings extends Component {
 
 /**
  * Corresponds to a setting button. 
- * Values: 
- *  text: String - text to display on button
- *  action: action - action to perform onPress
+ * @param {string} text - text to display on button
+ * @param {function} action - function to call on press
+
  */
 class Setting extends Component {
     constructor(props) {

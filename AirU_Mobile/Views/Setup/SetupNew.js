@@ -19,7 +19,9 @@ export default class SetupNew extends Component<Props> {
         this.checkLogin();
     }
 
-    // checks if the user has logged in previously
+    /**
+     * Checks if users has previously logged into system to display appropriate view
+     */
     checkLogin() {
         AsyncStorage.getItem('Login').then((_retrieveData) => {
             if (_retrieveData == null) {

@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {View, Text, AsyncStorage,
          TextInput, KeyboardAvoidingView, Button, Image} from 'react-native';
 import styles from '../../StyleSheets/Styles'
-import { LOGIN_NAME, LOGIN_TOKEN, TEST_MODE } from '../../Components/Constants'
+import { LOGIN_NAME, PASSWORD, TEST_MODE, WEB_URL } from '../../Components/Constants'
 
 export default class RegisterAccount extends Component<Props> {
     constructor(props) {
@@ -26,6 +26,7 @@ export default class RegisterAccount extends Component<Props> {
         // check results
         if (res.success) {
             AsyncStorage.setItem(LOGIN_NAME, this.state.username);
+            AsyncStorage.setItem(PASSWORD, this.state.password)
             this.props.navigation.navigate('ReviewFirst');
         } else {
             this.setState({error: 'Could not create account'})
@@ -33,7 +34,7 @@ export default class RegisterAccount extends Component<Props> {
     }
 
     async webCall() {
-        let urlBase = 'https://neat-environs-205720.appspot.com/mobile/register/user?'
+        let urlBase = WEB_URL + '/user?'
         let user = 'username=' + this.state.username
         let firstName = '&firstname=' + this.state.firstName
         let lastName = '&lastname=' + this.state.lastName
