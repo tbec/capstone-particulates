@@ -1,7 +1,7 @@
 import 'react-native'
 import React from 'react'
 import renderer from 'react-test-renderer'
-import Privacy from '../../../Views/Setup/Privacy'
+import RegisterAccount from '../../../Views/Setup/RegisterAccount'
 
 // used to find testIDs in code
 let findById = function(tree, testID) {
@@ -21,13 +21,7 @@ let findById = function(tree, testID) {
     }
 }
 
-  jest.mock('TouchableHighlight', () => {
-    const mockComponent = require('react-native/jest/mockComponent');
-    return mockComponent('TouchableHighlight');
-  });
-  
-/* Tests */
-test('Snapshot ConnectionSetup Setup', () => {
-    const snap = renderer.create(<Privacy/>).toJSON();
+test('Snapshot test for Confirmation Setup', () => {
+    const snap = renderer.create(<RegisterAccount/>).toJSON();
     expect(snap).toMatchSnapshot();
 })

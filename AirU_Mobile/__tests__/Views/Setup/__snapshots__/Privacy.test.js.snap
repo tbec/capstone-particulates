@@ -62,15 +62,10 @@ exports[`Snapshot ConnectionSetup Setup 1`] = `
       ]
     }
   >
-    <View
-      accessible={true}
-      isTVSelectable={true}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
+    <TouchableHighlight
+      activeOpacity={0.85}
+      delayPressOut={100}
+      onPress={[Function]}
       style={
         Object {
           "alignItems": "center",
@@ -83,6 +78,8 @@ exports[`Snapshot ConnectionSetup Setup 1`] = `
           "width": 150,
         }
       }
+      testID="setPrivacyTrue"
+      underlayColor="black"
     >
       <Text
         style={
@@ -94,16 +91,11 @@ exports[`Snapshot ConnectionSetup Setup 1`] = `
       >
         Allow
       </Text>
-    </View>
-    <View
-      accessible={true}
-      isTVSelectable={true}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
+    </TouchableHighlight>
+    <TouchableHighlight
+      activeOpacity={0.85}
+      delayPressOut={100}
+      onPress={[Function]}
       style={
         Object {
           "alignItems": "center",
@@ -116,6 +108,8 @@ exports[`Snapshot ConnectionSetup Setup 1`] = `
           "width": 150,
         }
       }
+      testID="setPrivacyFalse"
+      underlayColor="black"
     >
       <Text
         style={
@@ -127,7 +121,7 @@ exports[`Snapshot ConnectionSetup Setup 1`] = `
       >
         Deny
       </Text>
-    </View>
+    </TouchableHighlight>
   </View>
   <View
     style={
@@ -140,15 +134,10 @@ exports[`Snapshot ConnectionSetup Setup 1`] = `
       }
     }
   >
-    <View
-      accessible={true}
-      isTVSelectable={true}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
+    <TouchableHighlight
+      activeOpacity={30}
+      delayPressOut={100}
+      onPress={[Function]}
       style={
         Object {
           "alignItems": "flex-start",
@@ -159,6 +148,8 @@ exports[`Snapshot ConnectionSetup Setup 1`] = `
           "padding": 10,
         }
       }
+      testID="prevButton"
+      underlayColor="yellow"
     >
       <Text
         allowFontScaling={false}
@@ -168,7 +159,7 @@ exports[`Snapshot ConnectionSetup Setup 1`] = `
               "color": undefined,
               "fontSize": 40,
             },
-            null,
+            undefined,
             Object {
               "fontFamily": "Ionicons",
               "fontStyle": "normal",
@@ -180,7 +171,7 @@ exports[`Snapshot ConnectionSetup Setup 1`] = `
       >
         
       </Text>
-    </View>
+    </TouchableHighlight>
   </View>
 </View>
 `;

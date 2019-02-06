@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import {Text, View, Image, TextInput, Button, KeyboardAvoidingView, ScrollView, Alert} from 'react-native';
 import NavBar from '../../Components/NavBar';
 import { BleManager } from 'react-native-ble-plx';
+import { TEST_MODE } from '../../Components/Constants'
+import styles from '../../StyleSheets/Styles'
 
 export default class ConnectionSetup extends Component<Props> {
     static navigationOptions = {
@@ -11,14 +13,13 @@ export default class ConnectionSetup extends Component<Props> {
     constructor(props) {
         super(props)
 
-        // timer for faking
+        // functions and timer in case cannot connect or find BT
         this.connectToBluetooth = this.connectToBluetooth.bind(this);
         this.connectDeviceToWiFi = this.connectDeviceToWiFi.bind(this);
         let _timer = setInterval(this.connectToBluetooth, 2000);
 
-        // ADJUST ME FOR TEST MODE!
         this.state={bleConnected: false, MAC: null, wifiConnected: false, 
-                    WiFiName: "", WiFiPassword: "", WiFiError: false, timer: _timer, testMode: true};
+                    WiFiName: '', WiFiPassword: '', WiFiError: false, timer: _timer, testMode: TEST_MODE};
     }
 
     // displays alert to user if BT or WiFi is disabled on device
@@ -91,7 +92,7 @@ export default class ConnectionSetup extends Component<Props> {
         // if valid, navigate to Privacy. Otherwise mark as error
         // adjust in future to actually send to WiFi
         if (this.state.WiFiName == "UGuest" && this.state.WiFiPassword == "password") {
-           this.props.navigation.navigate("Privacy");
+            this.props.navigation.navigate('Privacy', { sensorName: "name", });
         }
         else {
             this.setState({WiFiError: true})
@@ -143,16 +144,14 @@ export default class ConnectionSetup extends Component<Props> {
                     {/* network */}
                     <TextInput editable={true} keyboardType='default' 
                                 autoCorrect={false} placeholder='SSID' secureTextEntry={false}
-                                style={{borderWidth: 2, borderColor: 'black', 
-                                width: '50%', height: 40, alignContent: 'center', justifyContent: 'center', paddingBottom: 10}}
+                                style={styles.textInput}
                                 onChangeText={(value) => {this.setState({WiFiName: value})}}
                                 />
                     <Text/>
                     {/* password */}
                     <TextInput editable={true} keyboardType='default' 
                                 autoCorrect={false} placeholder='Password' secureTextEntry={true} 
-                                style={{borderWidth: 2, borderColor: 'black', 
-                                width: '50%', height: 40, alignContent: 'center', justifyContent: 'center', paddingBottom: 10}}
+                                style={styles.textInput}
                                 onChangeText={(value) => {this.setState({WiFiPassword: value})}}
                                 />
                 </KeyboardAvoidingView>

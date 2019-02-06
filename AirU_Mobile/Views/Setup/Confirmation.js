@@ -6,31 +6,37 @@ import React, {Component} from 'react';
 import {Text, View, TouchableHighlight, Image, AsyncStorage} from 'react-native';
 import styles from '../../StyleSheets/Styles'
 import { NavigationActions, StackActions } from 'react-navigation'
+import { SENSOR_ARRAY } from '../../Components/Constants'
 
 export default class Confirmation extends Component<Props> {
+    constructor(props) {
+        super(props)
+    }
+
     // saves sensor after clicking final confirmation button, then navs to sensor screen
-    saveSensor() {
+    async saveSensor() {
         // get sensor information if already saved any previously
         var sensors = []
-        AsyncStorage.getItem('Sensors').then((_retrieveData) => {
+        await AsyncStorage.getItem(SENSOR_ARRAY).then((_retrieveData) => {
             if (_retrieveData == null) {
                 sensors = []
             }
             else {
-                sensors = _retrieveData
+                sensors = JSON.parse(_retrieveData)
             }
         })
 
         // get privacy, get array, JSON, save
-        let privacy = this.props.navigation.getParam('privacy', 'false');
+        let privacySetting = this.props.navigation.getParam('privacy', 'false');
         let name = this.props.navigation.getParam('sensorName', 'NewSensor');
-        let sensor = {sensorName: name, sensorPrivacy: privacy}
+        let sensor = {id: 'AB-CD-EF-GF', sensorName: name, privacy: privacySetting};
         sensors.push(sensor);
+        var json = JSON.stringify(sensors);
 
         // send JSON to server to add to profile
 
         // save sensors again to local storage
-        AsyncStorage.setItem('Sensors', JSON.stringify(sensors));
+        await AsyncStorage.setItem(SENSOR_ARRAY, json);
 
         // navigate back to Sensor page
         let reset = StackActions.reset({

@@ -2,12 +2,35 @@
 
 import React, {Component} from 'react';
 import {Text, View, TouchableHighlight, ImageBackground, Linking, Alert, AsyncStorage} from 'react-native';
-import {StackActions, NavigationActions} from 'react-navigation'
-import styles from '../StyleSheets/Styles'
+import styles from '../../StyleSheets/Styles'
+import { SENSOR_ARRAY } from '../../Components/Constants'
 
+/**
+ * Main settings window, contains various buttons to perform actions
+ */
 export default class Settings extends Component {
     constructor(props) {
         super(props);
+        this.getSensorList = this.getSensorList.bind(this)
+        this.getSensors = this.getSensors.bind(this)
+        this.state = ({devices: false, deviceList: []})
+    }
+
+    componentWillMount() {
+        this.getSensors()
+    }
+
+    async getSensors() {
+        let sensorsList = await this.getSensorList();
+        if (sensorsList != null) {
+            this.setState({devices: true, deviceList: sensorsList})
+        } else {
+            this.setState({devices: false})
+        }
+    }
+
+    async getSensorList() {
+        return await AsyncStorage.getItem(SENSOR_ARRAY).then(res => JSON.parse(res))
     }
 
     reset() {
@@ -25,14 +48,22 @@ export default class Settings extends Component {
     }
 
     render() {
+        let settings;
+        if (this.state.devices == true) {
+            settings = <Setting text="Edit Devices" 
+                action={() => this.props.navigation.navigate('EditDevice', 
+                                    { sensorList: this.state.deviceList})}/>
+        }
+
         return (
             <View style={styles.container}>
-            <ImageBackground source={require('../Resources/home_background.jpg')} style={{width: '100%', height: '100%'}}>
+            <ImageBackground source={require('../../Resources/home_background.jpg')} style={{width: '100%', height: '100%'}}>
                     <View style={{flex: 1, alignContent: 'flex-start', 
                                     justifyContent: 'center', flexDirection: 'row', paddingTop: 20}}>
                         <Text>Settings</Text>
                     </View>
                     <View style={[styles.home, {flex: 10}]}>
+                        {settings}
                         <Setting text="Reset Settings" action={() => this.reset()}/>
                         <Setting text="Contact AirU" action={() => Linking.openURL('mailto:aqandu@utah.edu')}/>
                     </View>

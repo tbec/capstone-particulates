@@ -161,6 +161,7 @@ exports[`Snapshot ConnectionSetup Setup 1`] = `
             "padding": 10,
           }
         }
+        testID="nextButton"
       >
         <Text
           allowFontScaling={false}

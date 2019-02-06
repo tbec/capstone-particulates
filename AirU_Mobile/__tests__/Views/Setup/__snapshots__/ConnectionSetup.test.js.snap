@@ -79,8 +79,9 @@ exports[`Snapshot ConnectionSetup Setup 1`] = `
         style={
           Object {
             "alignContent": "center",
+            "backgroundColor": "white",
             "borderColor": "black",
-            "borderWidth": 2,
+            "borderWidth": 1,
             "height": 40,
             "justifyContent": "center",
             "paddingBottom": 10,
@@ -101,8 +102,9 @@ exports[`Snapshot ConnectionSetup Setup 1`] = `
         style={
           Object {
             "alignContent": "center",
+            "backgroundColor": "white",
             "borderColor": "black",
-            "borderWidth": 2,
+            "borderWidth": 1,
             "height": 40,
             "justifyContent": "center",
             "paddingBottom": 10,
@@ -212,6 +214,7 @@ exports[`Snapshot ConnectionSetup Setup 1`] = `
             "padding": 10,
           }
         }
+        testID="prevButton"
       >
         <Text
           allowFontScaling={false}

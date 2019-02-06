@@ -2,12 +2,26 @@
  * Instructions for mounting sensor setup page
  */
 import React, {Component} from 'react';
-import {Text, View, TouchableHighlight, Image} from 'react-native';
+import {Text, View, KeyboardAvoidingView, Image, TextInput} from 'react-native';
 import NavBar from '../../Components/NavBar'
 import styles from '../../StyleSheets/Styles'
 
 export default class ReviewFirst extends Component<Props> {
+    constructor(props) {
+        super(props);
+        this.state={sensorName: ''}
+    }
+
     render() {
+        let navBar
+        if (this.state.sensorName != '') {
+            navBar = <NavBar navigation={this.props.navigation} next='ConnectionSetup' previous='ReviewFirst' 
+                        navProps={this.state.sensorName}/>
+        }
+        else {
+            
+        }
+
         return (
             <View style={styles.mainView}>
                 <View style={{flex: 10}}>
@@ -30,7 +44,16 @@ export default class ReviewFirst extends Component<Props> {
                         <Text/>
                     </View>
                 </View>
-                <NavBar navigation={this.props.navigation} next='ConnectionSetup' previous='ReviewFirst'/>
+                <KeyboardAvoidingView style={{flex: 1, alignContent: 'flex-start', justifyContent: 'flex-start',
+                        paddingLeft: 30}}>
+                    <Text>Enter a name for your sensor</Text>
+                    <TextInput editable={true} keyboardType='default' 
+                                autoCorrect={false} placeholder='Sensor Name' secureTextEntry={false}
+                                style={styles.textInput}
+                                onChangeText={(value) => {this.setState({sensorName: value})}}
+                    />
+                </KeyboardAvoidingView>
+                {navBar}
             </View>
         );
     }
