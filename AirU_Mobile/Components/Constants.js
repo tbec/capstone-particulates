@@ -1,4 +1,4 @@
-export const TEST_MODE = true
+export const TEST_MODE = false
 
 // Sensor constants
 export const SENSOR_ARRAY = 'Sensors'

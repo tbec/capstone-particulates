@@ -18,8 +18,9 @@ export default class ConnectionSetup extends Component<Props> {
         this.connectDeviceToWiFi = this.connectDeviceToWiFi.bind(this);
         let _timer = setInterval(this.connectToBluetooth, 2000);
 
-        this.state={bleConnected: false, sensorID: null, wifiConnected: false, 
-                    WiFiName: '', WiFiPassword: '', WiFiError: false, timer: _timer, testMode: TEST_MODE};
+        // CHANGE TESTMODE
+        this.state={bleConnected: false, sensorID: null, wifiConnected: false, error: '',
+                    WiFiName: '', WiFiPassword: '', WiFiError: false, timer: _timer, testMode: true};
     }
 
     // displays alert to user if BT or WiFi is disabled on device
@@ -76,6 +77,7 @@ export default class ConnectionSetup extends Component<Props> {
             if (error) {
                 return
             }
+
             // adjust name to match sensor
             if (device.name === 'ESP_GATTS_DEMO') {
                 manager.stopDeviceScan();
@@ -83,14 +85,22 @@ export default class ConnectionSetup extends Component<Props> {
                     .then((device) => {
                         return device.discoverAllServicesAndCharacteristics()
                     })
-                    // device id = MAC Address; set and return
                     .then((device) => {
-                        this.setState({sensorID: device.id, bleConnected: true})
+                        // serviceUUID, charUUID, transactionID
+                        return device.readCharacteristicForService(1, 2, 3)
+                    })
+                    .then((characteristic) => {
+                        this.setState({sensorID: characteristic.value, bleConnected: true})
+                    })
+                    .catch(error => { 
+                        console.log(error)
+                        this.setState({error: 'Could not connect to sensor'})
                     })
             }
         });
 
-        manager.destroy();
+        manager.cancelDeviceConnection()
+        manager.destroy()
     }
 
     // Tries to connect to WiFi to make sure valid. If works, sends information to sensor
