@@ -6,14 +6,24 @@ import React, {Component} from 'react';
 import {Text, View, TouchableHighlight, Image, AsyncStorage} from 'react-native';
 import styles from '../../StyleSheets/Styles'
 import { NavigationActions, StackActions } from 'react-navigation'
-import { SENSOR_ARRAY } from '../../Components/Constants'
+import { SENSOR_ARRAY, WEB_URL, LOGIN_NAME, PASSWORD, SENSOR_NAME, SENSOR_PRIVACY, SENSOR_ID } from '../../Components/Constants'
 
 export default class Confirmation extends Component<Props> {
     constructor(props) {
         super(props)
+
+        this.saveSensor = this.saveSensor.bind(this)
+        this.webCall = this.webCall.bind(this)
+        this.login = this.login.bind(this)
+        this.addDevice = this.addDevice.bind(this)
+
+        this.state = {error: ''}
     }
 
-    // saves sensor after clicking final confirmation button, then navs to sensor screen
+    /**
+     * Saves sensor after final confirmation buttoin both locally and in server, then navigates
+     *  back to main sensor overview screen
+     */
     async saveSensor() {
         // get sensor information if already saved any previously
         var sensors = []
@@ -27,26 +37,114 @@ export default class Confirmation extends Component<Props> {
         })
 
         // get privacy, get array, JSON, save
-        let privacySetting = this.props.navigation.getParam('privacy', 'false');
-        let name = this.props.navigation.getParam('sensorName', 'NewSensor');
-        let sensor = {id: 'AB-CD-EF-GF', sensorName: name, privacy: privacySetting};
-        sensors.push(sensor);
-        var json = JSON.stringify(sensors);
+        let privacySetting = this.props.navigation.getParam(SENSOR_PRIVACY, 'false');
+        let name = this.props.navigation.getParam(SENSOR_NAME, 'NewSensor');
+        let sensorID = this.props.navigation.getParam(SENSOR_ID, '0123456789ABC')
+        let sensor = {id: sensorID, sensorName: name, privacy: privacySetting};
 
         // send JSON to server to add to profile
+        let success = await this.webCall();
 
-        // save sensors again to local storage
-        await AsyncStorage.setItem(SENSOR_ARRAY, json);
+        if (success) {
+            // save sensor if added successfully
+            sensors.push(sensor);
+            var json = JSON.stringify(sensors);
 
-        // navigate back to Sensor page
-        let reset = StackActions.reset({
-            index: 0, 
-            actions:  [NavigationActions.navigate({
-                routeName: 'Tabs',
-                params: {},
-                action: NavigationActions.navigate('Sensor', {sensor: 'sensor'})})]
-        });
-        this.props.navigation.dispatch(reset);
+            // save sensors again to local storage
+            await AsyncStorage.setItem(SENSOR_ARRAY, json);
+
+            // navigate back to Sensor page
+            let reset = StackActions.reset({
+                index: 0, 
+                actions:  [NavigationActions.navigate({
+                    routeName: 'Tabs',
+                    params: {},
+                    action: NavigationActions.navigate('Sensor', {sensor: 'sensor'})})]
+            });
+            this.props.navigation.dispatch(reset);
+        } else {
+            this.setState({error: 'Could not save sensor to server'})
+        }
+    }
+
+    /**
+     * Makes calls to login and addDevice URL endpoints
+     */
+    async webCall() {
+        // get username
+        let username
+        await AsyncStorage.getItem(LOGIN_NAME).then((_retrieveData) => {
+            if (_retrieveData == null) {
+                // error
+            }
+            else {
+                username = _retrieveData
+            }
+        })
+
+        // login
+        result = await this.login(username)
+        let res = JSON.parse(result)
+
+        if (!res.success) {
+            // display error
+            return false
+        }
+
+        // add the device and return result
+
+        result = await this.addDevice(username)
+        res = JSON.parse(result)
+        
+        return res.success
+    }
+
+    /**
+     * Logs into the site, must call before adding device
+     */
+    async login(login) {
+        let password
+
+        await AsyncStorage.getItem(PASSWORD).then((_retrieveData) => {
+            if (_retrieveData == null) {
+                // error
+            }
+            else {
+                password = _retrieveData
+            }
+        })
+
+        let urlBase = WEB_URL + '/login?'
+        let user = 'username=' + login
+        let passwordParam = '&password=' + password
+
+        let url = urlBase + user + passwordParam
+
+        console.log('URL: ' + url)
+
+        return fetch(url, {method: 'POST', credentials: 'include' })
+            .then((response) => response.json())
+            .then((responseJson) => {
+            return responseJson })
+          .catch((error) => { console.error(error)})
+    }
+
+    async addDevice(username) {
+        let urlBase = WEB_URL + '/device/add?'
+        let user = 'username=' + username
+        let name = '&devicename=' + this.props.navigation.getParam(SENSOR_NAME, 'NewSensor')
+        let privacy = '&visable=' + this.props.navigation.getParam(SENSOR_PRIVACY, true)
+        let id = '&deviceid=' + this.props.navigation.getParam(SENSOR_ID, 'ABCDEFGH')
+
+        let url = urlBase + user + id + name
+
+        console.log('URL: ' + url)
+
+        return fetch(url, {method: 'POST', credentials: 'include' })
+            .then((response) => response.json())
+            .then((responseJson) => {
+            return responseJson })
+          .catch((error) => { console.error(error)})
     }
 
     render() {
@@ -66,6 +164,7 @@ export default class Confirmation extends Component<Props> {
                                         onPress={() => this.saveSensor()}>
                         <Text style={styles.buttonText}>Complete Setup</Text>
                     </TouchableHighlight>
+                    <Text>{this.state.error}</Text>
                 </View>
             </View>
         );

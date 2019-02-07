@@ -6,6 +6,7 @@ import React, {Component} from 'react';
 import {Text, View, TouchableHighlight,Image} from 'react-native';
 import NavBar from '../../Components/NavBar'
 import styles from '../../StyleSheets/Styles'
+import { SENSOR_NAME, SENSOR_ID} from '../../Components/Constants'
 
 export default class Privacy extends Component<Props> {
     constructor(props) {
@@ -14,8 +15,9 @@ export default class Privacy extends Component<Props> {
 
     // after selecting option, sets as appropriate 
     setPrivacy(value) {
-        this.props.navigation.navigate('Confirmation', {sensorName: this.props.navigation.getParam('sensorName', 'NewSensor')
-                                                            , privacy: value});
+        let name = this.props.navigation.getParam(SENSOR_NAME, 'NewSensor')
+        let id = this.props.navigation.getParam(SENSOR_ID, 'NewSensor')
+        this.props.navigation.navigate('Confirmation', {sensorName: name, sensorID: id,  privacy: value});
     }
 
     render() {

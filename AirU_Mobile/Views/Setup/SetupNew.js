@@ -5,6 +5,7 @@
 import React, {Component} from 'react';
 import {AsyncStorage} from 'react-native'
 import Login from '../Setup/Login'
+import { LOGIN_NAME } from '../../Components/Constants'
 
 export default class SetupNew extends Component<Props> {
 
@@ -19,9 +20,11 @@ export default class SetupNew extends Component<Props> {
         this.checkLogin();
     }
 
-    // checks if the user has logged in previously
+    /**
+     * Checks if users has previously logged into system to display appropriate view
+     */
     checkLogin() {
-        AsyncStorage.getItem('Login').then((_retrieveData) => {
+        AsyncStorage.getItem(LOGIN_NAME).then((_retrieveData) => {
             if (_retrieveData == null) {
                 this.setState({ loggedIn: false})
             }

@@ -7,9 +7,12 @@ import {TouchableHighlight, View, Text, AsyncStorage,
          TextInput, Platform, KeyboardAvoidingView, Button, Image, ImageBackground} from 'react-native';
 import styles from '../../StyleSheets/Styles'
 import Icon from 'react-native-vector-icons/Ionicons'
-import { LOGIN_NAME, LOGIN_TOKEN, TEST_MODE } from '../../Components/Constants'
+import { LOGIN_NAME, PASSWORD, TEST_MODE, WEB_URL} from '../../Components/Constants'
 
-// WIP. Will need to go to correct URL, save token after login, and navigate to next page after done
+/**
+ * Logs into system
+ * @param navigator - React Navigator used to move between screens after login
+ */
 export default class Login extends Component<Props> {
     constructor(props) {
         super(props);
@@ -19,7 +22,11 @@ export default class Login extends Component<Props> {
         this.state = ({login: '', password: '', error: ''})
     }
 
+    /**
+     * Logs into server
+     */
     async login() {
+        // used for testing only
         if (!TEST_MODE) {
             if (this.state.login != "TEST") {
                 this.setState({ error: "Invalid username or password" })
@@ -36,16 +43,26 @@ export default class Login extends Component<Props> {
         let result = await this.webCall();
         let json = JSON.parse(result);
 
+        // if success, save locally and continue
         if (json.success) {
-            AsyncStorage.setItem(LOGIN_NAME, this.state.login);
-            this.props.navigation.navigate('ReviewFirst');
+            AsyncStorage.setItem(LOGIN_NAME, this.state.login)
+            AsyncStorage.setItem(PASSWORD, this.state.password)
+            let toReturn = this.props.navigation.getParam('return', false);
+            if (toReturn) {
+                this.props.navigation.goBack()
+            } else {
+                this.props.navigation.navigate(navWindow) 
+            }
         } else {
-            this.setState({error: json.error[0]})
+            this.setState({error: 'Invalid username or password'})
         }
     }
 
+    /**
+     * Attempts to call server to log in with specified credentials
+     */
     async webCall() {
-        let urlBase = 'https://neat-environs-205720.appspot.com/mobile/login?'
+        let urlBase = WEB_URL + '/login?'
         let user = 'username=' + this.state.login
         let password = '&password=' + this.state.password
 
@@ -53,7 +70,7 @@ export default class Login extends Component<Props> {
 
         console.log('URL: ' + url)
 
-        return fetch(url, {method: 'POST'})
+        return fetch(url, {method: 'POST', credentials: 'include' })
             .then((response) => response.json())
             .then((responseJson) => {
             return responseJson })
@@ -90,12 +107,12 @@ export default class Login extends Component<Props> {
                             color='blue' 
                             disabled={(this.state.login == '' || this.state.password == '')}
                         />
-                        <Text style={{flex: 2, color: 'red'}}>
+                        <Text style={{flex: 2, color: 'red', textAlign: 'center'}}>
                             {this.state.error}
                         </Text>
                         <Button title="Register a new account"
                             onPress={() => this.props.navigation.navigate('RegisterAccount')}
-                            color='crimson' 
+                            color='blue' 
                         />
                     </View>
             </View>
