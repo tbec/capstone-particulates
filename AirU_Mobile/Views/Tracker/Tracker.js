@@ -25,20 +25,6 @@ export default class Tracker extends Component {
         };
     }
 
-    componentWillMount() {
-        navigator.geolocation.getCurrentPosition(
-            (position) => {
-                this.animateToRegion(position.coords.latitude, position.coords.longitude);
-                this.setState({
-                    currentPosition: { latitude: position.coords.latitude, longitude: position.coords.longitude },
-                    gettingLocation: false
-                });
-            },
-            (error) => { alert(error.message) },
-            { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
-        );
-    }
-
     componentDidMount() {
         BackgroundGeolocation.configure({
             desiredAccuracy: BackgroundGeolocation.HIGH_ACCURACY,
@@ -55,6 +41,16 @@ export default class Tracker extends Component {
             activitiesInterval: 10000,
             stopOnStillActivity: false,
         });
+        BackgroundGeolocation.getCurrentLocation((position) => {
+            this.animateToRegion(position.latitude, position.longitude);
+            this.setState({
+                currentPosition: { latitude: position.latitude, longitude: position.longitude },
+                gettingLocation: false
+            });
+        }, (error) => {
+            alert(error.message);
+            this.setState({gettingLocation: false});
+        }, { enableHighAccuracy: true, timeout: 10000, maximumAge: 1000 });
     }
 
     componentWillUnmount() {
@@ -75,7 +71,6 @@ export default class Tracker extends Component {
                 justifyContent: 'center'
             }} />
         }
-
         currentPosition = <Marker
             coordinate={this.state.currentPosition}
             image={require('../../Resources/pin.png')}
@@ -137,10 +132,12 @@ export default class Tracker extends Component {
         this.setState({ startTracking: false, stopTracking: true });
         BackgroundGeolocation.on('location', (position) => {
             this.animateToRegion(position.latitude, position.longitude);
+            let pollutionData = this.getPollution(position.latitude.toString(), position.longitude.toString(), '2019-02-06 12:45:19');
+            console.log("pdata: " + JSON.stringify(pollutionData));
             let newPoint = {
                 latitude: position.latitude,
                 longitude: position.longitude,
-                pollution: parseFloat(Math.random().toFixed(2)),
+                pollution: pollutionData._40,
                 color: this.pollutionColor(.1)
             }
             let path = this.state.allPoints;
@@ -167,12 +164,26 @@ export default class Tracker extends Component {
         BackgroundGeolocation.start();
     }
 
+    async getPollution(lat, lng, time) {
+        try {
+            let params = 'lat=' + lat + '&long=' + lng + '&timestamp=' + time + '&times=1000'
+            let response = await fetch(
+                'https://neat-environs-205720.appspot.com/data/pollution?' + params, { method: 'POST' },
+            );
+            console.log("response: " + JSON.stringify(response));
+            let responseJson = await response.json();
+            return responseJson;
+        } catch (error) {
+            alert(error);
+        }
+    }
+
     animateToRegion(lat, lng) {
         let r = {
             latitude: lat,
             longitude: lng,
-            latitudeDelta: .01,
-            longitudeDelta: .01,
+            latitudeDelta: .003,
+            longitudeDelta: .003,
         };
         this.mapView.animateToRegion(r, 50);
     }
