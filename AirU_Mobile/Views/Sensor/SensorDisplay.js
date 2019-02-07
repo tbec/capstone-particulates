@@ -148,7 +148,7 @@ class Graph extends Component<Props> {
                     yMin={0} 
                     yMax={200}
                     yAccessor={({ item }) => item.value}
-                    animate={true}>
+                    animate={false}>
                     <Grid direction={Grid.Direction.HORIZONTAL}/>
                     <Labels/>
                 </BarChart>
@@ -196,7 +196,7 @@ class DataType extends Component<Props> {
     }
 
     render() {
-        let data = [{value: 'Pollution'}, {value: 'Temperature'}]
+        let data = [{value: 'Pollution'}]
 
         return (
             <View style={{flex: 1}}>

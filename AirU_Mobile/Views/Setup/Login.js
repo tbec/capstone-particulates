@@ -27,7 +27,7 @@ export default class Login extends Component<Props> {
      */
     async login() {
         // used for testing only
-        if (!TEST_MODE) {
+        if (TEST_MODE) {
             if (this.state.login != "TEST") {
                 this.setState({ error: "Invalid username or password" })
                 return
@@ -51,7 +51,7 @@ export default class Login extends Component<Props> {
             if (toReturn) {
                 this.props.navigation.goBack()
             } else {
-                this.props.navigation.navigate(navWindow) 
+                this.props.navigation.navigate('ReviewFirst') 
             }
         } else {
             this.setState({error: 'Invalid username or password'})
