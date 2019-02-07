@@ -4,8 +4,8 @@ import NavBar from '../../Components/NavBar';
 import TrackerGraph from './TrackerGraph';
 import MapView, { Polyline, Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import styles from '../../StyleSheets/Styles';
-import { NavigationActions } from 'react-navigation'
-
+import { NavigationActions } from 'react-navigation';
+import BackgroundGeolocation from 'react-native-mauron85-background-geolocation';
 
 export default class Tracker extends Component {
     constructor(props) {
@@ -29,42 +29,68 @@ export default class Tracker extends Component {
         navigator.geolocation.getCurrentPosition(
             (position) => {
                 this.animateToRegion(position.coords.latitude, position.coords.longitude);
-                this.setState({currentPosition: {latitude: position.coords.latitude, longitude: position.coords.longitude},
-                    gettingLocation: false});
+                this.setState({
+                    currentPosition: { latitude: position.coords.latitude, longitude: position.coords.longitude },
+                    gettingLocation: false
+                });
             },
             (error) => { alert(error.message) },
             { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
         );
     }
 
+    componentDidMount() {
+        BackgroundGeolocation.configure({
+            desiredAccuracy: BackgroundGeolocation.HIGH_ACCURACY,
+            stationaryRadius: 5,
+            distanceFilter: 5,
+            notificationTitle: 'Background tracking',
+            notificationText: 'enabled',
+            startOnBoot: false,
+            debug: false,
+            stopOnTerminate: true,
+            locationProvider: BackgroundGeolocation.ACTIVITY_PROVIDER,
+            interval: 5000,
+            fastestInterval: 5000,
+            activitiesInterval: 10000,
+            stopOnStillActivity: false,
+        });
+    }
+
     componentWillUnmount() {
-        navigator.geolocation.clearWatch(this.watchId);
+        BackgroundGeolocation.stop();
+        BackgroundGeolocation.removeAllListeners();
     }
 
     render() {
         let button, trackerGraph, slider, icon, currentPosition, gettingLocation;
         const sliderValue = this.state.sliderValue;
-        if(this.state.gettingLocation){
-            gettingLocation = <ActivityIndicator size="large" color="#0000ff" style={{position: 'absolute', left: 0,
-            right: 0,
-            top: 0,
-            bottom: 0,
-            alignItems: 'center',
-            justifyContent: 'center'}} />
+        if (this.state.gettingLocation) {
+            gettingLocation = <ActivityIndicator size="large" color="#0000ff" style={{
+                position: 'absolute', left: 0,
+                right: 0,
+                top: 0,
+                bottom: 0,
+                alignItems: 'center',
+                justifyContent: 'center'
+            }} />
         }
+
+        currentPosition = <Marker
+            coordinate={this.state.currentPosition}
+            image={require('../../Resources/pin.png')}
+        />
         if (this.state.startTracking) {
             button = <Button title="Start Tracking" onPress={this.startTracking.bind(this)}></Button>
         }
         else if (this.state.stopTracking) {
             button = <Button title="Stop" onPress={this.stopTracking.bind(this)}></Button>
-            currentPosition = <Marker
-                coordinate={this.state.currentPosition}
-                image={require('./pin.png')}
-            />
         } else if (this.state.viewData) {
             button = <Button title="View Data" onPress={this.viewData.bind(this)}></Button>
+            currentPosition = null;
         }
         if (this.state.graph) {
+            currentPosition = null;
             trackerGraph = <TrackerGraph data={this.state.pollutionData} selectedIndex={this.state.sliderValue} navigation={this.props.navigation}></TrackerGraph>
             slider = <View style={sliderStyles.container}>
                 <Slider
@@ -76,7 +102,7 @@ export default class Tracker extends Component {
             </View>
             icon = <Marker
                 coordinate={this.state.markerPos}
-                image={require('./pin.png')}
+                image={require('../../Resources/pin.png')}
             />
             button = <Button title="Dismiss" onPress={this.dismissGraph.bind(this)}></Button>
         }
@@ -109,30 +135,36 @@ export default class Tracker extends Component {
     }
     startTracking() {
         this.setState({ startTracking: false, stopTracking: true });
-        this.watchId = navigator.geolocation.watchPosition(
-            (position) => {
-                this.animateToRegion(position.coords.latitude, position.coords.longitude);
-                let newPoint = {
-                    latitude: position.coords.latitude,
-                    longitude: position.coords.longitude,
-                    pollution: .1,
-                    color: this.pollutionColor(.1)
-                }
-                let path = this.state.allPoints;
-                path.push(newPoint);
-                if (path.length > 1) {
-                    this.setState((prevState) => {
-                        color = this.averageTwoColors(path[path.length - 1].color, path[path.length - 2].color);
-                        newPathCoords = { color: color, path: [path[path.length - 1], path[path.length - 2]] };
-                        oldPathArray = [...prevState.pathArray];
-                        oldPathArray.push(newPathCoords);
-                        return { pathArray: oldPathArray, allPoints: path, currentPosition: {latitude: position.coords.latitude, longitude: position.coords.longitude} };
-                    });
-                }
-            },
-            (error) => { alert(error.message) },
-            { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000, distanceFilter: 10 },
-        );
+        BackgroundGeolocation.on('location', (position) => {
+            this.animateToRegion(position.latitude, position.longitude);
+            let newPoint = {
+                latitude: position.latitude,
+                longitude: position.longitude,
+                pollution: parseFloat(Math.random().toFixed(2)),
+                color: this.pollutionColor(.1)
+            }
+            let path = this.state.allPoints;
+            path.push(newPoint);
+            if (path.length > 1) {
+                this.setState((prevState) => {
+                    color = this.averageTwoColors(path[path.length - 1].color, path[path.length - 2].color);
+                    newPathCoords = { color: color, path: [path[path.length - 1], path[path.length - 2]] };
+                    oldPathArray = [...prevState.pathArray];
+                    oldPathArray.push(newPathCoords);
+                    return { pathArray: oldPathArray, allPoints: path, currentPosition: { latitude: position.latitude, longitude: position.longitude } };
+                });
+            }
+            // handle your locations here
+            // to perform long running operation on iOS
+            // you need to create background task
+            BackgroundGeolocation.startTask(taskKey => {
+                // execute long running task
+                // eg. ajax post location
+                // IMPORTANT: task has to be ended by endTask
+                BackgroundGeolocation.endTask(taskKey);
+            });
+        });
+        BackgroundGeolocation.start();
     }
 
     animateToRegion(lat, lng) {
@@ -203,7 +235,7 @@ export default class Tracker extends Component {
     }
 
     stopTracking() {
-        navigator.geolocation.clearWatch(this.watchId);
+        BackgroundGeolocation.stop();
         this.setState({ stopTracking: false, viewData: true });
     }
 
@@ -214,7 +246,7 @@ export default class Tracker extends Component {
     }
 
     dismissGraph() {
-        this.setState({ graph: false, startTracking: true, pathArray: [] });
+        this.setState({ graph: false, startTracking: true, pathArray: [], allPoints: [], pollutionData: [] });
     }
 
     //estimates the pollution level between two data points

@@ -138,10 +138,11 @@ android {
 }
 
 dependencies {
-    compile project(':react-native-ble-plx')
-    compile project(':react-native-svg')
-    compile project(':react-native-maps')
-    compile project(':react-native-vector-icons')
+    compile project(':react-native-mauron85-background-geolocation')
+    implementation project(':react-native-ble-plx')
+    implementation project(':react-native-svg')
+    implementation project(':react-native-maps')
+    implementation project(':react-native-vector-icons')
     implementation 'com.facebook.fresco:fresco:1.11.0'
     implementation 'com.facebook.fresco:animated-gif:1.11.0'
     implementation fileTree(dir: "libs", include: ["*.jar"])
