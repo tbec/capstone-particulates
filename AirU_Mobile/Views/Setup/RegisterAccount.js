@@ -14,7 +14,7 @@ export default class RegisterAccount extends Component<Props> {
 
     async register() {
         // make API call to login passing in login/password
-        if (!TEST_MODE && this.state.username != "TEST") {
+        if (TEST_MODE && this.state.username != "TEST") {
             this.setState({ error: "Invalid username or password" })
             return
         }

@@ -16,16 +16,20 @@ export default class ConnectionSetup extends Component<Props> {
         // functions and timer in case cannot connect or find BT
         this.connectToBluetooth = this.connectToBluetooth.bind(this);
         this.connectDeviceToWiFi = this.connectDeviceToWiFi.bind(this);
-        let _timer = setInterval(this.connectToBluetooth, 2000);
+        let _timer// = setInterval(this.connectToBluetooth, 2000);
 
         // CHANGE TESTMODE
         this.state={bleConnected: false, sensorID: null, wifiConnected: false, error: '',
-                    WiFiName: '', WiFiPassword: '', WiFiError: false, timer: _timer, testMode: true};
+                    WiFiName: '', WiFiPassword: '', WiFiError: false, timer: _timer, testMode: false};
     }
 
     // displays alert to user if BT or WiFi is disabled on device
     // 0 = BT error, 1 = WiFi error
     alertSetupSettings(value) {
+
+        // clear to prevent asking again
+        // clearInterval(this.state.timer);
+
         // TEST MODE
         if (this.state.testMode) {
             let num = Math.floor(Math.random() * Math.floor(999))
@@ -34,7 +38,6 @@ export default class ConnectionSetup extends Component<Props> {
             }
             let id = '123456789' + num
             this.setState({sensorID: id, bleConnected: true})
-            clearInterval(this.state.timer);
             return
         }
 
@@ -65,14 +68,12 @@ export default class ConnectionSetup extends Component<Props> {
     }
 
     // used to get Sensor ID in connection step
-    connectToBluetooth() {
+    async connectToBluetooth() {
         // code use taken from https://polidea.github.io/react-native-ble-plx/ documentation
-        const manager = new BleManager();
-        if (manager.state != 'PoweredOn') {
-            this.alertSetupSettings(0);
-            return
-        }
-
+        console.log('Checking Bluetooth')
+        manager = new BleManager()
+        
+        // need to adjust to ask for location and BT permsissions on Android first
         manager.startDeviceScan(null, null, (error, device) => {
             if (error) {
                 return
@@ -81,26 +82,10 @@ export default class ConnectionSetup extends Component<Props> {
             // adjust name to match sensor
             if (device.name === 'ESP_GATTS_DEMO') {
                 manager.stopDeviceScan();
-                device.connect()
-                    .then((device) => {
-                        return device.discoverAllServicesAndCharacteristics()
-                    })
-                    .then((device) => {
-                        // serviceUUID, charUUID, transactionID
-                        return device.readCharacteristicForService(1, 2, 3)
-                    })
-                    .then((characteristic) => {
-                        this.setState({sensorID: characteristic.value, bleConnected: true})
-                    })
-                    .catch(error => { 
-                        console.log(error)
-                        this.setState({error: 'Could not connect to sensor'})
-                    })
+                this.setState({sensorID: device.id, bleConnected: true})
+                manager.destroy()
             }
-        });
-
-        manager.cancelDeviceConnection()
-        manager.destroy()
+        })
     }
 
     // Tries to connect to WiFi to make sure valid. If works, sends information to sensor
@@ -115,6 +100,10 @@ export default class ConnectionSetup extends Component<Props> {
         else {
             this.setState({WiFiError: true})
         }
+    }
+
+    componentWillMount() {
+        this.connectToBluetooth()
     }
 
     componentWillUnmount() {
