@@ -25,7 +25,7 @@ export default class Tracker extends Component {
         };
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         BackgroundGeolocation.configure({
             desiredAccuracy: BackgroundGeolocation.HIGH_ACCURACY,
             stationaryRadius: 5,
@@ -49,7 +49,7 @@ export default class Tracker extends Component {
             });
         }, (error) => {
             alert(error.message);
-            this.setState({gettingLocation: false});
+            this.setState({ gettingLocation: false });
         }, { enableHighAccuracy: true, timeout: 10000, maximumAge: 1000 });
     }
 
@@ -128,29 +128,33 @@ export default class Tracker extends Component {
             </View>
         );
     }
-    startTracking() {
+    async startTracking() {
         this.setState({ startTracking: false, stopTracking: true });
         BackgroundGeolocation.on('location', (position) => {
             this.animateToRegion(position.latitude, position.longitude);
-            let pollutionData = this.getPollution(position.latitude.toString(), position.longitude.toString(), '2019-02-06 12:45:19');
-            console.log("pdata: " + JSON.stringify(pollutionData));
-            let newPoint = {
-                latitude: position.latitude,
-                longitude: position.longitude,
-                pollution: pollutionData._40,
-                color: this.pollutionColor(.1)
-            }
-            let path = this.state.allPoints;
-            path.push(newPoint);
-            if (path.length > 1) {
-                this.setState((prevState) => {
-                    color = this.averageTwoColors(path[path.length - 1].color, path[path.length - 2].color);
-                    newPathCoords = { color: color, path: [path[path.length - 1], path[path.length - 2]] };
-                    oldPathArray = [...prevState.pathArray];
-                    oldPathArray.push(newPathCoords);
-                    return { pathArray: oldPathArray, allPoints: path, currentPosition: { latitude: position.latitude, longitude: position.longitude } };
-                });
-            }
+            let dateTime = this.getCurrentDate();
+            console.log("Time and date: " + dateTime);
+            this.getPollution(position.latitude.toString(), position.longitude.toString(), dateTime).then((pollutionJson) => {
+                let pollutionData = JSON.parse(pollutionJson);
+                let newPoint = {
+                    latitude: position.latitude,
+                    longitude: position.longitude,
+                    pollution: Math.round(pollutionData.PM1 * 100)/100,
+                    color: this.pollutionColor(pollutionData.PM1)
+                }
+                let path = this.state.allPoints;
+                path.push(newPoint);
+                if (path.length > 1) {
+                    this.setState((prevState) => {
+                        color = this.averageTwoColors(path[path.length - 1].color, path[path.length - 2].color);
+                        newPathCoords = { color: color, path: [path[path.length - 1], path[path.length - 2]] };
+                        oldPathArray = [...prevState.pathArray];
+                        oldPathArray.push(newPathCoords);
+                        return { pathArray: oldPathArray, allPoints: path, currentPosition: { latitude: position.latitude, longitude: position.longitude } };
+                    });
+                }
+
+            });
             // handle your locations here
             // to perform long running operation on iOS
             // you need to create background task
@@ -168,9 +172,8 @@ export default class Tracker extends Component {
         try {
             let params = 'lat=' + lat + '&long=' + lng + '&timestamp=' + time + '&times=1000'
             let response = await fetch(
-                'https://neat-environs-205720.appspot.com/data/pollution?' + params, { method: 'POST' },
+                'https://neat-environs-205720.appspot.com/data/pollution?' + params, { method: 'GET' },
             );
-            console.log("response: " + JSON.stringify(response));
             let responseJson = await response.json();
             return responseJson;
         } catch (error) {
@@ -218,6 +221,27 @@ export default class Tracker extends Component {
         }
         newPath.push(fakePath[fakePath.length - 1]);
         return newPath;
+    }
+
+    getCurrentDate() {
+        let date = new Date();
+        let year = date.getFullYear();
+        let month = date.getMonth() + 1;
+        let day = date.getDate();
+        let hour = date.getHours();
+        let minute = date.getMinutes();
+        let seconds = date.getSeconds();
+        //2019-02-06 12:45:19
+        return year.toString() + '-' + this.leadingZeroes(month) + '-' + this.leadingZeroes(day) + ' ' +
+        this.leadingZeroes(hour) + ":" + this.leadingZeroes(minute) + ":" + this.leadingZeroes(seconds);
+    }
+
+    leadingZeroes(num){
+        stringNum = num.toString();
+        if(stringNum.length == 1){
+            stringNum = "0" + stringNum;
+        }
+        return stringNum;
     }
 
     linePressed(pollution) {
