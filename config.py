@@ -11,3 +11,10 @@ TEMPLATE_FOLDER = './application/templates/'
 
 
 
+INFLUX_USERNAME = 'trentSenior'
+INFLUX_PASSWORD = 'LnSwACNZPN5BLP95'
+INFLUX_HOST = 'air.eng.utah.edu'
+INFLUX_DATABASE = 'airU'
+INFLUX_SSL = True
+INFLUX_VERIFY_SSL = True
+INFLUX_PORT = 8086

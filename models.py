@@ -1,6 +1,6 @@
 # SQL ALCHEMY models
 # Grabs the dB from my app to be used in the models inheritance
-from run import db
+from myapp import db
 from flask_login import UserMixin
 
 # Creates a Model for a User

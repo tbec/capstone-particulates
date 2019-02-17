@@ -1,5 +1,5 @@
 # Grab app and database from the start file
-from run import app, db, client
+from myapp import app, db, client
 
 #import db model for a User to login
 from models import User, Devices, DeviceLoc

@@ -22,7 +22,7 @@ client = InfluxDBClient(host=INFLUX_HOST,
                          verify_ssl=INFLUX_VERIFY_SSL)
 
 
-from main import *
+from views import *
 
 
 
