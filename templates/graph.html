@@ -48,13 +48,14 @@
 </div>
 
 
-<link rel="stylesheet" href="{{url_for('static',filename='graph.css')}}">
+<link rel="stylesheet" href="{{url_for('static',filename='style/graph.css')}}">
 <script src="//d3js.org/d3.v4.min.js"></script>
-<script type = "text/javascript" src="{{url_for('static',filename='graph.js')}}"></script>
+<script type = "text/javascript" src="{{url_for('static',filename='script/graph.js')}}"></script>
 <script type="text/javascript">
 
-    var b = {{bGraph|tojson}}
-    var c = {{cGraph|tojson}}
+    var b = {{bGraph|tojson}};
+    var c = {{cGraph|tojson}};
+    
     if(b){
         console.log("Its a bargraph")
         draw_graph("CO",".bottom-top-left");

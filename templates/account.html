@@ -6,45 +6,54 @@
 
 <div class="wrapper">
         
-    <h2 class="acc-header">Account Details</h2>
+    <div class="header-container">
+                <h2 class="acc-header">Account Details</h2>
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                        {% for category, message in messages %}
+                                <div class="{{category}}">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+                 {% endwith %}
+    </div>
+    
     <div class="user-info">
+        <div class="info-element"> 
+                <label class="label-text" for="firstName">First Name: </label>
+                <!-- <p id="email">{{current_user.email}}</p> -->
+                <input class="text-input"  type="text" id ="firstName" disabled value={{current_user.FirstName}}><a class="update" href="account/edit/firstName"><i class="fas fa-edit"></i></a>
+        </div>
+                <div class="info-element"> 
+                <label class="label-text" for="lastName">Last Name: </label>
+                <!-- <p id="email">{{current_user.email}}</p> -->
+                <input class="text-input"  type="text" id ="lastName" disabled value={{current_user.LastName}}><a class="update"  href="account/edit/lastName"><i class="fas fa-edit"></i></a>
+        </div>
         <div class="info-element"> 
             <label class="label-text" for="username">Username: </label>
            <!-- <p id="username">{{current_user.username}}</p> -->
-            <input class="text-input" type="text" id ="username" disabled value="{{user.username}}">
+            <input class="text-input" type="text" id ="username" disabled value={{current_user.Username}}><a class="update"  href="account/edit/username"><i class="fas fa-edit"></i></a>
         </div>
         <div class="info-element"> 
                 <label class="label-text" for="email">Email: </label>
                 <!-- <p id="email">{{current_user.email}}</p> -->
-                <input class="text-input"  type="text" id ="email" disabled value="{{user.email}}">
+                <input class="text-input"  type="text" id ="email" disabled value={{user.Email}}><a class="update"  href="account/edit/email"><i class="fas fa-edit"></i></a>
         </div>
         <div class="info-element"> 
-                <label class="label-text" for="password">Password: </label>
-                <p id="password">{{user.password}}</p>
-         </div>
+                        <label class="label-text" for="password">Password: </label>
+                        <!-- <p id="email">{{current_user.email}}</p> -->
+                <input class="text-input"  type="text" id ="email" disabled><a class="update"  href="account/edit/password"><i class="fas fa-edit"></i></a>
+        </div>
     </div>
 
 
-    <hr>   
-    <div class="add-device">
-        <h2 class="acc-header">Devices</h2>
-        <form method='POST' action="/addDevice">
-                <input class="text-input" name="add_device" type="text" placeholder="Device ID" ></input>
-                <input class="button" type="submit" value="Add new device"></input>
-        </form>
 
-        
-    </div>
-
-    <div class="device-info">
-        {%for device in ids %}
-        <div class="info-element"> 
-                <label class="label-text">Device ID: </label>
-                <input class="text-input" type="text" disabled value="{{device}}">
-        </div>
-        {%endfor%}
 </div>
 
 
-<link rel="stylesheet" href="{{url_for('static', filename='account.css')}}">
+<link rel="stylesheet" href="{{url_for('static', filename='style/account.css')}}">
+<script type="text/javascript">
+
+
+
+</script>
 {%endblock%}

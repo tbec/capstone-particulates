@@ -1,0 +1,70 @@
+{% extends 'layout.html' %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{%block content%} 
+        <h2 class="acc-header">Devices</h2>
+
+        <div class="header-container">
+
+                <table class="device-table">
+                        <tr>
+                                <th align="left" class="theaders">Device Name</th>
+                                <th align="left"  class="theaders">Device ID</th>
+                                <th align="left" class="theaders">Edit</th>
+                                <th align="left" class="theaders">Add to Cart</th>
+                                <th align="left" class="theaders">Delete</th>
+
+        
+                        </tr>
+
+                        {%for device in devices %}
+                                <tr>
+                                        <td> {{device.DeviceName}} </td>
+                                        <td> {{device.DeviceId}} </td>
+                                        <td> <a href="/devices/edit/{{device.DeviceId}}"><i class="fas fa-edit"></i> </a></td>
+                                        <td> <input type="checkbox"> </td>
+                                        <td><a href="/devices/remove/{{device.DeviceId}}"><i class="fas fa-times"></i></a></td>
+                                </tr>
+                        {%endfor%}
+
+                </table>
+
+        </div>
+
+        <h2 class="acc-header">Add Device</h2>
+
+        <div class="add-container">
+                        {% with messages = get_flashed_messages(with_categories=true) %}
+                                {% if messages %}
+                                        {% for category, message in messages %}
+                                                {%if "_login" in category%}
+                                                        <div class="{{category}}">{{ message }}</div>
+                                                {%endif%}
+                                        {% endfor %}
+                                {% endif %}
+                        {% endwith %}
+                <table>
+                                <tr>
+                                        <th align="left" class="theaders">Username</th>
+                                        <th align="left"  class="theaders">Device ID</th>
+                                        <th align="left" class="theaders">Device Name</th>
+                                        <th></th>
+                        
+                                </tr>
+                                <tr>
+                                        <form method='POST' action="/devices/add">
+                                                {{ form.hidden_tag() }}
+                                        <td> {{ wtf.form_field(form.username) }} </td>
+                                        <td> {{ wtf.form_field(form.deviceid)}} </td>
+                                        <td> {{ wtf.form_field(form.devicename)}} </td>
+                                        <td> <input class="button" type="submit" value="Add new device"></input> </td>  
+                                        </form>                
+                        
+                                </tr>
+                        
+                        </table>
+        </div>
+
+<link rel="stylesheet" href="{{url_for('static', filename='style/devices.css')}}">
+
+{%endblock%}

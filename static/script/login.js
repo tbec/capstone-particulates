@@ -1,3 +1,4 @@
+// Adding all the 'functionality' of the signup and login form
 const login = {
     init: function(){
         [...document.querySelectorAll('.toggle-button')].forEach(button => button.addEventListener('click', this.makeActive))

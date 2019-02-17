@@ -1,3 +1,4 @@
+// Resizes the map to be resizeable with the browser
 const map_view = {
     adjust_size : function(){
         var map = document.querySelector('iframe');
@@ -18,6 +19,7 @@ function adjust_height(){
     map.width = window.innerWidth - 100;
 }
 
+var a = "apple";
+// map_view.adjust_size();
+// map_view.set_event();
 
-map_view.adjust_size();
-map_view.set_event();
