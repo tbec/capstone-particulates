@@ -3,11 +3,12 @@
  */
 
 import React, {Component} from 'react';
-import {TouchableHighlight, View, Text, AsyncStorage,
-         TextInput, Platform, KeyboardAvoidingView, Button, Image, ImageBackground} from 'react-native';
+import {View, Text, AsyncStorage,
+         TextInput, KeyboardAvoidingView, Button, Image, ImageBackground} from 'react-native';
 import styles from '../../StyleSheets/Styles'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { LOGIN_NAME, PASSWORD, TEST_MODE, WEB_URL} from '../../Components/Constants'
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview'
 
 /**
  * Logs into system
@@ -79,11 +80,10 @@ export default class Login extends Component<Props> {
 
     render() {
         return (
-            <View style={styles.container}>
-                    <View style={{flex: 20, backgroundColor: '#b3e6ff'}}>
-                        <View style={{flex: 2, alignItems: 'center', justifyContent: 'center', paddingTop: 20, flexDirection: 'column'}}>
+            <KeyboardAwareScrollView style={[styles.container, {backgroundColor: '#b3e6ff'}]}>
+                        <View style={{height: 200, alignItems: 'center', justifyContent: 'center', paddingTop: 20}}>
                             <Image source={require('../../Resources/red_cloud.jpeg')} 
-                                            style={{width: '50%', height: '60%'}}/>
+                                            style={{width: '50%', height: '70%'}}/>
                         </View>
                         <KeyboardAvoidingView style={styles.textGroupBox}>
                         <Text style={styles.textInputLabel}>Username</Text>
@@ -104,18 +104,17 @@ export default class Login extends Component<Props> {
                         <Text/>
                         <Button title="Login"
                             onPress={() => this.login()}
-                            color='blue' 
+                            color='red' 
                             disabled={(this.state.login == '' || this.state.password == '')}
                         />
-                        <Text style={{flex: 2, color: 'red', textAlign: 'center'}}>
+                        <Text style={{height: 200, color: 'red', textAlign: 'center'}}>
                             {this.state.error}
                         </Text>
                         <Button title="Register a new account"
                             onPress={() => this.props.navigation.navigate('RegisterAccount')}
                             color='blue' 
                         />
-                    </View>
-            </View>
+            </KeyboardAwareScrollView>
         );
     }
 }

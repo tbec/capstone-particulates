@@ -107,7 +107,6 @@ export default class RegisterAccount extends Component<Props> {
                     <Text style={{height: 50, color: "red", textAlign: 'center'}}>
                         {this.state.error}
                     </Text>
-                
             </KeyboardAwareScrollView>
         );
     }

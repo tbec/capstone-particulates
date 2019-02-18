@@ -14,7 +14,7 @@ exports[`Snapshot ConnectionSetup Setup 1`] = `
       style={
         Object {
           "flex": 2,
-          "paddingTop": 20,
+          "paddingTop": 30,
         }
       }
     >
