@@ -7,7 +7,7 @@ import {Text, View, TouchableHighlight, Image, AsyncStorage} from 'react-native'
 import styles from '../../StyleSheets/Styles'
 import { NavigationActions, StackActions } from 'react-navigation'
 import { SENSOR_ARRAY, WEB_URL, LOGIN_NAME, PASSWORD, SENSOR_NAME, SENSOR_PRIVACY, SENSOR_ID } from '../../Components/Constants'
-import sensorFuncs from '../../Components/SensorObj'
+import {sensorFuncs} from '../../Components/SensorObj'
 
 export default class Confirmation extends Component<Props> {
     constructor(props) {
@@ -42,7 +42,7 @@ export default class Confirmation extends Component<Props> {
         let name = this.props.navigation.getParam(SENSOR_NAME, 'NewSensor');
         let sensorID = this.props.navigation.getParam(SENSOR_ID, '0123456789ABC')
         sensorId = sensorID.replace(/:/g, '') // remove :'s from sensor id as server does not need
-        // let _sensorData = sensorFuncs.emptyWeek()
+        let _sensorData = sensorFuncs.emptyWeek()
         _sensorData = []
 
         let sensor = {id: sensorID, sensorName: name, privacy: privacySetting, sensorData: _sensorData};

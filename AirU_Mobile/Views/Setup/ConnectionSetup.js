@@ -13,9 +13,12 @@ export default class ConnectionSetup extends Component<Props> {
 
     constructor(props) {
         super(props)
+
         // functions and timer in case cannot connect or find BT
         this.connectToBluetooth = this.connectToBluetooth.bind(this);
         this.connectDeviceToWiFi = this.connectDeviceToWiFi.bind(this);
+        this.alertSetupSettings = this.alertSetupSettings.bind(this);
+
         this.state={bleConnected: false, sensorID: null, wifiConnected: false, error: '',
                     WiFiName: '', WiFiPassword: '', WiFiError: false, testMode: TEST_MODE};
     }
@@ -23,10 +26,6 @@ export default class ConnectionSetup extends Component<Props> {
     // displays alert to user if BT or WiFi is disabled on device
     // 0 = BT error, 1 = WiFi error
     alertSetupSettings(value) {
-
-        // clear to prevent asking again
-        // clearInterval(this.state.timer);
-
         // TEST MODE
         if (this.state.testMode) {
             let num = Math.floor(Math.random() * Math.floor(999))
@@ -67,6 +66,10 @@ export default class ConnectionSetup extends Component<Props> {
     // used to get Sensor ID in connection step
     async connectToBluetooth() {
         // code use taken from https://polidea.github.io/react-native-ble-plx/ documentation
+        if (TEST_MODE) {
+            this.alertSetupSettings(0)
+        }
+
         console.log('Checking Bluetooth')
         manager = new BleManager()
         
@@ -162,7 +165,7 @@ export default class ConnectionSetup extends Component<Props> {
     }
 
     componentWillUnmount() {
-        clearInterval(this.state.timer);
+        
     }
 
     render() {

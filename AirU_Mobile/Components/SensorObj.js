@@ -1,54 +1,55 @@
-import React, {Component} from 'react';
+import React from 'react';
 
-export const sensorFuncs = (props) => {
+export const sensorFuncs = {
     // sensor attributes
-    function getID(sensor) {
+    getID: function(sensor) {
         return sensor.id
-    }
+    },
 
-    function getName(sensor) {
+    getName: function(sensor) {
         return sensor.name
-    }
+    },
 
-    function getPrivacy(sensor) {
+    getPrivacy: function (sensor) {
         return sensor.privacy
-    }
+    },
 
-    function getDataSet(sensor) {
+    getDataSet: function(sensor) {
         return sensor.sensorData
-    }
+    },
 
     /**
      * Create new empty day
      */
-    function emptyWeek() {
-        let emptyDay = emptyDay()
+    emptyWeek: function() {
+        let emptyDay = this.emptyDay()
         let emptyWeek = [emptyDay, emptyDay, emptyDay, emptyDay, emptyDay, emptyDay, emptyDay]
         return emptyWeek
-    }
+    },
 
-    /**
-     * Create new empty day
-     */
-    function emptyDay() {
+    // /**
+    //  * Create new empty day
+    //  */
+    emptyDay: function() {
         let dataPoint = {pm1: [], pm25: [], pm10: [], pm1Avg: 0, pm25Avg: 0, pm10Avg: 0}
-        var _data
+        var _data = []
 
         for (i = 0; i < 24; i++) {
-            data[i] = dataPoint
+            _data.push(dataPoint)
         }
 
-        let emptyDay = {date: new Date(Date.now), avg: 0, data: _data}
+        let _date = new Date()
+        let emptyDay = {date: _date, avg: 0, data: _data}
         return emptyDay
-    }
+    },
 
-    /**
-     * Adds a new datapoint to the set. If it it a new day, 
-     *  will remove previous day as well
-     * @param dataPoint datapoint to add
-     * @param dataSet Entire sensor dataset
-     */
-    function addData(props) {
+    // /**
+    //  * Adds a new datapoint to the set. If it it a new day, 
+    //  *  will remove previous day as well
+    //  * @param dataPoint datapoint to add
+    //  * @param dataSet Entire sensor dataset
+    //  */
+    addData: function(props) {
         dataPoint = props.dataPoint
         dataSet = props.dataSet
 
