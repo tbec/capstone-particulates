@@ -4,6 +4,7 @@ import RadioForm from 'react-native-simple-radio-button';
 import styles from '../../StyleSheets/Styles'
 import { SENSOR_ARRAY, WEB_URL, LOGIN_NAME, PASSWORD } from '../../Components/Constants'
 import { Dropdown } from 'react-native-material-dropdown'
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview'
 
 /**
  * Edit existing devices, accessed from Settings screen
@@ -156,16 +157,22 @@ export default class EditDevice extends Component<Props> {
     render() {
         return(
             <View style={styles.container}>
-                <View style={{flex: 20, backgroundColor: '#b3e6ff'}}>
-                    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center', paddingTop: 20, flexDirection: 'column'}}>
+                <KeyboardAwareScrollView style={[styles.container, {backgroundColor: '#b3e6ff'}]}>
+                    <View style={{height: 200, alignItems: 'center', justifyContent: 'center', paddingTop: 20}}>
                         <Image source={require('../../Resources/red_cloud.jpeg')} 
                                         style={{width: '50%', height: '60%'}}/>
                     </View>
+                    <Text/>
+                    <Text/>
+                    <Text/>
                     <SensorPicker data={this.state.sensorList} handler={this.sensorHandler} selected={this.state.name}/>
                     <View style={styles.textGroupBox}>
                         <Text style={[styles.textInputLabel, {textAlign: 'center'}]}>Device id</Text>
                         <Text style={{textAlign: 'center', paddingBottom: 10}}>{this.state.id}</Text>
                     </View>
+                    <Text/>
+                    <Text/>
+                    <Text/>
                     <KeyboardAvoidingView style={styles.textGroupBox}>
                         <Text style={styles.textInputLabel}>Device Name</Text>
                         <TextInput editable={true} keyboardType='default' 
@@ -175,16 +182,21 @@ export default class EditDevice extends Component<Props> {
                                 value={this.state.name}
                                 />
                     </KeyboardAvoidingView>
+                    <Text/>
+                    <Text/>
+                    <Text/>
                     <View style={styles.textGroupBox}>
                         <Text style={styles.textInputLabel}>Privacy Setting</Text>
                         <RadioButtons privacy={this.state.privacy == false ? 0 : 1} handler={this.privacyHandler}/>
                     </View>
+                    <Text/>
+                    <Text/>
                     <Button title="Update Settings"
                             onPress={() => this.editDevice()}
                             color='crimson' 
                         />
                     <Text>{this.state.error}</Text>
-                </View>
+                </KeyboardAwareScrollView>
             </View>
         )
     }
