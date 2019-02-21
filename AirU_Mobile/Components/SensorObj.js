@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 
-const sensorFuncs = (props) => {
+export const sensorFuncs = (props) => {
     // sensor attributes
     function getID(sensor) {
         return sensor.id
