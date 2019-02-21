@@ -1,36 +1,36 @@
 import React, {Component} from 'react';
 
-const sensorFuncs = {
+const sensorFuncs = (props) => {
     // sensor attributes
-    getID: function(sensor) {
+    function getID(sensor) {
         return sensor.id
-    },
+    }
 
-    getName: function(sensor) {
+    function getName(sensor) {
         return sensor.name
-    },
+    }
 
-    getPrivacy: function(sensor) {
+    function getPrivacy(sensor) {
         return sensor.privacy
-    },
+    }
 
-    getDataSet: function(sensor) {
+    function getDataSet(sensor) {
         return sensor.sensorData
-    },
+    }
 
     /**
      * Create new empty day
      */
-    emptyWeek: function() {
+    function emptyWeek() {
         let emptyDay = emptyDay()
         let emptyWeek = [emptyDay, emptyDay, emptyDay, emptyDay, emptyDay, emptyDay, emptyDay]
         return emptyWeek
-    },
+    }
 
     /**
      * Create new empty day
      */
-    emptyDay: function() {
+    function emptyDay() {
         let dataPoint = {pm1: [], pm25: [], pm10: [], pm1Avg: 0, pm25Avg: 0, pm10Avg: 0}
         var _data
 
@@ -40,7 +40,7 @@ const sensorFuncs = {
 
         let emptyDay = {date: new Date(Date.now), avg: 0, data: _data}
         return emptyDay
-    },
+    }
 
     /**
      * Adds a new datapoint to the set. If it it a new day, 
@@ -48,7 +48,10 @@ const sensorFuncs = {
      * @param dataPoint datapoint to add
      * @param dataSet Entire sensor dataset
      */
-    addData: function(dataPoint, dataSet) {
+    function addData(props) {
+        dataPoint = props.dataPoint
+        dataSet = props.dataSet
+
         let date = new Date(Date.now())
         let dayOfWeek = date.dayOfWeek()
         let day = dataSet[dayOfWeek]

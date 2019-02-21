@@ -1,13 +1,12 @@
 // shows sensor data
 import React, {Component} from 'react';
-import {Text, View, TouchableHighlight, AsyncStorage, Platform} from 'react-native';
+import {Text, View, TouchableHighlight, AsyncStorage} from 'react-native';
 import styles from '../../StyleSheets/Styles'
-import { SENSOR_ARRAY, WEB_URL, PASSWORD, LOGIN_NAME } from '../../Components/Constants'
+import { SENSOR_ARRAY, WEB_URL } from '../../Components/Constants'
 import { BarChart, Grid} from 'react-native-svg-charts'
 import {Text as TextChart, G} from 'react-native-svg'
 import { Dropdown } from 'react-native-material-dropdown';
 import { COLOR_GOOD, COLOR_HAZARDOUS, COLOR_MODERATE, COLOR_SENSITVE, COLOR_UNHEALTHY, COLOR_VERY_UNHEALTHY } from '../../Components/Constants'
-
 
 // component should never be called if AsyncStorage.getItem('Sensor') is not already set
 export default class SensorDisplay extends Component<Props> {
