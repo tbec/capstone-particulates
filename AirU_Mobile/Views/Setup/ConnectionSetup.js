@@ -4,6 +4,7 @@ import NavBar from '../../Components/NavBar';
 import { BleManager } from 'react-native-ble-plx';
 import { TEST_MODE, SENSOR_NAME, SENSOR_ID } from '../../Components/Constants'
 import styles from '../../StyleSheets/Styles'
+import base64 from 'react-native-base64'
 
 export default class ConnectionSetup extends Component<Props> {
     static navigationOptions = {
@@ -12,15 +13,11 @@ export default class ConnectionSetup extends Component<Props> {
 
     constructor(props) {
         super(props)
-
         // functions and timer in case cannot connect or find BT
         this.connectToBluetooth = this.connectToBluetooth.bind(this);
         this.connectDeviceToWiFi = this.connectDeviceToWiFi.bind(this);
-        let _timer// = setInterval(this.connectToBluetooth, 2000);
-
-        // CHANGE TESTMODE
         this.state={bleConnected: false, sensorID: null, wifiConnected: false, error: '',
-                    WiFiName: '', WiFiPassword: '', WiFiError: false, timer: _timer, testMode: false};
+                    WiFiName: '', WiFiPassword: '', WiFiError: false, testMode: TEST_MODE};
     }
 
     // displays alert to user if BT or WiFi is disabled on device
@@ -89,16 +86,74 @@ export default class ConnectionSetup extends Component<Props> {
     }
 
     // Tries to connect to WiFi to make sure valid. If works, sends information to sensor
-    connectDeviceToWiFi() {
-        // if valid, navigate to Privacy. Otherwise mark as error
-        // adjust in future to actually send to WiFi
-        if (this.state.WiFiName == "MyWiFi" && this.state.WiFiPassword == "password") {
-            const name = this.props.navigation.getParam(SENSOR_NAME, 'NewSensor')
-            const id = this.state.sensorID
-            this.props.navigation.navigate('Privacy', { sensorName: name, sensorID: id});
+    async connectDeviceToWiFi() {
+        this.setState({WiFiError: false})
+
+        // test mode settings
+        if (TEST_MODE) {
+            if (this.state.WiFiName != "MyWiFi" && this.state.WiFiPassword != "password") {
+                this.setState({WiFiError: true})
+                return
+            } else {
+                this.props.navigation.navigate('Privacy', { sensorName: name, sensorID: this.state.sensorID});
+            }
         }
-        else {
+
+        try {
+            manager = new BleManager()
+        
+            // need to adjust to ask for location and BT permsissions on Android first
+            manager.startDeviceScan(null, null, (error, device) => {
+                if (error) {
+                    return
+                }
+    
+                // adjust name to match sensor
+                if (device.name === 'ESP_GATTS_DEMO') {
+                    manager.stopDeviceScan();
+
+                    // connect to device, discover characteristics and services, write to char in service[3], 
+                    // close connection, destroy, and navigate to next screen
+                    device.connect()
+                        .then((device) => {
+                            return device.discoverAllServicesAndCharacteristics()
+                        })
+                        .then(() => {
+                            return manager.servicesForDevice(this.state.sensorID)
+                        }).then((services) => {
+                            console.log("found chars via manager")
+                            return services
+                        }).then((services) => {
+                            return services[2].characteristics()
+                        }).then((chars) => {
+                            console.log("Found characteristics")
+                            return chars
+                        }).then((chars) => {
+                            wifiInfo = this.state.WiFiName + '$' + this.state.WiFiPassword + '$'
+                            base = base64.encode(wifiInfo)
+                            return manager.writeCharacteristicWithResponseForDevice(this.state.sensorID, chars[0].serviceUUID, 
+                                chars[0].uuid, base)
+                        }).then((res) => console.log("Wrote chars"))
+                        .then(() => {
+                            console.log("Canceling device")
+                            manager.cancelDeviceConnection(this.state.sensorID)
+                        }).then(() => {manager.destroy()})
+                        .then(() => {
+                            // pass parameters onwards
+                            name = this.props.navigation.getParam(SENSOR_NAME, 'NameUndefined');
+                            this.props.navigation.navigate('Privacy', { sensorName: name, sensorID: this.state.sensorID});
+                        })
+                        .catch((exception) => {
+                            console.log("Exception raised")
+                            console.log(exception)
+                            this.setState({WiFiError: true})
+                        })
+                }
+            })
+        } catch (exception) {
+            console.log("Outer catch")
             this.setState({WiFiError: true})
+            return
         }
     }
 

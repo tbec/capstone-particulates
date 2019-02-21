@@ -3,7 +3,6 @@ import {View, TouchableHighlight, Text, ImageBackground, Image} from 'react-nati
 import {NavigationActions} from 'react-navigation'
 import  styles  from '../StyleSheets/Styles';
 export default class Home extends Component<Props> {
-    // need way to check if already registered and change options accordingly
     render() {
         return (
                 <View style={styles.container}>

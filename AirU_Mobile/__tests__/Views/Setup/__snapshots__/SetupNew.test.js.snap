@@ -16,241 +16,236 @@ exports[`Snapshot ConnectionSetup Setup 1`] = `
   scrollToInputAdditionalOffset={75}
   startScrolledToBottom={false}
   style={
-    Object {
-      "flex": 1,
-    }
+    Array [
+      Object {
+        "flex": 1,
+      },
+      Object {
+        "backgroundColor": "#b3e6ff",
+      },
+    ]
   }
 >
   <View>
     <View
       style={
         Object {
-          "backgroundColor": "#b3e6ff",
-          "flex": 20,
+          "alignItems": "center",
+          "height": 200,
+          "justifyContent": "center",
+          "paddingTop": 20,
+        }
+      }
+    >
+      <Image
+        source={
+          Object {
+            "testUri": "../../../Resources/red_cloud.jpeg",
+          }
+        }
+        style={
+          Object {
+            "height": "70%",
+            "width": "50%",
+          }
+        }
+      />
+    </View>
+    <View
+      onLayout={[Function]}
+      style={
+        Object {
+          "alignItems": "center",
+          "flex": 1,
+          "flexDirection": "column",
+          "justifyContent": "center",
+        }
+      }
+    >
+      <Text
+        style={
+          Object {
+            "color": "red",
+            "fontWeight": "bold",
+            "paddingBottom": 5,
+          }
+        }
+      >
+        Username
+      </Text>
+      <TextInput
+        allowFontScaling={true}
+        autoCorrect={false}
+        editable={true}
+        keyboardType="default"
+        onChangeText={[Function]}
+        placeholder="Login"
+        secureTextEntry={false}
+        style={
+          Object {
+            "alignContent": "center",
+            "backgroundColor": "white",
+            "borderColor": "black",
+            "borderWidth": 1,
+            "height": 40,
+            "justifyContent": "center",
+            "paddingBottom": 10,
+            "width": "50%",
+          }
+        }
+        underlineColorAndroid="transparent"
+      />
+    </View>
+    <View
+      onLayout={[Function]}
+      style={
+        Object {
+          "alignItems": "center",
+          "flex": 1,
+          "flexDirection": "column",
+          "justifyContent": "center",
+        }
+      }
+    >
+      <Text
+        style={
+          Object {
+            "color": "red",
+            "fontWeight": "bold",
+            "paddingBottom": 5,
+          }
+        }
+      >
+        Password
+      </Text>
+      <TextInput
+        allowFontScaling={true}
+        autoCorrect={false}
+        editable={true}
+        keyboardType="default"
+        onChangeText={[Function]}
+        placeholder="Password"
+        secureTextEntry={true}
+        style={
+          Object {
+            "alignContent": "center",
+            "backgroundColor": "white",
+            "borderColor": "black",
+            "borderWidth": 1,
+            "height": 40,
+            "justifyContent": "center",
+            "paddingBottom": 10,
+            "width": "50%",
+          }
+        }
+        underlineColorAndroid="transparent"
+      />
+    </View>
+    <Text />
+    <View
+      accessibilityRole="button"
+      accessibilityStates={
+        Array [
+          "disabled",
+        ]
+      }
+      accessible={true}
+      isTVSelectable={true}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "opacity": 1,
         }
       }
     >
       <View
         style={
-          Object {
-            "alignItems": "center",
-            "flex": 2,
-            "flexDirection": "column",
-            "justifyContent": "center",
-            "paddingTop": 20,
-          }
-        }
-      >
-        <Image
-          source={
-            Object {
-              "testUri": "../../../Resources/red_cloud.jpeg",
-            }
-          }
-          style={
-            Object {
-              "height": "60%",
-              "width": "50%",
-            }
-          }
-        />
-      </View>
-      <View
-        onLayout={[Function]}
-        style={
-          Object {
-            "alignItems": "center",
-            "flex": 1,
-            "flexDirection": "column",
-            "justifyContent": "center",
-          }
-        }
-      >
-        <Text
-          style={
-            Object {
-              "color": "red",
-              "fontWeight": "bold",
-              "paddingBottom": 5,
-            }
-          }
-        >
-          Username
-        </Text>
-        <TextInput
-          allowFontScaling={true}
-          autoCorrect={false}
-          editable={true}
-          keyboardType="default"
-          onChangeText={[Function]}
-          placeholder="Login"
-          secureTextEntry={false}
-          style={
-            Object {
-              "alignContent": "center",
-              "backgroundColor": "white",
-              "borderColor": "black",
-              "borderWidth": 1,
-              "height": 40,
-              "justifyContent": "center",
-              "paddingBottom": 10,
-              "width": "50%",
-            }
-          }
-          underlineColorAndroid="transparent"
-        />
-      </View>
-      <View
-        onLayout={[Function]}
-        style={
-          Object {
-            "alignItems": "center",
-            "flex": 1,
-            "flexDirection": "column",
-            "justifyContent": "center",
-          }
-        }
-      >
-        <Text
-          style={
-            Object {
-              "color": "red",
-              "fontWeight": "bold",
-              "paddingBottom": 5,
-            }
-          }
-        >
-          Password
-        </Text>
-        <TextInput
-          allowFontScaling={true}
-          autoCorrect={false}
-          editable={true}
-          keyboardType="default"
-          onChangeText={[Function]}
-          placeholder="Password"
-          secureTextEntry={true}
-          style={
-            Object {
-              "alignContent": "center",
-              "backgroundColor": "white",
-              "borderColor": "black",
-              "borderWidth": 1,
-              "height": 40,
-              "justifyContent": "center",
-              "paddingBottom": 10,
-              "width": "50%",
-            }
-          }
-          underlineColorAndroid="transparent"
-        />
-      </View>
-      <Text />
-      <View
-        accessibilityRole="button"
-        accessibilityStates={
           Array [
-            "disabled",
+            Object {},
+            Object {},
           ]
         }
-        accessible={true}
-        isTVSelectable={true}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
-        style={
-          Object {
-            "opacity": 1,
-          }
-        }
       >
-        <View
+        <Text
+          disabled={true}
           style={
             Array [
-              Object {},
-              Object {},
+              Object {
+                "color": "#007AFF",
+                "fontSize": 18,
+                "padding": 8,
+                "textAlign": "center",
+              },
+              Object {
+                "color": "red",
+              },
+              Object {
+                "color": "#cdcdcd",
+              },
             ]
           }
         >
-          <Text
-            disabled={true}
-            style={
-              Array [
-                Object {
-                  "color": "#007AFF",
-                  "fontSize": 18,
-                  "padding": 8,
-                  "textAlign": "center",
-                },
-                Object {
-                  "color": "blue",
-                },
-                Object {
-                  "color": "#cdcdcd",
-                },
-              ]
-            }
-          >
-            Login
-          </Text>
-        </View>
+          Login
+        </Text>
       </View>
-      <Text
-        style={
-          Object {
-            "color": "red",
-            "flex": 2,
-            "textAlign": "center",
-          }
+    </View>
+    <Text
+      style={
+        Object {
+          "color": "red",
+          "height": 200,
+          "textAlign": "center",
         }
-      >
-        
-      </Text>
+      }
+    >
+      
+    </Text>
+    <View
+      accessibilityRole="button"
+      accessibilityStates={Array []}
+      accessible={true}
+      isTVSelectable={true}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "opacity": 1,
+        }
+      }
+    >
       <View
-        accessibilityRole="button"
-        accessibilityStates={Array []}
-        accessible={true}
-        isTVSelectable={true}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
         style={
-          Object {
-            "opacity": 1,
-          }
+          Array [
+            Object {},
+          ]
         }
       >
-        <View
+        <Text
           style={
             Array [
-              Object {},
+              Object {
+                "color": "#007AFF",
+                "fontSize": 18,
+                "padding": 8,
+                "textAlign": "center",
+              },
+              Object {
+                "color": "blue",
+              },
             ]
           }
         >
-          <Text
-            style={
-              Array [
-                Object {
-                  "color": "#007AFF",
-                  "fontSize": 18,
-                  "padding": 8,
-                  "textAlign": "center",
-                },
-                Object {
-                  "color": "blue",
-                },
-              ]
-            }
-          >
-            Register a new account
-          </Text>
-        </View>
+          Register a new account
+        </Text>
       </View>
     </View>
   </View>

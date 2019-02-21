@@ -2,7 +2,7 @@
 import React, {Component} from 'react';
 import {Text, View, TouchableHighlight, AsyncStorage, Platform} from 'react-native';
 import styles from '../../StyleSheets/Styles'
-import { SENSOR_ARRAY } from '../../Components/Constants'
+import { SENSOR_ARRAY, WEB_URL, PASSWORD, LOGIN_NAME } from '../../Components/Constants'
 import { BarChart, Grid} from 'react-native-svg-charts'
 import {Text as TextChart, G} from 'react-native-svg'
 import { Dropdown } from 'react-native-material-dropdown';
@@ -21,8 +21,23 @@ export default class SensorDisplay extends Component<Props> {
         this.graphDataHandler = this.graphDataHandler.bind(this)
         this.sensorHandler = this.sensorHandler.bind(this)
 
-        this.state = {sensorList: [], data: [], selectedSensor: '', selectedType: 'Pollution', 
-                        pickingType: false, period: 'hour', connected: true, error: '', dataPoint: 0}
+        // web calls
+        this.webCall = this.webCall.bind(this)
+        this.getData = this.getData.bind(this)
+
+        this.state = {sensorList: [], data: [], selectedSensor: '', selectedType: 'PM1', 
+                        pickingType: false, period: 'hour', connected: true, error: '', dataPoint: 0, timer: null}
+    }
+
+    componentWillMount() {
+        this.getSensors()
+        let _timer = setInterval(this.getData, 10000) // every 5 minutes
+        this.getData()
+        this.setState({timer: _timer})
+    }
+
+    componentWillUnmount() {
+        this.clearInterval(this.state.timer)
     }
 
     // gets list of saved sensors
@@ -39,11 +54,7 @@ export default class SensorDisplay extends Component<Props> {
         this.setState({selectedSensor: sensorList[index].id})
     }
 
-    componentWillMount() {
-        this.getSensors()
-    }
-
-    // handlers passed to various functions
+    /** HANDLERS **/
     periodHandler(periodRange) {
         this.setState({period: periodRange})
     }
@@ -60,6 +71,37 @@ export default class SensorDisplay extends Component<Props> {
         this.setState({selectedSensor: this.state.sensorList[index]})
     }
 
+    /** WEB CALLS **/
+    async getData() {
+        data = await this.webCall()
+        if (data == null) {
+            this.setState({connected: false})
+            return
+        }
+
+        let json = JSON.parse(data);
+        _pm1 = json["PM1"]
+        _pm10 = json["PM10"]
+        _time = json["time"]
+        _pm25 = json["PM2.5"]
+
+        dataPoint = {pm1: _pm1, pm10: _pm10, pm25: _pm25, time: _time}
+        this.setState({data: [dataPoint]})
+    }
+
+    async webCall() {
+        let urlBase = WEB_URL + '/data/pollution/'
+        let deviceID = 'F45EAB9C48E6' //this.state.selectedSensor.id
+
+        let url = urlBase + deviceID
+        url = 'http://neat-environs-205720.appspot.com/data/pollution/F45EAB9C48E6'
+
+        console.log('URL: ' + url)
+
+        response = await fetch(url, {method: 'GET', credentials: 'include' })
+        return response.json()
+    }
+
     render() {
         return (
             <View style={{flex: 3}}>
@@ -70,7 +112,8 @@ export default class SensorDisplay extends Component<Props> {
                 <DataType value={this.state.selectedType} handler={this.dataTypeHandler}/>
                 <SensorPicker selected={this.state.selectedSensor.sensorName} data={this.state.sensorList} 
                                 handler={this.sensorHandler}/>
-                <Graph data={this.state.data} handler={this.graphDataHandler} period={this.state.period}/>
+                <Graph data={this.state.data} selectedType={this.state.selectedType} 
+                        handler={this.graphDataHandler} period={this.state.period}/>
                 <Information dataPoint={this.state.dataPoint} selectedType={this.state.selectedType}/>
             </View>
         )
@@ -79,6 +122,7 @@ export default class SensorDisplay extends Component<Props> {
 
 // code taken from 
 // https://github.com/JesperLekland/react-native-svg-charts-examples/blob/master/storybook/stories/bar-chart/vertical-with-labels.js
+// Used to display information in a graph
 class Graph extends Component<Props> {
     constructor(props) {
         super(props)
@@ -101,15 +145,28 @@ class Graph extends Component<Props> {
     }
 
     render() {
-        let data = [ 0, 10, 50, 99, 139, 205, 301, 266, 187, 92, 45, 12, 65, 43, 180]
+        // // period to show for data
+        // if (this.props.period == 'hour') {
+        //     data = data.slice(10, 16);    data.day.hour[Date.now().getHour()]
+        // } else if (this.props.period == 'day') {
+        //     data = data.slice(5, 16);    data[Date.now().dayOfWeek()]
+        // } else { 
+        //      get averages from data top level and display
+        // }
 
-        // period to show for data
-        if (this.props.period == 'hour') {
-            data = data.slice(10, 16);
-        } else if (this.props.period == 'day') {
-            data = data.slice(5, 16);
+        // get data points
+        var data = []
+        if (this.props.data.length == 0) {
+            data.push(0)
+        } else if (this.props.selectedType == 'PM1') {
+            data.push(this.props.data[0].pm1)
+        } else if (this.props.selectedType == 'PM2.5') {
+            data.push(this.props.data[0].pm25)
+        } else {
+            data.push(this.props.data[0].pm10)
         }
 
+        // create labels
         const CUT_OFF = 20
         const Labels = ({ x, y, bandwidth, colorData }) => (
             data.map((value, index) => (
@@ -118,8 +175,8 @@ class Graph extends Component<Props> {
                         x={ x(index) + (bandwidth / 2) }
                         y={ value < CUT_OFF ? y(value) - 10 : y(value) + 15 }
                         fontSize={ 14 }
-                        fill='black'
-                        // fill={ value >= CUT_OFF ? 'white' : 'black' }
+                        // fill='black'
+                        fill={ value >= CUT_OFF ? 'white' : 'black' }
                         alignmentBaseline={ 'middle' }
                         textAnchor={ 'middle' }
                     >
@@ -196,7 +253,7 @@ class DataType extends Component<Props> {
     }
 
     render() {
-        let data = [{value: 'Pollution'}]
+        let data = [{value: 'PM1'}, {value: 'PM2.5'}, {value: 'PM10'}]
 
         return (
             <View style={{flex: 1}}>

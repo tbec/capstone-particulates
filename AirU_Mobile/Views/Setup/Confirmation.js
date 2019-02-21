@@ -7,6 +7,7 @@ import {Text, View, TouchableHighlight, Image, AsyncStorage} from 'react-native'
 import styles from '../../StyleSheets/Styles'
 import { NavigationActions, StackActions } from 'react-navigation'
 import { SENSOR_ARRAY, WEB_URL, LOGIN_NAME, PASSWORD, SENSOR_NAME, SENSOR_PRIVACY, SENSOR_ID } from '../../Components/Constants'
+import sensorFuncs from '../../Components/SensorObj'
 
 export default class Confirmation extends Component<Props> {
     constructor(props) {
@@ -40,7 +41,11 @@ export default class Confirmation extends Component<Props> {
         let privacySetting = this.props.navigation.getParam(SENSOR_PRIVACY, 'false');
         let name = this.props.navigation.getParam(SENSOR_NAME, 'NewSensor');
         let sensorID = this.props.navigation.getParam(SENSOR_ID, '0123456789ABC')
-        let sensor = {id: sensorID, sensorName: name, privacy: privacySetting};
+        sensorId = sensorID.replace(/:/g, '') // remove :'s from sensor id as server does not need
+        // let _sensorData = sensorFuncs.emptyWeek()
+        _sensorData = []
+
+        let sensor = {id: sensorID, sensorName: name, privacy: privacySetting, sensorData: _sensorData};
 
         // send JSON to server to add to profile
         let success = await this.webCall();
@@ -92,7 +97,6 @@ export default class Confirmation extends Component<Props> {
         }
 
         // add the device and return result
-
         result = await this.addDevice(username)
         res = JSON.parse(result)
         
@@ -134,7 +138,7 @@ export default class Confirmation extends Component<Props> {
         let user = 'username=' + username
         let name = '&devicename=' + this.props.navigation.getParam(SENSOR_NAME, 'NewSensor')
         let privacy = '&visable=' + this.props.navigation.getParam(SENSOR_PRIVACY, true)
-        let id = '&deviceid=' + this.props.navigation.getParam(SENSOR_ID, 'ABCDEFGH')
+        let id = '&deviceid=' + this.props.navigation.getParam(SENSOR_ID, 'ABCDEFGH').replace(/:/g, '')
 
         let url = urlBase + user + id + name
 
@@ -164,7 +168,7 @@ export default class Confirmation extends Component<Props> {
                                         onPress={() => this.saveSensor()}>
                         <Text style={styles.buttonText}>Complete Setup</Text>
                     </TouchableHighlight>
-                    <Text>{this.state.error}</Text>
+                    <Text style={styles.error}>{this.state.error}</Text>
                 </View>
             </View>
         );

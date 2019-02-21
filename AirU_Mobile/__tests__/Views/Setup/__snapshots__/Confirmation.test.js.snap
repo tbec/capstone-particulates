@@ -95,7 +95,15 @@ exports[`Snapshot test for Confirmation Setup 1`] = `
         Complete Setup
       </Text>
     </View>
-    <Text>
+    <Text
+      style={
+        Object {
+          "color": "red",
+          "fontWeight": "bold",
+          "textAlign": "center",
+        }
+      }
+    >
       
     </Text>
   </View>
