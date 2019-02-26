@@ -3,18 +3,53 @@
 exports[`Snapshot ConnectionSetup Setup 1`] = `
 <View
   style={
-    Object {
-      "flex": 1,
-      "flexDirection": "column",
-      "height": "80%",
-      "justifyContent": "space-between",
-      "paddingTop": 30,
-    }
+    Array [
+      Object {
+        "flex": 1,
+        "flexDirection": "column",
+        "height": "80%",
+        "justifyContent": "space-between",
+        "paddingTop": 30,
+      },
+      Object {
+        "paddingTop": 10,
+      },
+    ]
   }
 >
   <View
     style={
+      Array [
+        Object {
+          "alignItems": "center",
+          "flex": 5,
+          "flexDirection": "column",
+          "padding": 40,
+        },
+        Object {
+          "flex": 1,
+        },
+      ]
+    }
+  >
+    <Image
+      source={
+        Object {
+          "testUri": "../../../Resources/Setup_Mounting.png",
+        }
+      }
+      style={
+        Object {
+          "height": "95%",
+          "width": "150%",
+        }
+      }
+    />
+  </View>
+  <View
+    style={
       Object {
+        "alignContent": "flex-start",
         "flex": 8,
       }
     }
@@ -50,33 +85,31 @@ exports[`Snapshot ConnectionSetup Setup 1`] = `
         Once a spot is found, use the zip ties to fix to the location and plug in the sensor
       </Text>
     </View>
-    <Image
-      source={
-        Object {
-          "testUri": "../../../Resources/SensorMounting.png",
-        }
-      }
+    <View
       style={
         Object {
           "alignContent": "center",
           "flex": 2,
-          "height": "10%",
           "justifyContent": "center",
-          "width": "40%",
-        }
-      }
-    />
-    <View
-      style={
-        Object {
-          "flex": 1,
+          "paddingBottom": 10,
+          "paddingLeft": 50,
         }
       }
     >
-      <Text />
-      <Text>
-        After this is complete and the sensor has powered on, proceed to the next step
-      </Text>
+      <Image
+        source={
+          Object {
+            "testUri": "../../../Resources/SensorMounting.png",
+          }
+        }
+        style={
+          Object {
+            "flex": 1,
+            "height": 263,
+            "width": 242,
+          }
+        }
+      />
     </View>
   </View>
   <View
@@ -86,7 +119,7 @@ exports[`Snapshot ConnectionSetup Setup 1`] = `
         "alignContent": "center",
         "flex": 1,
         "justifyContent": "flex-start",
-        "paddingLeft": 30,
+        "paddingLeft": 50,
       }
     }
   >

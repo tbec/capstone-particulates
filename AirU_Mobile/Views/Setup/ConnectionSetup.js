@@ -20,7 +20,7 @@ export default class ConnectionSetup extends Component<Props> {
         this.alertSetupSettings = this.alertSetupSettings.bind(this);
 
         this.state={bleConnected: false, sensorID: null, wifiConnected: false, error: '',
-                    WiFiName: '', WiFiPassword: '', WiFiError: false, testMode: TEST_MODE};
+                    WiFiName: '', WiFiPassword: '', WiFiError: false, testMode: true};
     }
 
     // displays alert to user if BT or WiFi is disabled on device
@@ -66,7 +66,7 @@ export default class ConnectionSetup extends Component<Props> {
     // used to get Sensor ID in connection step
     async connectToBluetooth() {
         // code use taken from https://polidea.github.io/react-native-ble-plx/ documentation
-        if (TEST_MODE) {
+        if (this.state.testMode) {
             this.alertSetupSettings(0)
         }
 
@@ -93,11 +93,12 @@ export default class ConnectionSetup extends Component<Props> {
         this.setState({WiFiError: false})
 
         // test mode settings
-        if (TEST_MODE) {
+        if (this.state.testMode) {
             if (this.state.WiFiName != "MyWiFi" && this.state.WiFiPassword != "password") {
                 this.setState({WiFiError: true})
                 return
             } else {
+                name = this.props.navigation.getParam(SENSOR_NAME, 'NameUndefined');
                 this.props.navigation.navigate('Privacy', { sensorName: name, sensorID: this.state.sensorID});
             }
         }
@@ -190,7 +191,10 @@ export default class ConnectionSetup extends Component<Props> {
         
         return (
             <ScrollView contentContainerStyle={{flexGrow: 1, justifyContent: 'space-between'}}>
-                <View style={{flex: 2, paddingTop: 30}}>
+                <View style={[styles.header, {flex: 2, paddingTop: 40, flexDirection: 'column'}]}>
+                    <Image source={require('../../Resources/Setup_Connecting.png')} style={{width: '140%', height: '100%'}}/>
+                </View>
+                <View style={{flex: 2}}>
                     <Text>Enable your Bluetooth and connect to the sensor. Once it is connected the device name will show below. 
                         Select your WiFi network to connect to, enter the password, then select 'Connect'.
                     </Text>

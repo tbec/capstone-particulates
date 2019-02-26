@@ -12,9 +12,38 @@ exports[`Snapshot ConnectionSetup Setup 1`] = `
   <View>
     <View
       style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 5,
+            "flexDirection": "column",
+            "padding": 40,
+          },
+          Object {
+            "flex": 3,
+            "paddingTop": 30,
+          },
+        ]
+      }
+    >
+      <Image
+        source={
+          Object {
+            "testUri": "../../../Resources/Setup_Connecting.png",
+          }
+        }
+        style={
+          Object {
+            "height": "100%",
+            "width": "140%",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
         Object {
           "flex": 2,
-          "paddingTop": 30,
         }
       }
     >
@@ -31,16 +60,21 @@ exports[`Snapshot ConnectionSetup Setup 1`] = `
         }
       }
     >
-      <Text
-        style={
+      <Image
+        source={
           Object {
-            "fontWeight": "bold",
-            "textAlign": "center",
+            "testUri": "../../../Resources/Loading.gif",
           }
         }
-      >
-        123456789469
-      </Text>
+        style={
+          Object {
+            "alignContent": "center",
+            "height": 100,
+            "justifyContent": "center",
+            "width": 100,
+          }
+        }
+      />
     </View>
     <View
       style={

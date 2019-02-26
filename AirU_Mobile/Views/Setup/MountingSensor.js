@@ -17,8 +17,11 @@ export default class ReviewFirst extends Component<Props> {
                         navProps={{sensorName: this.state.sensorName}}/>
 
         return (
-            <View style={styles.mainView}>
-                <View style={{flex: 7, alignContent: 'flex-start'}}>
+            <View style={[styles.mainView, {paddingTop: 5}]}>
+                <View style={[styles.header, {flex: 1}]}>
+                    <Image source={require('../../Resources/Setup_Mounting.png')} style={{width: '150%', height: '95%'}}/>
+                </View>
+                <View style={{flex: 9, alignContent: 'flex-start'}}>
                     <View style={{flex: 2}}>
                         <Text>Find a suitible spot to mount the sensor outside. The location you choose should be: </Text>
                         <Text/>

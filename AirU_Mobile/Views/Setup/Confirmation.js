@@ -154,7 +154,11 @@ export default class Confirmation extends Component<Props> {
     render() {
         return (
             <View style={styles.mainView}>
-                <View style={{flex: 3}}>
+            <View style={[styles.header, {flex: 1, paddingTop: 30}]}>
+                    <Image source={require('../../Resources/Setup_Confirmation.png')} 
+                        style={{width: '140%', height: '100%'}}/>
+                </View>
+                <View style={{flex: 7}}>
                     <Text>Sensor setup complete! If you have not finished mounting and securing your sensor already, please do so now.</Text>
                     <Text></Text>
                     <Text>If you need to adjust the settings for your sensor, you can do so in the settings</Text>
@@ -163,7 +167,7 @@ export default class Confirmation extends Component<Props> {
                     <Text/>
                     <Image source={require('../../Resources/Confirmation.jpg')} style={{width: '100%', height: '100%', flex: 4, alignContent: 'center'}}/>
                 </View>
-                <View style={[styles.home, {flex: 1}]}>
+                <View style={[styles.home, {flex: 3}]}>
                     <TouchableHighlight style={styles.button} 
                                         onPress={() => this.saveSensor()}>
                         <Text style={styles.buttonText}>Complete Setup</Text>
