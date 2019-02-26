@@ -18,7 +18,7 @@ export default class ReviewFirst extends Component<Props> {
 
         return (
             <View style={styles.mainView}>
-                <View style={{flex: 8}}>
+                <View style={{flex: 7, alignContent: 'flex-start'}}>
                     <View style={{flex: 2}}>
                         <Text>Find a suitible spot to mount the sensor outside. The location you choose should be: </Text>
                         <Text/>
@@ -30,15 +30,14 @@ export default class ReviewFirst extends Component<Props> {
                         <Text/>
                         <Text>Once a spot is found, use the zip ties to fix to the location and plug in the sensor</Text>
                     </View>
+                    <View style={{alignContent: 'center', justifyContent: 'center', flex: 2, paddingLeft: 50, 
+                            paddingBottom: 10}}>
                     <Image source={require('../../Resources/SensorMounting.png')} 
-                            style={{width: '40%', height: '10%', flex: 2, alignContent: 'center', justifyContent: 'center'}}/>
-                    <View style={{flex: 1}}>
-                        <Text/>
-                        <Text>After this is complete and the sensor has powered on, proceed to the next step</Text>
+                            style={{flex:1, height: 263, width: 242}}/>
                     </View>
                 </View>
                 <KeyboardAvoidingView style={{flex: 1, alignContent: 'flex-start', justifyContent: 'flex-start',
-                        paddingLeft: 30, alignContent: 'center'}}>
+                        paddingLeft: 50, alignContent: 'center'}}>
                     <Text>Enter a name for your sensor</Text>
                     <TextInput editable={true} keyboardType='default' 
                                 autoCorrect={false} placeholder='Sensor Name' secureTextEntry={false}

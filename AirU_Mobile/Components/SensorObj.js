@@ -49,12 +49,9 @@ export const sensorFuncs = {
     //  * @param dataPoint datapoint to add
     //  * @param dataSet Entire sensor dataset
     //  */
-    addData: function(props) {
-        dataPoint = props.dataPoint
-        dataSet = props.dataSet
-
+    addData: function(dataPoint, dataSet) {
         let date = new Date(Date.now())
-        let dayOfWeek = date.dayOfWeek()
+        let dayOfWeek = date.getDay()
         let day = dataSet[dayOfWeek]
 
         if (day.date.valueOf != date.setHours(0,0,0)) {

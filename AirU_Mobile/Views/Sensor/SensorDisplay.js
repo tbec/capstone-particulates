@@ -6,6 +6,7 @@ import { SENSOR_ARRAY, WEB_URL } from '../../Components/Constants'
 import { BarChart, Grid} from 'react-native-svg-charts'
 import {Text as TextChart, G} from 'react-native-svg'
 import { Dropdown } from 'react-native-material-dropdown';
+import {sensorFuncs} from '../../Components/SensorObj'
 import { COLOR_GOOD, COLOR_HAZARDOUS, COLOR_MODERATE, COLOR_SENSITVE, COLOR_UNHEALTHY, COLOR_VERY_UNHEALTHY } from '../../Components/Constants'
 
 // component should never be called if AsyncStorage.getItem('Sensor') is not already set
@@ -85,12 +86,13 @@ export default class SensorDisplay extends Component<Props> {
         _pm25 = json["PM2.5"]
 
         dataPoint = {pm1: _pm1, pm10: _pm10, pm25: _pm25, time: _time}
+        dataSet = sensorFuncs.addData(dataPoint, this.state.data)
         this.setState({data: [dataPoint]})
     }
 
     async webCall() {
         let urlBase = WEB_URL + '/data/pollution/'
-        let deviceID = 'F45EAB9C48E6' //this.state.selectedSensor.id
+        let deviceID = 'A81B6A7A6116' //this.state.selectedSensor.id
 
         let url = urlBase + deviceID
         url = 'http://neat-environs-205720.appspot.com/data/pollution/F45EAB9C48E6'
