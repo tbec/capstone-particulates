@@ -6,6 +6,8 @@ import MapView, { Polyline, Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import styles from '../../StyleSheets/Styles';
 import { NavigationActions } from 'react-navigation';
 import BackgroundGeolocation from 'react-native-mauron85-background-geolocation';
+import { AsyncStorage } from 'react-native';
+import { EXPOSUREDATA } from '../../Components/Constants';
 
 export default class Tracker extends Component {
     constructor(props) {
@@ -100,6 +102,7 @@ export default class Tracker extends Component {
                 image={require('../../Resources/pin.png')}
             />
             button = <Button title="Dismiss" onPress={this.dismissGraph.bind(this)}></Button>
+            button = <Button title="Save Data" onPress={this.saveData.bind(this)}></Button>
         }
         return (
             <View style={{ flex: 1, flexDirection: 'column' }}>
@@ -133,13 +136,12 @@ export default class Tracker extends Component {
         BackgroundGeolocation.on('location', (position) => {
             this.animateToRegion(position.latitude, position.longitude);
             let dateTime = this.getCurrentDate();
-            console.log("Time and date: " + dateTime);
             this.getPollution(position.latitude.toString(), position.longitude.toString(), dateTime).then((pollutionJson) => {
                 let pollutionData = JSON.parse(pollutionJson);
                 let newPoint = {
                     latitude: position.latitude,
                     longitude: position.longitude,
-                    pollution: Math.round(pollutionData.PM1 * 100)/100,
+                    pollution: Math.round(pollutionData.PM1 * 100) / 100,
                     color: this.pollutionColor(pollutionData.PM1)
                 }
                 let path = this.state.allPoints;
@@ -233,12 +235,12 @@ export default class Tracker extends Component {
         let seconds = date.getSeconds();
         //2019-02-06 12:45:19
         return year.toString() + '-' + this.leadingZeroes(month) + '-' + this.leadingZeroes(day) + ' ' +
-        this.leadingZeroes(hour) + ":" + this.leadingZeroes(minute) + ":" + this.leadingZeroes(seconds);
+            this.leadingZeroes(hour) + ":" + this.leadingZeroes(minute) + ":" + this.leadingZeroes(seconds);
     }
 
-    leadingZeroes(num){
+    leadingZeroes(num) {
         stringNum = num.toString();
-        if(stringNum.length == 1){
+        if (stringNum.length == 1) {
             stringNum = "0" + stringNum;
         }
         return stringNum;
@@ -282,6 +284,23 @@ export default class Tracker extends Component {
 
     dismissGraph() {
         this.setState({ graph: false, startTracking: true, pathArray: [], allPoints: [], pollutionData: [] });
+    }
+
+    async saveData() {
+        try {
+            let exposureData = "";
+            let savedData = await AsyncStorage.getItem(EXPOSUREDATA);
+            if(savedData == null){
+                exposureData = JSON.stringify([this.state.allPoints]);
+            } else {
+                savedData = JSON.parse(savedData);
+                savedData.push(this.state.allPoints);
+                exposureData = JSON.stringify(savedData);
+            }
+            await AsyncStorage.setItem(EXPOSUREDATA, exposureData);
+        } catch (error) {
+            alert(error);
+        }
     }
 
     //estimates the pollution level between two data points
@@ -359,7 +378,7 @@ export default class Tracker extends Component {
             return "#ffff00";
         } else if (pollution >= .5 && pollution < .75) {
             return "#ffa500";
-        } else if (pollution >= .75 && pollution <= 1) {
+        } else if (pollution >= .75) {
             return "#ff0000";
         }
     }

@@ -6,6 +6,7 @@ export const SENSOR_ARRAY = 'Sensors'
 export const SENSOR_ID = 'sensorID'
 export const SENSOR_NAME = 'sensorName'
 export const SENSOR_PRIVACY = 'privacy'
+export const EXPOSUREDATA = 'exposureData';
 
 // Login constants
 export const LOGIN_NAME = 'LoginName'

@@ -8,7 +8,6 @@ import {Image} from 'react-native'
 import Home from '../Views/Home'
 import Settings from '../Views/Settings/Settings'
 import Map from '../Views/Map'
-import Tracker from '../Views/Tracker/Tracker'
 import Setup from '../Views/Setup/SetupNew'
 import MountingSensor from '../Views/Setup/MountingSensor'
 
@@ -27,7 +26,9 @@ import Sensor from '../Views/Sensor/Sensor'
 // sensor if needed
 import RegisterAccount from '../Views/Setup/RegisterAccount'
 
-// tracker if needed
+// tracker
+import TrackerMenu from '../Views/Tracker/TrackerMenu'
+import Tracker from '../Views/Tracker/Tracker'
 
 // settings if needed
 import EditDevice from '../Views/Settings/EditDevice'
@@ -42,7 +43,7 @@ import EditDevice from '../Views/Settings/EditDevice'
 const TabNavigator = createBottomTabNavigator(
   {
     Sensor: {screen: Sensor},
-    Tracker: {screen: Tracker},
+    TrackerMenu: {screen: TrackerMenu},
     Map: {screen: Map},
     Settings: {screen: Settings}
   },
@@ -55,7 +56,7 @@ const TabNavigator = createBottomTabNavigator(
         if (routeName == 'Sensor') {
           return <Icon name={Platform.OS === "ios" ? "ios-analytics" : "md-analytics"} size={20}/>
         }
-        else if (routeName == 'Tracker') {
+        else if (routeName == 'TrackerMenu') {
           return <Icon name={Platform.OS === "ios" ? "ios-bonfire" : "md-bonfire"} size={20}/>
         }
         else if (routeName == 'Map') {
@@ -78,7 +79,7 @@ const Router = createStackNavigator(
     Home: {screen: Home},
     Settings: {screen: Settings}, 
     Map: {screen: Map},
-    Tracker: {screen: Tracker},
+    TrackerMenu: {screen: TrackerMenu},
     Tabs: {screen: TabNavigator, initalRouteName: 'Home'},
 
     // sensor setup
@@ -96,6 +97,9 @@ const Router = createStackNavigator(
 
     //sensor screens
     Sensor: {screen: Sensor},
+
+    //tracker screens
+    Tracker: {screen: Tracker},
 
     // Settings
     EditDevice: {screen: EditDevice},
