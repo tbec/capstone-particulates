@@ -24,8 +24,9 @@ export default class SensorDisplay extends Component<Props> {
         // web calls
         this.webCall = this.webCall.bind(this)
         this.getData = this.getData.bind(this)
-
-        this.state = {sensorList: [], data: [], selectedSensor: '', selectedType: 'PM1', 
+        
+        lastUpdate = new Date(Date.now())
+        this.state = {sensorList: [], data: [], selectedSensor: {sensorData: []}, selectedType: 'PM1', lastUpdated: lastUpdate,
                         pickingType: false, period: 'hour', connected: true, error: '', dataPoint: 0, timer: null}
     }
 
@@ -79,15 +80,19 @@ export default class SensorDisplay extends Component<Props> {
             return
         }
 
+        // parse data
         let json = JSON.parse(data);
         _pm1 = json["PM1"]
         _pm10 = json["PM10"]
         _time = json["time"]
         _pm25 = json["PM2.5"]
 
+        // add datapoint and update state
         dataPoint = {pm1: _pm1, pm10: _pm10, pm25: _pm25, time: _time}
-        dataSet = sensorFuncs.addData(dataPoint, this.state.data)
-        this.setState({data: [dataPoint]})
+        selectSensor = sensorFuncs.addData(this.state.selectedSensor, 
+                dataPoint, sensorFuncs.getDataSet(this.state.selectedSensor))
+
+        this.setState({data: selectSensor.sensorrData, lastUpdated: new Date(Date.now())})
     }
 
     async webCall() {
@@ -113,8 +118,8 @@ export default class SensorDisplay extends Component<Props> {
                 <DataType value={this.state.selectedType} handler={this.dataTypeHandler}/>
                 <SensorPicker selected={this.state.selectedSensor.sensorName} data={this.state.sensorList} 
                                 handler={this.sensorHandler}/>
-                <Graph data={this.state.data} selectedType={this.state.selectedType} 
-                        handler={this.graphDataHandler} period={this.state.period}/>
+                <Graph sensor={this.state.selectedSensor} selectedType={this.state.selectedType} 
+                        handler={this.graphDataHandler} period={this.state.period} date={this.state.lastUpdated}/>
                 <Information dataPoint={this.state.dataPoint} selectedType={this.state.selectedType}/>
             </View>
         )
@@ -123,7 +128,15 @@ export default class SensorDisplay extends Component<Props> {
 
 // code taken from 
 // https://github.com/JesperLekland/react-native-svg-charts-examples/blob/master/storybook/stories/bar-chart/vertical-with-labels.js
-// Used to display information in a graph
+
+/**
+ * Graph component
+ * @param sensor Sensor with dataset as outlined in sensorFuncs
+ * @param selectedType name of data type, should be one of possible ones in Datatype component below
+ * @param handler callback when sensor point is picked
+ * @param period selected period (hour, day, week)
+ * @param date Current date, used to get data according to period
+ */
 class Graph extends Component<Props> {
     constructor(props) {
         super(props)
@@ -146,25 +159,28 @@ class Graph extends Component<Props> {
     }
 
     render() {
-        // // period to show for data
-        // if (this.props.period == 'hour') {
-        //     data = data.slice(10, 16);    data.day.hour[Date.now().getHour()]
-        // } else if (this.props.period == 'day') {
-        //     data = data.slice(5, 16);    data[Date.now().dayOfWeek()]
-        // } else { 
-        //      get averages from data top level and display
-        // }
+        // period to show for data
+        var data = this.props.sensor.sensorData
 
-        // get data points
-        var data = []
-        if (this.props.data.length == 0) {
-            data.push(0)
-        } else if (this.props.selectedType == 'PM1') {
-            data.push(this.props.data[0].pm1)
-        } else if (this.props.selectedType == 'PM2.5') {
-            data.push(this.props.data[0].pm25)
-        } else {
-            data.push(this.props.data[0].pm10)
+        if (data.length == 0) {
+            data = [0]
+        } else if (this.props.period == 'hour') {
+            currDay = this.props.date.getDay()
+            currHour = this.props.date.getHours()
+            data = data[currDay].data[currHour]
+
+            if (this.props.selectedType == "PM1") {
+                data = data.pm1
+            } else if (this.props.selectedType == "PM25") {
+                data = data.pm25
+            } else {
+                data = data.pm10
+            }
+        }
+
+        // should only happen on start
+        if (data.length == 0) {
+            data = [0]
         }
 
         // create labels

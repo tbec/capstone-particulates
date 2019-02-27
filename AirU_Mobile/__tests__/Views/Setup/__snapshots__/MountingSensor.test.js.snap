@@ -12,7 +12,7 @@ exports[`Snapshot ConnectionSetup Setup 1`] = `
         "paddingTop": 30,
       },
       Object {
-        "paddingTop": 10,
+        "paddingTop": 5,
       },
     ]
   }
@@ -50,7 +50,7 @@ exports[`Snapshot ConnectionSetup Setup 1`] = `
     style={
       Object {
         "alignContent": "flex-start",
-        "flex": 8,
+        "flex": 9,
       }
     }
   >

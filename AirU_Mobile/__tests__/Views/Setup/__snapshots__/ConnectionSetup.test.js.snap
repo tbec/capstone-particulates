@@ -20,8 +20,9 @@ exports[`Snapshot ConnectionSetup Setup 1`] = `
             "padding": 40,
           },
           Object {
-            "flex": 3,
-            "paddingTop": 30,
+            "flex": 2,
+            "flexDirection": "column",
+            "paddingTop": 40,
           },
         ]
       }
@@ -60,21 +61,16 @@ exports[`Snapshot ConnectionSetup Setup 1`] = `
         }
       }
     >
-      <Image
-        source={
-          Object {
-            "testUri": "../../../Resources/Loading.gif",
-          }
-        }
+      <Text
         style={
           Object {
-            "alignContent": "center",
-            "height": 100,
-            "justifyContent": "center",
-            "width": 100,
+            "fontWeight": "bold",
+            "textAlign": "center",
           }
         }
-      />
+      >
+        123456789324
+      </Text>
     </View>
     <View
       style={

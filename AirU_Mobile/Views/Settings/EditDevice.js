@@ -22,7 +22,7 @@ export default class EditDevice extends Component<Props> {
         this.editDeviceCall = this.editDeviceCall.bind(this)
 
         sensorsList = this.props.navigation.getParam('sensorList', 'NewSensor')
-        this.state=({sensorList: sensorsList, sensorIndex: 0, error: '',
+        this.state=({sensorList: sensorsList, sensorIndex: 0, error: '', sendingData: false,
                         selectedSensor: sensorsList[0], name: sensorsList[0].sensorName, 
                         id: sensorsList[0].id, privacy: sensorsList[0].privacy})
     }
@@ -50,9 +50,11 @@ export default class EditDevice extends Component<Props> {
      */
     async editDevice() {
         // make web call
+        this.setState({sendingData: true})
+
         successful = await this.webCall()
         if (!successful) {
-            this.setState({error: 'Could not connect to server'})
+            this.setState({error: 'Could not connect to server', sendingData: false})
             return
         }
         
@@ -131,7 +133,10 @@ export default class EditDevice extends Component<Props> {
             .then((response) => response.json())
             .then((responseJson) => {
             return responseJson })
-          .catch((error) => { console.error(error)})
+          .catch((error) => { 
+              console.log(error)
+              return null
+          })
     }
 
     /**
@@ -151,7 +156,10 @@ export default class EditDevice extends Component<Props> {
             .then((response) => response.json())
             .then((responseJson) => {
             return responseJson })
-          .catch((error) => { console.error(error)})
+          .catch((error) => { 
+              console.log(error)
+              return null
+        })
     }
     
     render() {
@@ -193,6 +201,7 @@ export default class EditDevice extends Component<Props> {
                     <Text/>
                     <Button title="Update Settings"
                             onPress={() => this.editDevice()}
+                            disabled={(sendingData)}
                             color='crimson' 
                         />
                     <Text>{this.state.error}</Text>

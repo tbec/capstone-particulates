@@ -19,13 +19,14 @@ export default class Login extends Component<Props> {
         this.login.bind(this)
         this.webCall = this.webCall.bind(this)
 
-        this.state = ({login: '', password: '', error: ''})
+        this.state = ({login: '', password: '', error: '', loggingIn: false})
     }
 
     /**
      * Logs into server
      */
     async login() {
+        this.setState({loggingIn: true})
         // used for testing only
         if (TEST_MODE) {
             if (this.state.login != "TEST") {
@@ -41,10 +42,10 @@ export default class Login extends Component<Props> {
 
         // make API call to login passing in login/password
         let result = await this.webCall();
-        let json = JSON.parse(result);
+        // let json = JSON.parse(result);
 
         // if success, save locally and continue
-        if (json.success) {
+        if (result != null && JSON.parse(result).success) {
             AsyncStorage.setItem(LOGIN_NAME, this.state.login)
             AsyncStorage.setItem(PASSWORD, this.state.password)
             let toReturn = this.props.navigation.getParam('return', false);
@@ -54,7 +55,7 @@ export default class Login extends Component<Props> {
                 this.props.navigation.navigate('ReviewFirst') 
             }
         } else {
-            this.setState({error: 'Invalid username or password'})
+            this.setState({error: 'Invalid username or password', loggingIn: false})
         }
     }
 
@@ -74,7 +75,9 @@ export default class Login extends Component<Props> {
             .then((response) => response.json())
             .then((responseJson) => {
             return responseJson })
-          .catch((error) => { console.error(error)})
+          .catch((error) => { 
+              console.error(error)
+            })
     }
 
     render() {
@@ -104,7 +107,8 @@ export default class Login extends Component<Props> {
                         <Button title="Login"
                             onPress={() => this.login()}
                             color='red' 
-                            disabled={(this.state.login == '' || this.state.password == '')}
+                            disabled={(this.state.login == '' || this.state.password == '' 
+                                || this.state.loggingIn)}
                         />
                         <Text style={{height: 200, color: 'red', textAlign: 'center'}}>
                             {this.state.error}

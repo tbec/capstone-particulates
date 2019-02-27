@@ -14,8 +14,38 @@ exports[`Snapshot test for Confirmation Setup 1`] = `
 >
   <View
     style={
+      Array [
+        Object {
+          "alignItems": "center",
+          "flex": 5,
+          "flexDirection": "column",
+          "padding": 40,
+        },
+        Object {
+          "flex": 1,
+          "paddingTop": 30,
+        },
+      ]
+    }
+  >
+    <Image
+      source={
+        Object {
+          "testUri": "../../../Resources/Setup_Confirmation.png",
+        }
+      }
+      style={
+        Object {
+          "height": "100%",
+          "width": "140%",
+        }
+      }
+    />
+  </View>
+  <View
+    style={
       Object {
-        "flex": 3,
+        "flex": 7,
       }
     }
   >
@@ -57,7 +87,7 @@ exports[`Snapshot test for Confirmation Setup 1`] = `
           "justifyContent": "space-evenly",
         },
         Object {
-          "flex": 1,
+          "flex": 3,
         },
       ]
     }

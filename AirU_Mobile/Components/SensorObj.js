@@ -1,4 +1,19 @@
-import React from 'react';
+/**
+ * Information related to sensor
+ * 
+ * Sensor dataset should contain following information:
+ *  [array of Days]
+ * A day has:
+ *  date: day it corresponds to
+ *  dataSet
+ *    [] of values corresponding to measuremeant
+ *    avg of each which is average over dataset
+ * 
+ * @param id string Sensor MAC ID
+ * @param name string Name of sensor
+ * @param Privacy boolean true or false
+ * @param Dataset set of data
+ */
 
 export const sensorFuncs = {
     // sensor attributes
@@ -22,14 +37,14 @@ export const sensorFuncs = {
      * Create new empty day
      */
     emptyWeek: function() {
-        let emptyDay = this.emptyDay()
-        let emptyWeek = [emptyDay, emptyDay, emptyDay, emptyDay, emptyDay, emptyDay, emptyDay]
+        let emptyWeek = [sensorFuncs.emptyDay(), sensorFuncs.emptyDay(), sensorFuncs.emptyDay(), sensorFuncs.emptyDay()
+                , sensorFuncs.emptyDay(), sensorFuncs.emptyDay(), sensorFuncs.emptyDay()]
         return emptyWeek
     },
 
-    // /**
-    //  * Create new empty day
-    //  */
+    /**
+     * Create new empty day
+     */
     emptyDay: function() {
         let dataPoint = {pm1: [], pm25: [], pm10: [], pm1Avg: 0, pm25Avg: 0, pm10Avg: 0}
         var _data = []
@@ -38,41 +53,53 @@ export const sensorFuncs = {
             _data.push(dataPoint)
         }
 
-        let _date = new Date()
-        let emptyDay = {date: _date, avg: 0, data: _data}
+        let _date = new Date(Date.now())
+        _date = new Date(_date.setHours(0,0,0))
+        let emptyDay = {date: _date, data: _data}
         return emptyDay
     },
 
-    // /**
-    //  * Adds a new datapoint to the set. If it it a new day, 
-    //  *  will remove previous day as well
-    //  * @param dataPoint datapoint to add
-    //  * @param dataSet Entire sensor dataset
-    //  */
-    addData: function(dataPoint, dataSet) {
+    /**
+     * Adds a new datapoint to the set. If it it a new day, 
+     *  will remove previous day as well
+     * @param sensor Sensor to pull data from
+     * @param dataPoint datapoint to add
+     * @param dataSet Entire sensor dataset
+     * @returns sensor with updated data
+     */
+    addData: function(sensor, dataPoint, dataSet) {
+        // setup
         let date = new Date(Date.now())
+        let dateStart = new Date(Date.now())
+        dateStart = new Date(dateStart.setHours(0,0,0))
         let dayOfWeek = date.getDay()
         let day = dataSet[dayOfWeek]
 
-        if (day.date.valueOf != date.setHours(0,0,0)) {
-            day = emptyDay()
+        // if dates are different, update day
+        if (day.date.valueOf != dateStart.valueOf) {
+            day = sensorFuncs.emptyDay()
         }
 
         let hour = date.getHours()
-        let today = day[hour]
+        let today = day.data[hour]
 
         // add data
         today.pm1.push(dataPoint.pm1)
         today.pm25.push(dataPoint.pm25)
         today.pm10.push(dataPoint.pm10)
 
+        reducer = (first, second, length) => (first + second) / length;
+
         // update averages
-        today.pm1Avg = today.pm1Avg.reduce((a, b) => a + b) / today.pm1Avg.length;
-        today.pm25Avg = today.pm25Avg.reduce((a, b) => a + b) / today.pm25Avg.length;
-        today.pm10Avg = today.pm10Avg.reduce((a, b) => a + b) / today.pm10Avg.length;
+        today.pm1Avg = today.pm1.reduce(reducer)
+        today.pm25Avg = today.pm25.reduce(reducer)
+        today.pm10Avg = today.pm10.reduce(reducer)
 
         // set data point and return
-        day[hour] = today
-        return dataSet
+        day.data[hour] = today
+        sensor.sensorData[dayOfWeek] = day
+
+        // save sensor?
+        return sensor
     }
 }

@@ -43,7 +43,6 @@ export default class Confirmation extends Component<Props> {
         let sensorID = this.props.navigation.getParam(SENSOR_ID, '0123456789ABC')
         sensorId = sensorID.replace(/:/g, '') // remove :'s from sensor id as server does not need
         let _sensorData = sensorFuncs.emptyWeek()
-        _sensorData = []
 
         let sensor = {id: sensorID, sensorName: name, privacy: privacySetting, sensorData: _sensorData};
 
