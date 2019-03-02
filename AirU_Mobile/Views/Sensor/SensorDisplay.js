@@ -1,13 +1,13 @@
 // shows sensor data
 import React, {Component} from 'react';
-import {Text, View, TouchableHighlight, AsyncStorage, Platform} from 'react-native';
+import {Text, View, TouchableHighlight, AsyncStorage} from 'react-native';
 import styles from '../../StyleSheets/Styles'
-import { SENSOR_ARRAY } from '../../Components/Constants'
+import { SENSOR_ARRAY, WEB_URL } from '../../Components/Constants'
 import { BarChart, Grid} from 'react-native-svg-charts'
 import {Text as TextChart, G} from 'react-native-svg'
 import { Dropdown } from 'react-native-material-dropdown';
+import {sensorFuncs} from '../../Components/SensorObj'
 import { COLOR_GOOD, COLOR_HAZARDOUS, COLOR_MODERATE, COLOR_SENSITVE, COLOR_UNHEALTHY, COLOR_VERY_UNHEALTHY } from '../../Components/Constants'
-
 
 // component should never be called if AsyncStorage.getItem('Sensor') is not already set
 export default class SensorDisplay extends Component<Props> {
@@ -21,8 +21,24 @@ export default class SensorDisplay extends Component<Props> {
         this.graphDataHandler = this.graphDataHandler.bind(this)
         this.sensorHandler = this.sensorHandler.bind(this)
 
-        this.state = {sensorList: [], data: [], selectedSensor: '', selectedType: 'Pollution', 
-                        pickingType: false, period: 'hour', connected: true, error: '', dataPoint: 0}
+        // web calls
+        this.webCall = this.webCall.bind(this)
+        this.getData = this.getData.bind(this)
+        
+        lastUpdate = new Date(Date.now())
+        this.state = {sensorList: [], data: [], selectedSensor: {sensorData: []}, selectedType: 'PM1', lastUpdated: lastUpdate,
+                        pickingType: false, period: 'hour', connected: true, error: '', dataPoint: 0, timer: null}
+    }
+
+    componentWillMount() {
+        this.getSensors()
+        let _timer = setInterval(this.getData, 10000) // every 5 minutes
+        this.getData()
+        this.setState({timer: _timer})
+    }
+
+    componentWillUnmount() {
+        this.clearInterval(this.state.timer)
     }
 
     // gets list of saved sensors
@@ -39,11 +55,7 @@ export default class SensorDisplay extends Component<Props> {
         this.setState({selectedSensor: sensorList[index].id})
     }
 
-    componentWillMount() {
-        this.getSensors()
-    }
-
-    // handlers passed to various functions
+    /** HANDLERS **/
     periodHandler(periodRange) {
         this.setState({period: periodRange})
     }
@@ -60,6 +72,42 @@ export default class SensorDisplay extends Component<Props> {
         this.setState({selectedSensor: this.state.sensorList[index]})
     }
 
+    /** WEB CALLS **/
+    async getData() {
+        data = await this.webCall()
+        if (data == null) {
+            this.setState({connected: false})
+            return
+        }
+
+        // parse data
+        let json = JSON.parse(data);
+        _pm1 = json["PM1"]
+        _pm10 = json["PM10"]
+        _time = json["time"]
+        _pm25 = json["PM2.5"]
+
+        // add datapoint and update state
+        dataPoint = {pm1: _pm1, pm10: _pm10, pm25: _pm25, time: _time}
+        selectSensor = sensorFuncs.addData(this.state.selectedSensor, 
+                dataPoint, sensorFuncs.getDataSet(this.state.selectedSensor))
+
+        this.setState({data: selectSensor.sensorrData, lastUpdated: new Date(Date.now())})
+    }
+
+    async webCall() {
+        let urlBase = WEB_URL + '/data/pollution/'
+        let deviceID = 'A81B6A7A6116' //this.state.selectedSensor.id
+
+        let url = urlBase + deviceID
+        url = 'http://neat-environs-205720.appspot.com/data/pollution/F45EAB9C48E6'
+
+        console.log('URL: ' + url)
+
+        response = await fetch(url, {method: 'GET', credentials: 'include' })
+        return response.json()
+    }
+
     render() {
         return (
             <View style={{flex: 3}}>
@@ -70,7 +118,8 @@ export default class SensorDisplay extends Component<Props> {
                 <DataType value={this.state.selectedType} handler={this.dataTypeHandler}/>
                 <SensorPicker selected={this.state.selectedSensor.sensorName} data={this.state.sensorList} 
                                 handler={this.sensorHandler}/>
-                <Graph data={this.state.data} handler={this.graphDataHandler} period={this.state.period}/>
+                <Graph sensor={this.state.selectedSensor} selectedType={this.state.selectedType} 
+                        handler={this.graphDataHandler} period={this.state.period} date={this.state.lastUpdated}/>
                 <Information dataPoint={this.state.dataPoint} selectedType={this.state.selectedType}/>
             </View>
         )
@@ -79,21 +128,30 @@ export default class SensorDisplay extends Component<Props> {
 
 // code taken from 
 // https://github.com/JesperLekland/react-native-svg-charts-examples/blob/master/storybook/stories/bar-chart/vertical-with-labels.js
+
+/**
+ * Graph component
+ * @param sensor Sensor with dataset as outlined in sensorFuncs
+ * @param selectedType name of data type, should be one of possible ones in Datatype component below
+ * @param handler callback when sensor point is picked
+ * @param period selected period (hour, day, week)
+ * @param date Current date, used to get data according to period
+ */
 class Graph extends Component<Props> {
     constructor(props) {
         super(props)
     }
 
     pollutionColor(pollution) {
-        if (pollution >= 0 && pollution < 50) {
+        if (pollution >= 0 && pollution < 5) {
             return COLOR_GOOD;
-        } else if (pollution >= 50 && pollution < 100) {
+        } else if (pollution >= 5 && pollution < 10) {
             return COLOR_MODERATE
-        } else if (pollution >= 100 && pollution < 150) {
+        } else if (pollution >= 10 && pollution < 12) {
             return COLOR_SENSITVE
-        } else if (pollution >= 150 && pollution < 200) {
+        } else if (pollution >= 12 && pollution < 15) {
             return COLOR_UNHEALTHY
-        } else if (pollution >= 200 && pollution < 300 ) {
+        } else if (pollution >= 15 && pollution < 20 ) {
             return COLOR_VERY_UNHEALTHY
         } else {
             return COLOR_HAZARDOUS
@@ -101,15 +159,30 @@ class Graph extends Component<Props> {
     }
 
     render() {
-        let data = [ 0, 10, 50, 99, 139, 205, 301, 266, 187, 92, 45, 12, 65, 43, 180]
-
         // period to show for data
-        if (this.props.period == 'hour') {
-            data = data.slice(10, 16);
-        } else if (this.props.period == 'day') {
-            data = data.slice(5, 16);
+        var data = this.props.sensor.sensorData
+
+        if (data.length == 0) {
+            data = [0]
+        } else if (this.props.period == 'hour') {
+            currDay = this.props.date.getDay()
+            currHour = this.props.date.getHours()
+            data = data[currDay].data[currHour]
+
+            if (this.props.selectedType == "PM1") {
+                data = data.pm1
+            } else if (this.props.selectedType == "PM25") {
+                data = data.pm25
+            } else {
+                data = data.pm10
+            }
         }
 
+        if (data.length == 0) {
+            data = [0]
+        }
+
+        // create labels
         const CUT_OFF = 20
         const Labels = ({ x, y, bandwidth, colorData }) => (
             data.map((value, index) => (
@@ -118,8 +191,8 @@ class Graph extends Component<Props> {
                         x={ x(index) + (bandwidth / 2) }
                         y={ value < CUT_OFF ? y(value) - 10 : y(value) + 15 }
                         fontSize={ 14 }
-                        fill='black'
-                        // fill={ value >= CUT_OFF ? 'white' : 'black' }
+                        // fill='black'
+                        fill={ value >= CUT_OFF ? 'white' : 'black' }
                         alignmentBaseline={ 'middle' }
                         textAnchor={ 'middle' }
                     >
@@ -196,7 +269,7 @@ class DataType extends Component<Props> {
     }
 
     render() {
-        let data = [{value: 'Pollution'}]
+        let data = [{value: 'PM1'}, {value: 'PM2.5'}, {value: 'PM10'}]
 
         return (
             <View style={{flex: 1}}>
@@ -262,15 +335,15 @@ class Information extends Component<Props> {
     render() {
         let dataText;
         let pollution = this.props.dataPoint;
-        if (pollution >= 0 && pollution < 50) {
+        if (pollution >= 0 && pollution < 5) {
             dataText = this.dataGood();
-        } else if (pollution >= 50 && pollution < 100) {
+        } else if (pollution >= 5 && pollution < 10) {
             dataText = this.dataModerate();
-        } else if (pollution >= 100 && pollution < 150) {
+        } else if (pollution >= 10 && pollution < 12) {
             dataText = this.dataSensitive();
-        } else if (pollution >= 150 && pollution < 200) {
+        } else if (pollution >= 12 && pollution < 15) {
             dataText = this.dataUnhealthy();
-        } else if (pollution >= 200 && pollution < 300 ) {
+        } else if (pollution >= 15 && pollution < 20) {
             dataText = this.dataVeryUnhealthy();
         } else {
             dataText = this.dataHazardous();
