@@ -20,7 +20,7 @@ export default class ConnectionSetup extends Component<Props> {
         this.alertSetupSettings = this.alertSetupSettings.bind(this);
 
         this.state={bleConnected: false, sensorID: null, wifiConnected: false, error: '',
-                    WiFiName: '', WiFiPassword: '', WiFiError: false, testMode: true};
+                    WiFiName: '', WiFiPassword: '', WiFiError: false, testMode: false};
     }
 
     // displays alert to user if BT or WiFi is disabled on device

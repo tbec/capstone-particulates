@@ -28,8 +28,8 @@ export default class Home extends Component<Props> {
             }})
 
         let res = await this.login(_login)
-        results = JSON.parse(res)
-        if (results.success) {
+        
+        if (res != null && JSON.parse(res).success) {
             let sensors = await this.webCall()
             sensors = sensors.replace()
             let sensorJSON = JSON.parse(sensors)
@@ -52,7 +52,10 @@ export default class Home extends Component<Props> {
             .then((response) => response.json())
             .then((responseJson) => {
             return responseJson })
-          .catch((error) => { console.error(error)})
+          .catch((error) => { 
+              console.error(log)
+              return null
+        })
     }
 
     /**
@@ -82,7 +85,10 @@ export default class Home extends Component<Props> {
             .then((response) => response.json())
             .then((responseJson) => {
             return responseJson })
-          .catch((error) => { console.error(error)})
+            .catch((error) => { 
+              console.log(error)
+              return null
+        })
     }
 
     render() {

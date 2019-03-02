@@ -143,15 +143,15 @@ class Graph extends Component<Props> {
     }
 
     pollutionColor(pollution) {
-        if (pollution >= 0 && pollution < 50) {
+        if (pollution >= 0 && pollution < 5) {
             return COLOR_GOOD;
-        } else if (pollution >= 50 && pollution < 100) {
+        } else if (pollution >= 5 && pollution < 10) {
             return COLOR_MODERATE
-        } else if (pollution >= 100 && pollution < 150) {
+        } else if (pollution >= 10 && pollution < 12) {
             return COLOR_SENSITVE
-        } else if (pollution >= 150 && pollution < 200) {
+        } else if (pollution >= 12 && pollution < 15) {
             return COLOR_UNHEALTHY
-        } else if (pollution >= 200 && pollution < 300 ) {
+        } else if (pollution >= 15 && pollution < 20 ) {
             return COLOR_VERY_UNHEALTHY
         } else {
             return COLOR_HAZARDOUS
@@ -178,7 +178,6 @@ class Graph extends Component<Props> {
             }
         }
 
-        // should only happen on start
         if (data.length == 0) {
             data = [0]
         }
@@ -336,15 +335,15 @@ class Information extends Component<Props> {
     render() {
         let dataText;
         let pollution = this.props.dataPoint;
-        if (pollution >= 0 && pollution < 50) {
+        if (pollution >= 0 && pollution < 5) {
             dataText = this.dataGood();
-        } else if (pollution >= 50 && pollution < 100) {
+        } else if (pollution >= 5 && pollution < 10) {
             dataText = this.dataModerate();
-        } else if (pollution >= 100 && pollution < 150) {
+        } else if (pollution >= 10 && pollution < 12) {
             dataText = this.dataSensitive();
-        } else if (pollution >= 150 && pollution < 200) {
+        } else if (pollution >= 12 && pollution < 15) {
             dataText = this.dataUnhealthy();
-        } else if (pollution >= 200 && pollution < 300 ) {
+        } else if (pollution >= 15 && pollution < 20) {
             dataText = this.dataVeryUnhealthy();
         } else {
             dataText = this.dataHazardous();
