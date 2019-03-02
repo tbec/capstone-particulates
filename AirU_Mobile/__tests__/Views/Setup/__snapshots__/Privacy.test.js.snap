@@ -14,6 +14,36 @@ exports[`Snapshot ConnectionSetup Setup 1`] = `
 >
   <View
     style={
+      Array [
+        Object {
+          "alignItems": "center",
+          "flex": 5,
+          "flexDirection": "column",
+          "padding": 40,
+        },
+        Object {
+          "flex": 1,
+          "paddingTop": 30,
+        },
+      ]
+    }
+  >
+    <Image
+      source={
+        Object {
+          "testUri": "../../../Resources/Setup_Privacy.png",
+        }
+      }
+      style={
+        Object {
+          "height": "100%",
+          "width": "140%",
+        }
+      }
+    />
+  </View>
+  <View
+    style={
       Object {
         "alignContent": "center",
         "flex": 5,
@@ -24,11 +54,20 @@ exports[`Snapshot ConnectionSetup Setup 1`] = `
     <Text
       style={
         Object {
-          "flex": 2,
+          "flex": 1,
         }
       }
     >
-      Your sensor has been successfully connected! Would you like to make your sensor visable publically? This will allow people to view your sensor's location on a map and for researchers to directly use and access the data your sensor gathers.
+      Your sensor has been successfully connected! Would you like to make your sensor visable publically?
+    </Text>
+    <Text
+      style={
+        Object {
+          "flex": 1,
+        }
+      }
+    >
+      This will allow people to view your sensor's location on a map and for researchers to directly use and access its data.
     </Text>
     <Text />
     <Image
@@ -57,7 +96,7 @@ exports[`Snapshot ConnectionSetup Setup 1`] = `
           "justifyContent": "space-evenly",
         },
         Object {
-          "flex": 3,
+          "flex": 5,
         },
       ]
     }

@@ -3,6 +3,7 @@ import {View, Text, AsyncStorage,
          TextInput, KeyboardAvoidingView, Button, Image} from 'react-native';
 import styles from '../../StyleSheets/Styles'
 import { LOGIN_NAME, PASSWORD, TEST_MODE, WEB_URL } from '../../Components/Constants'
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview'
 
 export default class RegisterAccount extends Component<Props> {
     constructor(props) {
@@ -14,7 +15,7 @@ export default class RegisterAccount extends Component<Props> {
 
     async register() {
         // make API call to login passing in login/password
-        if (!TEST_MODE && this.state.username != "TEST") {
+        if (TEST_MODE && this.state.username != "TEST") {
             this.setState({ error: "Invalid username or password" })
             return
         }
@@ -50,9 +51,8 @@ export default class RegisterAccount extends Component<Props> {
 
     render() {
         return (
-            <View style={styles.container}>
-                <View style={{flex: 20, backgroundColor: '#b3e6ff'}}>
-                    <View style={{flex: 2, alignItems: 'center', justifyContent: 'center', paddingTop: 20, flexDirection: 'column'}}>
+            <KeyboardAwareScrollView style={{backgroundColor: '#b3e6ff'}}>
+                    <View style={{height: 200, alignItems: 'center', justifyContent: 'center', paddingTop: 20}}>
                         <Image source={require('../../Resources/red_cloud.jpeg')} 
                                         style={{width: '50%', height: '70%'}}/>
                     </View>
@@ -97,17 +97,17 @@ export default class RegisterAccount extends Component<Props> {
                                 />
                     </KeyboardAvoidingView>
                     <Text/>
+                    <Text/>
                     <Button title="Register"
                         onPress={() => this.register()}
                         color='red' 
                         disabled={(this.state.login == "" || this.state.password == "" || this.state.email == "")}
                     />
                     <Text/>
-                    <Text style={{flex: 1, color: "red", textAlign: 'center'}}>
+                    <Text style={{height: 50, color: "red", textAlign: 'center'}}>
                         {this.state.error}
                     </Text>
-                </View>
-            </View>
+            </KeyboardAwareScrollView>
         );
     }
 }

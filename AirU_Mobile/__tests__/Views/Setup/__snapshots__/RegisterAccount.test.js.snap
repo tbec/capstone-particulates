@@ -1,27 +1,32 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Snapshot test for Confirmation Setup 1`] = `
-<View
+<RCTScrollView
+  contentInset={
+    Object {
+      "bottom": 0,
+    }
+  }
+  getTextInputRefs={[Function]}
+  onContentSizeChange={[Function]}
+  onLayout={[Function]}
+  onScroll={[Function]}
+  scrollEventThrottle={200}
+  scrollToBottomOnKBShow={false}
+  scrollToInputAdditionalOffset={75}
+  startScrolledToBottom={false}
   style={
     Object {
-      "flex": 1,
+      "backgroundColor": "#b3e6ff",
     }
   }
 >
-  <View
-    style={
-      Object {
-        "backgroundColor": "#b3e6ff",
-        "flex": 20,
-      }
-    }
-  >
+  <View>
     <View
       style={
         Object {
           "alignItems": "center",
-          "flex": 2,
-          "flexDirection": "column",
+          "height": 200,
           "justifyContent": "center",
           "paddingTop": 20,
         }
@@ -267,6 +272,7 @@ exports[`Snapshot test for Confirmation Setup 1`] = `
       />
     </View>
     <Text />
+    <Text />
     <View
       accessibilityRole="button"
       accessibilityStates={
@@ -323,14 +329,14 @@ exports[`Snapshot test for Confirmation Setup 1`] = `
     <Text
       style={
         Object {
-          "alignContent": "center",
           "color": "red",
-          "flex": 1,
+          "height": 50,
+          "textAlign": "center",
         }
       }
     >
       
     </Text>
   </View>
-</View>
+</RCTScrollView>
 `;

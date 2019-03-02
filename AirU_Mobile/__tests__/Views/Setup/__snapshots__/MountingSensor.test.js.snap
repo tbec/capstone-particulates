@@ -3,26 +3,61 @@
 exports[`Snapshot ConnectionSetup Setup 1`] = `
 <View
   style={
-    Object {
-      "flex": 1,
-      "flexDirection": "column",
-      "height": "80%",
-      "justifyContent": "space-between",
-      "paddingTop": 30,
-    }
+    Array [
+      Object {
+        "flex": 1,
+        "flexDirection": "column",
+        "height": "80%",
+        "justifyContent": "space-between",
+        "paddingTop": 30,
+      },
+      Object {
+        "paddingTop": 5,
+      },
+    ]
   }
 >
   <View
     style={
+      Array [
+        Object {
+          "alignItems": "center",
+          "flex": 5,
+          "flexDirection": "column",
+          "padding": 40,
+        },
+        Object {
+          "flex": 1,
+        },
+      ]
+    }
+  >
+    <Image
+      source={
+        Object {
+          "testUri": "../../../Resources/Setup_Mounting.png",
+        }
+      }
+      style={
+        Object {
+          "height": "95%",
+          "width": "150%",
+        }
+      }
+    />
+  </View>
+  <View
+    style={
       Object {
-        "flex": 10,
+        "alignContent": "flex-start",
+        "flex": 9,
       }
     }
   >
     <View
       style={
         Object {
-          "flex": 1,
+          "flex": 2,
         }
       }
     >
@@ -50,44 +85,41 @@ exports[`Snapshot ConnectionSetup Setup 1`] = `
         Once a spot is found, use the zip ties to fix to the location and plug in the sensor
       </Text>
     </View>
-    <Image
-      source={
-        Object {
-          "testUri": "../../../Resources/SensorMounting.png",
-        }
-      }
-      style={
-        Object {
-          "alignContent": "center",
-          "flex": 1,
-          "height": "10%",
-          "justifyContent": "center",
-          "width": "40%",
-        }
-      }
-    />
     <View
       style={
         Object {
-          "flex": 1,
+          "alignContent": "center",
+          "flex": 2,
+          "justifyContent": "center",
+          "paddingBottom": 10,
+          "paddingLeft": 50,
         }
       }
     >
-      <Text />
-      <Text>
-        After this is complete and the sensor has powered on, proceed to the next step
-      </Text>
-      <Text />
+      <Image
+        source={
+          Object {
+            "testUri": "../../../Resources/SensorMounting.png",
+          }
+        }
+        style={
+          Object {
+            "flex": 1,
+            "height": 263,
+            "width": 242,
+          }
+        }
+      />
     </View>
   </View>
   <View
     onLayout={[Function]}
     style={
       Object {
-        "alignContent": "flex-start",
+        "alignContent": "center",
         "flex": 1,
         "justifyContent": "flex-start",
-        "paddingLeft": 30,
+        "paddingLeft": 50,
       }
     }
   >
@@ -116,6 +148,102 @@ exports[`Snapshot ConnectionSetup Setup 1`] = `
       }
       underlineColorAndroid="transparent"
     />
+  </View>
+  <View
+    style={
+      Object {
+        "alignContent": "space-between",
+        "flexDirection": "row",
+        "height": 60,
+        "justifyContent": "flex-end",
+        "width": "100%",
+      }
+    }
+  >
+    <View
+      accessible={true}
+      isTVSelectable={true}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "alignItems": "flex-start",
+          "backgroundColor": "transparent",
+          "borderColor": "black",
+          "flex": 1,
+          "justifyContent": "flex-start",
+          "padding": 10,
+        }
+      }
+      testID="prevButton"
+    >
+      <Text
+        allowFontScaling={false}
+        style={
+          Array [
+            Object {
+              "color": undefined,
+              "fontSize": 40,
+            },
+            null,
+            Object {
+              "fontFamily": "Ionicons",
+              "fontStyle": "normal",
+              "fontWeight": "normal",
+            },
+            Object {},
+          ]
+        }
+      >
+        
+      </Text>
+    </View>
+    <View
+      accessible={true}
+      isTVSelectable={true}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "alignItems": "flex-end",
+          "backgroundColor": "transparent",
+          "borderColor": "black",
+          "flex": 1,
+          "justifyContent": "flex-end",
+          "padding": 10,
+        }
+      }
+      testID="nextButton"
+    >
+      <Text
+        allowFontScaling={false}
+        style={
+          Array [
+            Object {
+              "color": undefined,
+              "fontSize": 40,
+            },
+            null,
+            Object {
+              "fontFamily": "Ionicons",
+              "fontStyle": "normal",
+              "fontWeight": "normal",
+            },
+            Object {},
+          ]
+        }
+      >
+        
+      </Text>
+    </View>
   </View>
 </View>
 `;

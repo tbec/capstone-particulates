@@ -10,7 +10,11 @@ import NavBar from '../../Components/NavBar'
 export default class ReviewFirst extends Component<Props> {
     render() {
         return (
-            <ScrollView contentContainerStyle={styles.mainView} showsVerticalScrollIndicator={true}>
+            <ScrollView contentContainerStyle={[styles.mainView, {paddingTop: 5}]} 
+                        showsVerticalScrollIndicator={true}>
+                <View style={[styles.header, {flex: 1}]}>
+                    <Image source={require('../../Resources/Setup_Packaging.png')} style={{width: '150%', height: '100%'}}/>
+                </View>
                 <Text>Before proceeding, please confirm the following items were in your AirU box: </Text>
                 <Text/>
                 <View style={{flex: 4, flexDirection: 'row', backgroundColor: 'powderBlue'}}>
@@ -22,11 +26,10 @@ export default class ReviewFirst extends Component<Props> {
                         <Image source={require('../../Resources/SensorBox.png')} style={{width: '50%', height: '100%', flex: 3}}/>
                     </View>
                     <Text/>
-                    <Text style={{flex: 1}}>On the back of the sensor, make sure there are two stickers</Text>
+                    <Text style={{flex: 1}}>On the back of the sensor, make sure there is a stickers</Text>
                     <Image source={require('../../Resources/SensorStickers.png')} style={{width: '60%', height: '50%', flex: 3}}/>
                     <Text/>
-                    <Text style={{flex: 1}}>The first is the MAC address which will be used to connect to the sensor</Text>
-                    <Text style={{flex: 1}}>The second is the S-A-XXX label, which is the name of the sensor</Text>
+                    <Text style={{flex: 1}}>This contains the MAC address which will be used to connect to the sensor</Text>
                     <Text style={{flex: 1}}>After confirming everything, please proceed to connecting to the sensor</Text>
                     <NavBar navigation={this.props.navigation} next='MountingSensor'/>
             </ScrollView>

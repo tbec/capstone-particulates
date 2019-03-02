@@ -4,6 +4,7 @@ import NavBar from '../../Components/NavBar';
 import { BleManager } from 'react-native-ble-plx';
 import { TEST_MODE, SENSOR_NAME, SENSOR_ID } from '../../Components/Constants'
 import styles from '../../StyleSheets/Styles'
+import base64 from 'react-native-base64'
 
 export default class ConnectionSetup extends Component<Props> {
     static navigationOptions = {
@@ -16,11 +17,10 @@ export default class ConnectionSetup extends Component<Props> {
         // functions and timer in case cannot connect or find BT
         this.connectToBluetooth = this.connectToBluetooth.bind(this);
         this.connectDeviceToWiFi = this.connectDeviceToWiFi.bind(this);
-        let _timer = setInterval(this.connectToBluetooth, 2000);
+        this.alertSetupSettings = this.alertSetupSettings.bind(this);
 
-        // CHANGE TESTMODE
         this.state={bleConnected: false, sensorID: null, wifiConnected: false, error: '',
-                    WiFiName: '', WiFiPassword: '', WiFiError: false, timer: _timer, testMode: true};
+                    WiFiName: '', WiFiPassword: '', WiFiError: false, testMode: false};
     }
 
     // displays alert to user if BT or WiFi is disabled on device
@@ -34,7 +34,6 @@ export default class ConnectionSetup extends Component<Props> {
             }
             let id = '123456789' + num
             this.setState({sensorID: id, bleConnected: true})
-            clearInterval(this.state.timer);
             return
         }
 
@@ -65,14 +64,16 @@ export default class ConnectionSetup extends Component<Props> {
     }
 
     // used to get Sensor ID in connection step
-    connectToBluetooth() {
+    async connectToBluetooth() {
         // code use taken from https://polidea.github.io/react-native-ble-plx/ documentation
-        const manager = new BleManager();
-        if (manager.state != 'PoweredOn') {
-            this.alertSetupSettings(0);
-            return
+        if (this.state.testMode) {
+            this.alertSetupSettings(0)
         }
 
+        console.log('Checking Bluetooth')
+        manager = new BleManager()
+        
+        // need to adjust to ask for location and BT permsissions on Android first
         manager.startDeviceScan(null, null, (error, device) => {
             if (error) {
                 return
@@ -81,44 +82,91 @@ export default class ConnectionSetup extends Component<Props> {
             // adjust name to match sensor
             if (device.name === 'ESP_GATTS_DEMO') {
                 manager.stopDeviceScan();
-                device.connect()
-                    .then((device) => {
-                        return device.discoverAllServicesAndCharacteristics()
-                    })
-                    .then((device) => {
-                        // serviceUUID, charUUID, transactionID
-                        return device.readCharacteristicForService(1, 2, 3)
-                    })
-                    .then((characteristic) => {
-                        this.setState({sensorID: characteristic.value, bleConnected: true})
-                    })
-                    .catch(error => { 
-                        console.log(error)
-                        this.setState({error: 'Could not connect to sensor'})
-                    })
+                this.setState({sensorID: device.id, bleConnected: true})
+                manager.destroy()
             }
-        });
-
-        manager.cancelDeviceConnection()
-        manager.destroy()
+        })
     }
 
     // Tries to connect to WiFi to make sure valid. If works, sends information to sensor
-    connectDeviceToWiFi() {
-        // if valid, navigate to Privacy. Otherwise mark as error
-        // adjust in future to actually send to WiFi
-        if (this.state.WiFiName == "MyWiFi" && this.state.WiFiPassword == "password") {
-            const name = this.props.navigation.getParam(SENSOR_NAME, 'NewSensor')
-            const id = this.state.sensorID
-            this.props.navigation.navigate('Privacy', { sensorName: name, sensorID: id});
+    async connectDeviceToWiFi() {
+        this.setState({WiFiError: false})
+
+        // test mode settings
+        if (this.state.testMode) {
+            if (this.state.WiFiName != "MyWiFi" && this.state.WiFiPassword != "password") {
+                this.setState({WiFiError: true})
+                return
+            } else {
+                name = this.props.navigation.getParam(SENSOR_NAME, 'NameUndefined');
+                this.props.navigation.navigate('Privacy', { sensorName: name, sensorID: this.state.sensorID});
+            }
         }
-        else {
+
+        try {
+            manager = new BleManager()
+        
+            // need to adjust to ask for location and BT permsissions on Android first
+            manager.startDeviceScan(null, null, (error, device) => {
+                if (error) {
+                    return
+                }
+    
+                // adjust name to match sensor
+                if (device.name === 'ESP_GATTS_DEMO') {
+                    manager.stopDeviceScan();
+
+                    // connect to device, discover characteristics and services, write to char in service[3], 
+                    // close connection, destroy, and navigate to next screen
+                    device.connect()
+                        .then((device) => {
+                            return device.discoverAllServicesAndCharacteristics()
+                        })
+                        .then(() => {
+                            return manager.servicesForDevice(this.state.sensorID)
+                        }).then((services) => {
+                            console.log("found chars via manager")
+                            return services
+                        }).then((services) => {
+                            return services[2].characteristics()
+                        }).then((chars) => {
+                            console.log("Found characteristics")
+                            return chars
+                        }).then((chars) => {
+                            wifiInfo = this.state.WiFiName + '$' + this.state.WiFiPassword + '$'
+                            base = base64.encode(wifiInfo)
+                            return manager.writeCharacteristicWithResponseForDevice(this.state.sensorID, chars[0].serviceUUID, 
+                                chars[0].uuid, base)
+                        }).then((res) => console.log("Wrote chars"))
+                        .then(() => {
+                            console.log("Canceling device")
+                            manager.cancelDeviceConnection(this.state.sensorID)
+                        }).then(() => {manager.destroy()})
+                        .then(() => {
+                            // pass parameters onwards
+                            name = this.props.navigation.getParam(SENSOR_NAME, 'NameUndefined');
+                            this.props.navigation.navigate('Privacy', { sensorName: name, sensorID: this.state.sensorID});
+                        })
+                        .catch((exception) => {
+                            console.log("Exception raised")
+                            console.log(exception)
+                            this.setState({WiFiError: true})
+                        })
+                }
+            })
+        } catch (exception) {
+            console.log("Outer catch")
             this.setState({WiFiError: true})
+            return
         }
     }
 
+    componentWillMount() {
+        this.connectToBluetooth()
+    }
+
     componentWillUnmount() {
-        clearInterval(this.state.timer);
+        
     }
 
     render() {
@@ -143,7 +191,10 @@ export default class ConnectionSetup extends Component<Props> {
         
         return (
             <ScrollView contentContainerStyle={{flexGrow: 1, justifyContent: 'space-between'}}>
-                <View style={{flex: 2, paddingTop: 30}}>
+                <View style={[styles.header, {flex: 2, paddingTop: 40, flexDirection: 'column'}]}>
+                    <Image source={require('../../Resources/Setup_Connecting.png')} style={{width: '140%', height: '100%'}}/>
+                </View>
+                <View style={{flex: 2}}>
                     <Text>Enable your Bluetooth and connect to the sensor. Once it is connected the device name will show below. 
                         Select your WiFi network to connect to, enter the password, then select 'Connect'.
                     </Text>

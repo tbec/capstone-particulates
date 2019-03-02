@@ -23,17 +23,23 @@ export default class Privacy extends Component<Props> {
     render() {
         return (
             <View style={styles.mainView}>
+            <View style={[styles.header, {flex: 1, paddingTop: 30}]}>
+                    <Image source={require('../../Resources/Setup_Privacy.png')} style={{width: '140%', height: '100%'}}/>
+                </View>
                 <View style={{flex: 5, alignContent: 'center', justifyContent: 'center'}}>
-                    <Text style={{flex: 2}}>Your sensor has been successfully connected!
+                    <Text style={{flex: 1}}>Your sensor has been successfully connected!
                         Would you like to make your sensor visable publically? 
-                        This will allow people to view your sensor's location on a map and for researchers to directly use and access 
-                        the data your sensor gathers.
+                    </Text>
+                    <Text style={{flex: 1}}>
+                        This will allow people to view your sensor's location on a map 
+                        and for researchers to directly use and access 
+                        its data.
                     </Text>
                     <Text/>
                     <Image source={require('../../Resources/SensorPrivacy.png')} style={{width: '100%', height: '100%', flex: 4, alignContent: 'center'}}/>
                 </View>
                 {/* choice section */}
-                <View style={[styles.home, {flex: 3}]}>
+                <View style={[styles.home, {flex: 5}]}>
                     <TouchableHighlight style={styles.button} testID={'setPrivacyTrue'}
                             onPress={() => this.setPrivacy(true)}>
                         <Text style={styles.buttonText}>Allow</Text>
