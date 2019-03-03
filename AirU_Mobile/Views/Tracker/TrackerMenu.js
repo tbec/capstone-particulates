@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Button } from 'react-native';
+import { View, Button, Text, FlatList } from 'react-native';
 import { AsyncStorage } from 'react-native';
 import { EXPOSUREDATA } from '../../Components/Constants';
 
@@ -11,25 +11,40 @@ export default class TrackerMenu extends Component<Props> {
         }
     }
 
-    async componentDidMount() {
+    async updateList() {
+        console.log('called');
         try {
             const savedData = await AsyncStorage.getItem(EXPOSUREDATA);
-            console.log("SAVED DATA");
-            console.log(savedData);
-            this.setState({ savedData: savedData });
+            if (savedData) {
+                this.setState({ savedData: JSON.parse(savedData) });
+            }
         } catch (error) {
         }
     }
 
     render() {
+        this.updateList();
         return (
             <View>
-                <Button title="Start New" onPress={this.startNew.bind(this)}></Button>
+                <Button title="Start New" onPress={this.startNew.bind(this)} style={{ margin: 3 }}></Button>
+                <FlatList
+                    data={this.state.savedData}
+                    renderItem={({ item }) => <Text onPress={this.viewData.bind(this, item)}
+                        style={{ color: 'blue', fontSize: 30, borderBottomWidth: 2, textAlign: "center", margin: 5 }}>{item.key}</Text>}
+                />
             </View>);
     }
 
     startNew() {
-        this.props.navigation.navigate('Tracker');
+        this.props.navigation.navigate('Tracker', {
+            path: undefined
+        });
+    }
+
+    viewData(path) {
+        this.props.navigation.navigate('Tracker', {
+            path: path
+        });
     }
 
 }

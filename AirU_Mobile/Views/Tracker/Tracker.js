@@ -12,6 +12,7 @@ import { EXPOSUREDATA } from '../../Components/Constants';
 export default class Tracker extends Component {
     constructor(props) {
         super(props);
+        const params = this.props.navigation.state.params.path;
         this.state = {
             pathArray: [],
             allPoints: [],
@@ -23,8 +24,19 @@ export default class Tracker extends Component {
             startTracking: true,
             stopTracking: false,
             viewData: false,
-            graph: false
+            saveData: true,
+            graph: false,
         };
+        if (params != undefined) {
+            this.state.allPoints = params.allPoints,
+                this.state.pathArray = params.pathArray,
+                this.state.pollutionData = params.pollutionData,
+                this.state.startTracking = false,
+                this.state.stopTracking = false,
+                this.state.viewData = false,
+                this.state.saveData = false,
+                this.state.graph = true
+        }
     }
 
     async componentDidMount() {
@@ -43,16 +55,21 @@ export default class Tracker extends Component {
             activitiesInterval: 10000,
             stopOnStillActivity: false,
         });
-        BackgroundGeolocation.getCurrentLocation((position) => {
-            this.animateToRegion(position.latitude, position.longitude);
-            this.setState({
-                currentPosition: { latitude: position.latitude, longitude: position.longitude },
-                gettingLocation: false
-            });
-        }, (error) => {
-            alert(error.message);
-            this.setState({ gettingLocation: false });
-        }, { enableHighAccuracy: true, timeout: 10000, maximumAge: 1000 });
+        if (!this.state.graph) {
+            BackgroundGeolocation.getCurrentLocation((position) => {
+                this.animateToRegion(position.latitude, position.longitude);
+                let currentPosition = { latitude: position.latitude, longitude: position.longitude };
+                this.setState({ gettingLocation: false, currentPosition: currentPosition });
+            }, (error) => {
+                alert(error.message);
+                this.setState({ gettingLocation: false });
+            }, { enableHighAccuracy: true, timeout: 10000, maximumAge: 1000 });
+        } else {
+            let startCoord = this.state.allPoints[0];
+            let currentPosition = { latitude: startCoord.latitude, longitude: startCoord.longitude };
+            setTimeout(() => { this.animateToRegion(startCoord.latitude, startCoord.longitude) }, 10);
+            this.setState({ gettingLocation: false, markerPos: currentPosition });
+        }
     }
 
     componentWillUnmount() {
@@ -101,8 +118,15 @@ export default class Tracker extends Component {
                 coordinate={this.state.markerPos}
                 image={require('../../Resources/pin.png')}
             />
-            button = <Button title="Dismiss" onPress={this.dismissGraph.bind(this)}></Button>
-            button = <Button title="Save Data" onPress={this.saveData.bind(this)}></Button>
+            let saveButton;
+            if (this.state.saveData) {
+                saveButton = <Button title="Save Data" onPress={this.saveData.bind(this)}></Button>
+            }
+            button = <View style={{ flexDirection: 'row' }}>
+                {saveButton}
+                <View style={{ width: 20 }}></View>
+                <Button title="Dismiss" onPress={this.dismissGraph.bind(this)}></Button>
+            </View>
         }
         return (
             <View style={{ flex: 1, flexDirection: 'column' }}>
@@ -132,7 +156,7 @@ export default class Tracker extends Component {
         );
     }
     async startTracking() {
-        this.setState({ startTracking: false, stopTracking: true });
+        this.setState({ startTracking: false, stopTracking: true, saveData: true });
         BackgroundGeolocation.on('location', (position) => {
             this.animateToRegion(position.latitude, position.longitude);
             let dateTime = this.getCurrentDate();
@@ -290,14 +314,25 @@ export default class Tracker extends Component {
         try {
             let exposureData = "";
             let savedData = await AsyncStorage.getItem(EXPOSUREDATA);
-            if(savedData == null){
-                exposureData = JSON.stringify([this.state.allPoints]);
+            if (savedData == null) {
+                exposureData = JSON.stringify([{
+                    key: this.getCurrentDate(),
+                    pathArray: this.state.pathArray,
+                    pollutionData: this.state.pollutionData,
+                    allPoints: this.state.allPoints
+                }]);
             } else {
                 savedData = JSON.parse(savedData);
-                savedData.push(this.state.allPoints);
+                savedData.push({
+                    key: this.getCurrentDate(),
+                    pathArray: this.state.pathArray,
+                    pollutionData: this.state.pollutionData,
+                    allPoints: this.state.allPoints
+                });
                 exposureData = JSON.stringify(savedData);
             }
             await AsyncStorage.setItem(EXPOSUREDATA, exposureData);
+            this.setState({saveData:false});
         } catch (error) {
             alert(error);
         }
