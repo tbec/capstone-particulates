@@ -61,16 +61,21 @@ exports[`Snapshot ConnectionSetup Setup 1`] = `
         }
       }
     >
-      <Text
-        style={
+      <Image
+        source={
           Object {
-            "fontWeight": "bold",
-            "textAlign": "center",
+            "testUri": "../../../Resources/Loading.gif",
           }
         }
-      >
-        123456789324
-      </Text>
+        style={
+          Object {
+            "alignContent": "center",
+            "height": 100,
+            "justifyContent": "center",
+            "width": 100,
+          }
+        }
+      />
     </View>
     <View
       style={

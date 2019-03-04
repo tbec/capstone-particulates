@@ -6,6 +6,10 @@ PODS:
     - GoogleMaps/Base
   - React (0.57.5):
     - React/Core (= 0.57.5)
+  - react-native-ble-plx (1.0.1):
+    - React
+    - react-native-ble-plx-swift
+  - react-native-ble-plx-swift (1.0.1)
   - React/Core (0.57.5):
     - yoga (= 0.57.5.React)
   - React/RCTImage (0.57.5):
@@ -19,6 +23,8 @@ PODS:
 
 DEPENDENCIES:
   - GoogleMaps
+  - react-native-ble-plx (from `../node_modules/react-native-ble-plx`)
+  - react-native-ble-plx-swift (from `../node_modules/react-native-ble-plx`)
   - React/RCTImage (from `../node_modules/react-native`)
   - RNSVG (from `../node_modules/react-native-svg`)
   - yoga (from `../node_modules/react-native/ReactCommon/yoga/Yoga.podspec`)
@@ -30,6 +36,10 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   React:
     :path: "../node_modules/react-native"
+  react-native-ble-plx:
+    :path: "../node_modules/react-native-ble-plx"
+  react-native-ble-plx-swift:
+    :path: "../node_modules/react-native-ble-plx"
   RNSVG:
     :path: "../node_modules/react-native-svg"
   yoga:
@@ -38,9 +48,11 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   GoogleMaps: f79af95cb24d869457b1f961c93d3ce8b2f3b848
   React: 1fe0eb13d90b625d94c3b117c274dcfd2e760e11
+  react-native-ble-plx: 7ad27c5a97bdb07ca77cf92badacd990e350c32c
+  react-native-ble-plx-swift: 283d93356064625d8d825b0814203628afe381f0
   RNSVG: 6252323c0312735f0af5f58b5adf2965b6a9ffbf
   yoga: b1ce48b6cf950b98deae82838f5173ea7cf89e85
 
-PODFILE CHECKSUM: 54a90dc076dacf03bcfc1c455a0ee128a142dad2
+PODFILE CHECKSUM: 65638240333bcc06ea1be94bfaf4602040fabed1
 
 COCOAPODS: 1.5.3
