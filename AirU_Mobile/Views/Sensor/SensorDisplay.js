@@ -33,23 +33,24 @@ export default class SensorDisplay extends Component<Props> {
     }
 
     componentWillMount() {
-        let refreshRate = this.getTimer()
-        let _timer = setInterval(this.getData, refreshRate) // every 5 minutes
+        this.getTimer()
         this.getData()
-        this.setState({timer: _timer})
-    }
-
-    async getTimer() {
-        await AsyncStorage.getItem(REFRESH).then((_retrieveData) => {
-            if (_retrieveData == null) {
-                return 10000
-            } else {
-                return JSON.parse(_retrieveData)
-            }})
     }
 
     componentWillUnmount() {
         this.clearInterval(this.state.timer)
+    }
+
+    // setup timer for 
+    async getTimer() {
+        await AsyncStorage.getItem(REFRESH).then((_retrieveData) => {
+            if (_retrieveData == null) {
+                _timer = setInterval(this.getData, 30000) // every 30 seconds by default
+                return _timer
+            } else {
+                _timer = setInterval(this.getData, JSON.parse(_retrieveData))
+                return _timer
+            }}).then((_timer) => { this.setState({timer: _timer})})
     }
 
     // gets list of saved sensors
