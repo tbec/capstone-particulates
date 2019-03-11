@@ -7,7 +7,8 @@ import { BarChart, Grid} from 'react-native-svg-charts'
 import {Text as TextChart, G} from 'react-native-svg'
 import { Dropdown } from 'react-native-material-dropdown';
 import {sensorFuncs} from '../../Components/SensorObj'
-import { COLOR_GOOD, COLOR_HAZARDOUS, COLOR_MODERATE, COLOR_SENSITVE, COLOR_UNHEALTHY, COLOR_VERY_UNHEALTHY } from '../../Components/Constants'
+import { COLOR_GOOD, COLOR_HAZARDOUS, COLOR_MODERATE, COLOR_SENSITVE, COLOR_UNHEALTHY, COLOR_VERY_UNHEALTHY
+            , REFRESH} from '../../Components/Constants'
 
 // component should never be called if AsyncStorage.getItem('Sensor') is not already set
 export default class SensorDisplay extends Component<Props> {
@@ -15,7 +16,8 @@ export default class SensorDisplay extends Component<Props> {
         super(Props);
         
         // bindings
-        this.getSensors.bind(this);
+        this.getSensors = this.getSensors.bind(this);
+        this.getTimer = this.getTimer.bind(this);
         this.dataTypeHandler = this.dataTypeHandler.bind(this)
         this.periodHandler = this.periodHandler.bind(this)
         this.graphDataHandler = this.graphDataHandler.bind(this)
@@ -31,10 +33,19 @@ export default class SensorDisplay extends Component<Props> {
     }
 
     componentWillMount() {
-        this.getSensors()
-        let _timer = setInterval(this.getData, 10000) // every 5 minutes
+        let refreshRate = this.getTimer()
+        let _timer = setInterval(this.getData, refreshRate) // every 5 minutes
         this.getData()
         this.setState({timer: _timer})
+    }
+
+    async getTimer() {
+        await AsyncStorage.getItem(REFRESH).then((_retrieveData) => {
+            if (_retrieveData == null) {
+                return 10000
+            } else {
+                return JSON.parse(_retrieveData)
+            }})
     }
 
     componentWillUnmount() {
@@ -92,15 +103,15 @@ export default class SensorDisplay extends Component<Props> {
         selectSensor = sensorFuncs.addData(this.state.selectedSensor, 
                 dataPoint, sensorFuncs.getDataSet(this.state.selectedSensor))
 
-        this.setState({data: selectSensor.sensorrData, lastUpdated: new Date(Date.now())})
+        this.setState({connected: true, data: selectSensor.sensorrData, lastUpdated: new Date(Date.now())})
     }
 
     async webCall() {
         let urlBase = WEB_URL + '/data/pollution/'
-        let deviceID = 'A81B6A7A6116' //this.state.selectedSensor.id
+        let deviceID = 'F45EAB9F6CFA' //this.state.selectedSensor.id
 
         let url = urlBase + deviceID
-        url = 'http://neat-environs-205720.appspot.com/data/pollution/F45EAB9C48E6'
+        url = 'http://neat-environs-205720.appspot.com/data/pollution/' + deviceID
 
         console.log('URL: ' + url)
 
@@ -109,10 +120,12 @@ export default class SensorDisplay extends Component<Props> {
     }
 
     render() {
+        let connStatus = this.state.connected ? 'Connected' : 'Not Connected'
+
         return (
             <View style={{flex: 3}}>
                 <Text style={{textAlign: 'center', paddingBottom: 10}}>
-                    Not Connected
+                    {connStatus}
                 </Text>
                 <Period period={this.state.period} handler={this.periodHandler}/>
                 <DataType value={this.state.selectedType} handler={this.dataTypeHandler}/>
@@ -176,6 +189,10 @@ class Graph extends Component<Props> {
             } else {
                 data = data.pm10
             }
+        } else if (this.props.period == 'week' || this.props.period == 'day') {
+            data = [0]
+        } else {
+            data = [0]
         }
 
         if (data.length == 0) {

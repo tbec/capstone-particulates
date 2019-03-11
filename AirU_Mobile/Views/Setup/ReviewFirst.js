@@ -13,7 +13,7 @@ export default class ReviewFirst extends Component<Props> {
             <ScrollView contentContainerStyle={[styles.mainView, {paddingTop: 5}]} 
                         showsVerticalScrollIndicator={true}>
                 <View style={[styles.header, {flex: 1}]}>
-                    <Image source={require('../../Resources/Setup_Packaging.png')} style={{width: '150%', height: '100%'}}/>
+                    <Image source={require('../../Resources/Setup_Packaging.png')} style={{width: 400, height: 45}}/>
                 </View>
                 <Text>Before proceeding, please confirm the following items were in your AirU box: </Text>
                 <Text/>

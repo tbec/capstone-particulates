@@ -192,7 +192,7 @@ export default class ConnectionSetup extends Component<Props> {
         return (
             <ScrollView contentContainerStyle={{flexGrow: 1, justifyContent: 'space-between'}}>
                 <View style={[styles.header, {flex: 2, paddingTop: 40, flexDirection: 'column'}]}>
-                    <Image source={require('../../Resources/Setup_Connecting.png')} style={{width: '140%', height: '100%'}}/>
+                    <Image source={require('../../Resources/Setup_Connecting.png')} style={{width: 400, height: 45}}/>
                 </View>
                 <View style={{flex: 2}}>
                     <Text>Enable your Bluetooth and connect to the sensor. Once it is connected the device name will show below. 

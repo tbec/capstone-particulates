@@ -100,6 +100,7 @@ export const sensorFuncs = {
         sensor.sensorData[dayOfWeek] = day
 
         // save sensor?
+
         return sensor
     }
 }
