@@ -441,6 +441,7 @@
 		6943E15721CD974600D26D26 /* AIRGMSMarker.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AIRGMSMarker.m; sourceTree = "<group>"; };
 		697014D621DEF48000FE7D0E /* AirU_Mobile-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AirU_Mobile-Bridging-Header.h"; sourceTree = "<group>"; };
 		697014D721DEF48100FE7D0E /* SwiftForBT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftForBT.swift; sourceTree = "<group>"; };
+		69991965223BD9F100E0F56A /* AirU_Mobile.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = AirU_Mobile.entitlements; path = AirU_Mobile/AirU_Mobile.entitlements; sourceTree = "<group>"; };
 		69A48B9A21CDC787004A453D /* Octicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Octicons.ttf; sourceTree = "<group>"; };
 		69A48B9B21CDC787004A453D /* Feather.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Feather.ttf; sourceTree = "<group>"; };
 		69A48B9C21CDC787004A453D /* Entypo.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Entypo.ttf; sourceTree = "<group>"; };
@@ -743,6 +744,7 @@
 		13B07FAE1A68108700A75B9A /* AirU_Mobile */ = {
 			isa = PBXGroup;
 			children = (
+				69991965223BD9F100E0F56A /* AirU_Mobile.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -1254,6 +1256,11 @@
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = SZRB53ACNX;
 						LastSwiftMigration = 1010;
+						SystemCapabilities = {
+							com.apple.Keychain = {
+								enabled = 1;
+							};
+						};
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -1893,6 +1900,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = AirU_Mobile/AirU_Mobile.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = SZRB53ACNX;
@@ -1932,6 +1940,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = AirU_Mobile/AirU_Mobile.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = SZRB53ACNX;
 				FRAMEWORK_SEARCH_PATHS = (

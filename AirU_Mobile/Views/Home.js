@@ -2,14 +2,15 @@ import React, {Component} from 'react';
 import {View, TouchableHighlight, Text, ImageBackground, Image, AsyncStorage} from 'react-native';
 import {NavigationActions} from 'react-navigation'
 import  styles  from '../StyleSheets/Styles';
-import {LOGIN_NAME, PASSWORD, WEB_URL} from '../Components/Constants'
+import {LOGIN_NAME, PASSWORD, WEB_URL, SENSOR_ARRAY} from '../Components/Constants'
+import {sensorFuncs} from '../Components/SensorObj'
 
 export default class Home extends Component<Props> {
     constructor(props) {
         super(props)
 
         this.updateArrays = this.updateArrays.bind(this)
-        this.webCall = this.webCall.bind(this)
+        this.getSensorsWebCall = this.getSensorsWebCall.bind(this)
         this.login = this.login.bind(this)
     }
 
@@ -17,9 +18,13 @@ export default class Home extends Component<Props> {
         this.updateArrays()
     }
 
+    /**
+     * Get sensors from server and add locally
+     */
     async updateArrays() {
         let _login
 
+        // check if logged in previously
         await AsyncStorage.getItem(LOGIN_NAME).then((_retrieveData) => {
             if (_retrieveData == null) {
                 return
@@ -27,27 +32,53 @@ export default class Home extends Component<Props> {
                 _login = _retrieveData
             }})
 
+        // try to login
         let res = await this.login(_login)
         
+        // if successfully logged in, get account sensors
         if (res != null && JSON.parse(res).success) {
-            let sensors = await this.webCall()
-            sensors = sensors.replace()
+            let sensors = await this.getSensorsWebCall()
             let sensorJSON = JSON.parse(sensors)
-            console.log("Got JSON")
+            console.log("Got sensor JSON")
+
+            sensorList = await AsyncStorage.getItem(SENSOR_ARRAY).then(res => JSON.parse(res))
+            var newSensorList = []
 
             // for each loop to go through and add sensors
+            for (let currSensor of sensorJSON) {
+                for (let listSensor of sensorList) {
+                    if (currSensor.DeviceName == sensorFuncs.getName(listSensor)) {
+                        break;
+                    }
 
-            // get data for each
-            
+                    // if did not find, add to list
+                    _id = currSensor.DeviceId
+                    _name = currSensor.DeviceName
+                    _privacy = false
+                    _sensorData = sensorFuncs.emptyWeek()
+
+                    let newSensor = {id: _id, sensorName: _name, privacy: _privacy, sensorData: _sensorData};
+                    newSensorList.push(newSensor)
+                }
+            }
+
+            sensorList.push(newSensorList);
+
+            // get data for each?
+
         }
     }
 
-    async webCall() {
+    /**
+     * Gets sensors associated with account
+     */
+    async getSensorsWebCall() {
         let urlBase = WEB_URL + '/user/devices'
         let url = urlBase
 
         console.log('URL: ' + url)
 
+        // format returned [DeviceID: .... DeviceName: ....]
         return fetch(url, {method: 'GET', credentials: 'include' })
             .then((response) => response.json())
             .then((responseJson) => {
