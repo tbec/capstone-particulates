@@ -4,7 +4,6 @@ import android.app.Application;
 
 import com.airbnb.android.react.maps.MapsPackage;
 import com.facebook.react.ReactApplication;
-import com.oblador.keychain.KeychainPackage;
 import com.marianhello.bgloc.react.BackgroundGeolocationPackage;
 import com.polidea.reactnativeble.BlePackage;
 import com.horcrux.svg.SvgPackage;
@@ -31,12 +30,12 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-            new KeychainPackage(),
             new BackgroundGeolocationPackage(),
             new BlePackage(),
             new SvgPackage(),
             new MapsPackage(),
             new VectorIconsPackage()
+	  new KeychainPackage()
       );
     }
 
