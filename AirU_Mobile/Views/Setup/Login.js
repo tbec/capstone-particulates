@@ -46,8 +46,8 @@ export default class Login extends Component<Props> {
 
         // if success, save locally and continue
         if (result != null && JSON.parse(result).success) {
-            // AsyncStorage.setItem(LOGIN_NAME, this.state.login)
-            // AsyncStorage.setItem(PASSWORD, this.state.password)
+            AsyncStorage.setItem(LOGIN_NAME, this.state.login)
+            AsyncStorage.setItem(PASSWORD, this.state.password)
             accountFuncs.saveAccount(this.state.login, this.state.password)
 
             let toReturn = this.props.navigation.getParam('return', false);

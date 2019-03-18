@@ -1,4 +1,5 @@
 import * as Keychain from 'react-native-keychain';
+import {WEB_URL} from './Constants'
 
 export const accountFuncs = {
 
@@ -7,8 +8,8 @@ export const accountFuncs = {
         let username, password
 
         await Keychain.getGenericPassword().then((credentials) => {
-            if (pwd == null) {
-                console.error("Password is null")
+            if (credentials == null) {
+                return null
             } else {
                 username = credentials.username
                 password = credentials.password
