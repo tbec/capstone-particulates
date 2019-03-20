@@ -29,7 +29,7 @@ export default class SensorDisplay extends Component<Props> {
         
         lastUpdate = new Date(Date.now())
         this.state = {sensorList: [], data: [], selectedSensor: {sensorData: []}, selectedType: 'PM1', lastUpdated: lastUpdate,
-                        pickingType: false, period: 'hour', connected: true, error: '', dataPoint: 0, timer: null}
+                        pickingType: false, period: 'hour', connected: true, error: '', sensorNumber: 0, timer: null}
     }
 
     componentWillMount() {
@@ -86,6 +86,8 @@ export default class SensorDisplay extends Component<Props> {
 
     /** WEB CALLS **/
     async getData() {
+        //TODO: ADJUST TO DO ALL SENSORS INSTEAD OF ONLY CURRENTLY SELECTED ONE
+
         data = await this.webCall()
         if (data == null) {
             this.setState({connected: false})
@@ -100,9 +102,9 @@ export default class SensorDisplay extends Component<Props> {
         _pm25 = json["PM2.5"]
 
         // add datapoint and update state
-        dataPoint = {pm1: _pm1, pm10: _pm10, pm25: _pm25, time: _time}
-        selectSensor = sensorFuncs.addData(this.state.selectedSensor, 
-                dataPoint, sensorFuncs.getDataSet(this.state.selectedSensor))
+        dataToAdd = {pm1: _pm1, pm10: _pm10, pm25: _pm25, time: _time}
+        selectSensor = sensorFuncs.addData(this.state.sensorList, this.state.sensorNumber, 
+            dataToAdd, sensorFuncs.getDataSet(this.state.selectedSensor))
 
         this.setState({connected: true, data: selectSensor.sensorrData, lastUpdated: new Date(Date.now())})
     }
@@ -134,7 +136,7 @@ export default class SensorDisplay extends Component<Props> {
                                 handler={this.sensorHandler}/>
                 <Graph sensor={this.state.selectedSensor} selectedType={this.state.selectedType} 
                         handler={this.graphDataHandler} period={this.state.period} date={this.state.lastUpdated}/>
-                <Information dataPoint={this.state.dataPoint} selectedType={this.state.selectedType}/>
+                <Information dataPoint={this.state.sensorNumber} selectedType={this.state.selectedType}/>
             </View>
         )
     }
@@ -176,6 +178,7 @@ class Graph extends Component<Props> {
         // period to show for data
         var data = this.props.sensor.sensorData
 
+        // choose which view to show
         if (data.length == 0) {
             data = [0]
         } else if (this.props.period == 'hour') {
@@ -190,8 +193,19 @@ class Graph extends Component<Props> {
             } else {
                 data = data.pm10
             }
-        } else if (this.props.period == 'week' || this.props.period == 'day') {
-            data = [0]
+
+            // only show past 8 data points to avoid filling up graph
+            data = data.slice(data.length-8)
+        } else if (this.props.period == 'week') {
+            if (this.props.selectedType == "PM1") {
+                data = data.pm1
+            } else if (this.props.selectedType == "PM25") {
+                data = data.pm25
+            } else {
+                data = data.pm10
+            }
+        } else if (this.props.period == 'day') {
+
         } else {
             data = [0]
         }

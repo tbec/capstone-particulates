@@ -49,6 +49,7 @@ export default class Login extends Component<Props> {
             AsyncStorage.setItem(LOGIN_NAME, this.state.login)
             AsyncStorage.setItem(PASSWORD, this.state.password)
             accountFuncs.saveAccount(this.state.login, this.state.password)
+            accountFuncs.updateArrays()
 
             let toReturn = this.props.navigation.getParam('return', false);
             if (toReturn) {

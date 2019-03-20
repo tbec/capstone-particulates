@@ -12,3 +12,6 @@ AirU_Mobile/package-lock.json
 *.pyc
 AirU_Mobile/ios/Podfile.lock
 AirU_Mobile/ios/Podfile~
+.idea/vcs.xml
+.idea/workspace.xml
+.idea/codeStyles/Project.xml

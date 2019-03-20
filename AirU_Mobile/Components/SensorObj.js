@@ -1,3 +1,7 @@
+import {AsyncStorage} from 'react-native'
+import {SENSOR_ARRAY} from '../Components/Constants'
+import React from 'react'
+
 /**
  * Information related to sensor
  * 
@@ -67,8 +71,11 @@ export const sensorFuncs = {
      * @param dataSet Entire sensor dataset
      * @returns sensor with updated data
      */
-    addData: function(sensor, dataPoint, dataSet) {
+    addData: function(sensorList, position, dataPoint, dataSet) {
         // setup
+        let sensor = sensorList[position]
+        
+        // get date
         let date = new Date(Date.now())
         let dateStart = new Date(Date.now())
         dateStart = new Date(dateStart.setHours(0,0,0))
@@ -88,18 +95,20 @@ export const sensorFuncs = {
         today.pm25.push(dataPoint.pm25)
         today.pm10.push(dataPoint.pm10)
 
+        // update averages
         reducer = (first, second, length) => (first + second) / length;
 
-        // update averages
         today.pm1Avg = today.pm1.reduce(reducer)
         today.pm25Avg = today.pm25.reduce(reducer)
         today.pm10Avg = today.pm10.reduce(reducer)
 
-        // set data point and return
+        // set data point
         day.data[hour] = today
         sensor.sensorData[dayOfWeek] = day
 
-        // save sensor?
+        // save sensor and return
+        sensorList[position] = sensor
+        AsyncStorage.setItem(SENSOR_ARRAY, JSON.stringify(sensorList))
 
         return sensor
     }

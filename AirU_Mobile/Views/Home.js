@@ -15,7 +15,8 @@ export default class Home extends Component<Props> {
     }
 
     componentWillMount() {
-        this.updateArrays()
+        //this.updateArrays()
+        accountFuncs.updateArrays()
     }
 
     /**
@@ -79,7 +80,7 @@ export default class Home extends Component<Props> {
             }
 
             sensorList.push(newSensorList)
-            await AsyncStorage.setItem(SENSOR_ARRAY, JSON.stringify(sensorList))
+            AsyncStorage.setItem(SENSOR_ARRAY, JSON.stringify(sensorList))
             console.log("Wrote sensors")
 
             // get data for each?
