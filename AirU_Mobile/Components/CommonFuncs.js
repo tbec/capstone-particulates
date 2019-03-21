@@ -1,6 +1,7 @@
 import * as Keychain from 'react-native-keychain';
-import {WEB_URL} from './Constants'
+import {WEB_URL, SENSOR_ARRAY} from './Constants'
 import {AsyncStorage} from 'react-native'
+import {sensorFuncs} from './SensorObj'
 import React from 'react'
 
 export const accountFuncs = {
@@ -81,7 +82,8 @@ export const accountFuncs = {
                 // check if exists
                 if (sensorList != null) {
                     for (let listSensor of sensorList) {
-                        if (currSensor.DeviceName == sensorFuncs.getName(listSensor)) {
+                        listSensorName = sensorFuncs.getName(listSensor)
+                        if (currSensor.DeviceName == listSensorName) {
                             inSensor = true
                             break;
                         }
@@ -106,7 +108,11 @@ export const accountFuncs = {
                 sensorList = []
             }
 
-            sensorList.push(newSensorList)
+            // add new sensors
+            for (sensor of newSensorList) {
+                sensorList.push(sensor)
+            }
+
             AsyncStorage.setItem(SENSOR_ARRAY, JSON.stringify(sensorList))
             console.log("Wrote sensors")
 

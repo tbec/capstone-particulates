@@ -6,7 +6,7 @@ import React, {Component} from 'react';
 import {View, Text, AsyncStorage,
          TextInput, KeyboardAvoidingView, Button, Image, ImageBackground} from 'react-native';
 import styles from '../../StyleSheets/Styles'
-import { LOGIN_NAME, TEST_MODE, WEB_URL} from '../../Components/Constants'
+import { LOGIN_NAME, TEST_MODE, WEB_URL, PASSWORD} from '../../Components/Constants'
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview'
 import {accountFuncs} from '../../Components/CommonFuncs'
 

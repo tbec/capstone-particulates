@@ -33,8 +33,8 @@ export default class SensorDisplay extends Component<Props> {
     }
 
     componentWillMount() {
+        this.getSensors()
         this.getTimer()
-        this.getData()
     }
 
     componentWillUnmount() {
@@ -57,6 +57,7 @@ export default class SensorDisplay extends Component<Props> {
     async getSensors() {
         let sensorsList = await this.getSensorList();
         this.setState({sensorList: sensorsList, selectedSensor: sensorsList[0]})
+        this.getData()
     }
 
     async getSensorList() {
@@ -106,12 +107,12 @@ export default class SensorDisplay extends Component<Props> {
         selectSensor = sensorFuncs.addData(this.state.sensorList, this.state.sensorNumber, 
             dataToAdd, sensorFuncs.getDataSet(this.state.selectedSensor))
 
-        this.setState({connected: true, data: selectSensor.sensorrData, lastUpdated: new Date(Date.now())})
+        this.setState({connected: true, data: selectSensor.sensorData, lastUpdated: new Date(Date.now())})
     }
 
     async webCall() {
         let urlBase = WEB_URL + '/data/pollution/'
-        let deviceID = 'F45EAB9F6CFA' //this.state.selectedSensor.id
+        let deviceID = this.state.selectedSensor.id //'F45EAB9F6CFA'
 
         let url = urlBase + deviceID
         url = 'http://neat-environs-205720.appspot.com/data/pollution/' + deviceID
@@ -156,6 +157,7 @@ export default class SensorDisplay extends Component<Props> {
 class Graph extends Component<Props> {
     constructor(props) {
         super(props)
+        this.computeDayAverage = this.computeDayAverage.bind(this)
     }
 
     pollutionColor(pollution) {
@@ -172,6 +174,27 @@ class Graph extends Component<Props> {
         } else {
             return COLOR_HAZARDOUS
         }
+    }
+
+    computeDayAverage(start, end, type, dataDays) {
+        val = 0
+        if (type == "PM1") {
+            for (i = start; i < end; i ++) {
+                val = val + dataDays[i].pm1Avg
+            }
+        } else if (type == "PM25") {
+            for (i = start; i < end; i ++) {
+                val = val + dataDays[i].pm25Avg
+            }
+        } else {
+            for (i = start; i < end; i ++) {
+                val = val + dataDays[i].pm10Avg
+            }
+        }
+        length = end - start
+        val = val / length
+        val = val.toFixed(2)
+        return val
     }
 
     render() {
@@ -195,17 +218,63 @@ class Graph extends Component<Props> {
             }
 
             // only show past 8 data points to avoid filling up graph
-            data = data.slice(data.length-8)
-        } else if (this.props.period == 'week') {
-            if (this.props.selectedType == "PM1") {
-                data = data.pm1
-            } else if (this.props.selectedType == "PM25") {
-                data = data.pm25
-            } else {
-                data = data.pm10
-            }
-        } else if (this.props.period == 'day') {
+            if (data.length > 7)
+                data = data.slice(data.length-7)
 
+        } else if (this.props.period == 'day') {
+            currDay = this.props.date.getDay()
+            dataDays = data[currDay].data
+            data = []
+            if (this.props.selectedType == "PM1") {
+                data.push(this.computeDayAverage(0, 4, "PM1", dataDays))
+                data.push(this.computeDayAverage(4, 8, "PM1", dataDays))
+                data.push(this.computeDayAverage(8, 12, "PM1", dataDays))
+                data.push(this.computeDayAverage(12, 16, "PM1", dataDays))
+                data.push(this.computeDayAverage(16, 20, "PM1", dataDays))
+                data.push(this.computeDayAverage(20, 23, "PM1", dataDays))
+            } else if (this.props.selectedType == "PM25") {
+                data.push(this.computeDayAverage(0, 4, "PM25", dataDays))
+                data.push(this.computeDayAverage(4, 8, "PM25", dataDays))
+                data.push(this.computeDayAverage(8, 12, "PM25", dataDays))
+                data.push(this.computeDayAverage(12, 16, "PM25", dataDays))
+                data.push(this.computeDayAverage(16, 20, "PM25", dataDays))
+                data.push(this.computeDayAverage(20, 23, "PM25", dataDays))
+            } else {
+                data.push(this.computeDayAverage(0, 4, "PM10", dataDays))
+                data.push(this.computeDayAverage(4, 8, "PM10", dataDays))
+                data.push(this.computeDayAverage(8, 12, "PM10", dataDays))
+                data.push(this.computeDayAverage(12, 16, "PM10", dataDays))
+                data.push(this.computeDayAverage(16, 20, "PM10", dataDays))
+                data.push(this.computeDayAverage(20, 23, "PM10", dataDays))
+            }
+        }  else if (this.props.period == 'week') {
+            dataDays = data
+            data = []
+            if (this.props.selectedType == "PM1") {
+                data.push(dataDays[0].avg.pm1Avg)
+                data.push(dataDays[1].avg.pm1Avg)
+                data.push(dataDays[2].avg.pm1Avg)
+                data.push(dataDays[3].avg.pm1Avg)
+                data.push(dataDays[4].avg.pm1Avg)
+                data.push(dataDays[5].avg.pm1Avg)
+                data.push(dataDays[6].avg.pm1Avg)
+            } else if (this.props.selectedType == "PM25") {
+                data.push(dataDays[0].avg.pm25Avg)
+                data.push(dataDays[1].avg.pm25Avg)
+                data.push(dataDays[2].avg.pm25Avg)
+                data.push(dataDays[3].avg.pm25Avg)
+                data.push(dataDays[4].avg.pm25Avg)
+                data.push(dataDays[5].avg.pm25Avg)
+                data.push(dataDays[6].avg.pm25Avg)
+            } else {
+                data.push(dataDays[0].avg.pm10Avg)
+                data.push(dataDays[1].avg.pm10Avg)
+                data.push(dataDays[2].avg.pm10Avg)
+                data.push(dataDays[3].avg.pm10Avg)
+                data.push(dataDays[4].avg.pm10Avg)
+                data.push(dataDays[5].avg.pm10Avg)
+                data.push(dataDays[6].avg.pm10Avg)
+            }
         } else {
             data = [0]
         }
