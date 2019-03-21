@@ -26,6 +26,8 @@ export default class Tracker extends Component {
             viewData: false,
             saveData: true,
             graph: false,
+            previousTime: 0,
+            exposureTime: 0
         };
         if (params != undefined) {
             this.state.allPoints = params.allPoints,
@@ -156,7 +158,9 @@ export default class Tracker extends Component {
         );
     }
     async startTracking() {
-        this.setState({ startTracking: false, stopTracking: true, saveData: true });
+        var d = new Date();
+        var n = d.getTime();
+        this.setState({ startTracking: false, stopTracking: true, saveData: true, previousTime: n });
         BackgroundGeolocation.on('location', (position) => {
             this.animateToRegion(position.latitude, position.longitude);
             let dateTime = this.getCurrentDate();
@@ -165,8 +169,8 @@ export default class Tracker extends Component {
                 let newPoint = {
                     latitude: position.latitude,
                     longitude: position.longitude,
-                    pollution: Math.round(pollutionData.PM1 * 100) / 100,
-                    color: this.pollutionColor(pollutionData.PM1)
+                    pollution: Math.round(pollutionData["PM2.5"] * 100) / 100,
+                    color: this.pollutionColor(pollutionData["PM2.5"])
                 }
                 let path = this.state.allPoints;
                 path.push(newPoint);
@@ -179,7 +183,7 @@ export default class Tracker extends Component {
                         return { pathArray: oldPathArray, allPoints: path, currentPosition: { latitude: position.latitude, longitude: position.longitude } };
                     });
                 }
-
+                this.notifyUser(pollutionData["PM2.5"]);
             });
             // handle your locations here
             // to perform long running operation on iOS
@@ -204,6 +208,32 @@ export default class Tracker extends Component {
             return responseJson;
         } catch (error) {
             alert(error);
+        }
+    }
+
+    //check if the user has been exposed to bad air for a prolonged period of time and send a notification
+    notifyUser(pollution) {
+        let d = new Date();
+        let time = d.getTime();
+        let elapsedTime = time - this.state.previousTime;
+        this.setState({previousTime: time});
+        //weight the time according to the level of pollution
+        if (pollution >= 0 && pollution < 12) {
+           elapsedTime = 0;
+        } else if (pollution >= 12 && pollution < 35.4) {
+            elapsedTime = elapsedTime/4;
+        } else if (pollution >= 35.4 && pollution < 55.4) {
+            elapsedTime = elapsedTime/2;
+        }
+        //convert time to minutes
+        elapsedTime = (elapsedTime / 1000)/60;
+        total = this.state.exposureTime + elapsedTime;
+        //If the user has spent an hour (weighted) in bad air send a notification
+        if(total >= 60){
+            //send notification
+            this.setState({exposureTime: 0});
+        } else {
+            this.setState({exposureTime: total});
         }
     }
 
@@ -407,13 +437,13 @@ export default class Tracker extends Component {
     }
 
     pollutionColor(pollution) {
-        if (pollution >= 0 && pollution < .25) {
+        if (pollution >= 0 && pollution < 12) {
             return "#00ff00";
-        } else if (pollution >= .25 && pollution < .5) {
+        } else if (pollution >= 12 && pollution < 35.4) {
             return "#ffff00";
-        } else if (pollution >= .5 && pollution < .75) {
+        } else if (pollution >= 35.4 && pollution < 55.4) {
             return "#ffa500";
-        } else if (pollution >= .75) {
+        } else if (pollution >= 55.4) {
             return "#ff0000";
         }
     }
