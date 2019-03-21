@@ -12,7 +12,6 @@ export default class TrackerMenu extends Component<Props> {
     }
 
     async updateList() {
-        console.log('called');
         try {
             const savedData = await AsyncStorage.getItem(EXPOSUREDATA);
             if (savedData) {
