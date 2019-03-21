@@ -8,6 +8,8 @@ import { NavigationActions } from 'react-navigation';
 import BackgroundGeolocation from 'react-native-mauron85-background-geolocation';
 import { AsyncStorage } from 'react-native';
 import { EXPOSUREDATA } from '../../Components/Constants';
+import PushNotification from 'react-native-push-notification';
+
 
 export default class Tracker extends Component {
     constructor(props) {
@@ -56,6 +58,10 @@ export default class Tracker extends Component {
             fastestInterval: 5000,
             activitiesInterval: 10000,
             stopOnStillActivity: false,
+        });
+        PushNotification.configure({
+            // (required) Called when a remote or local notification is opened or received
+            onNotification: onNotification, //this._onNotification,
         });
         if (!this.state.graph) {
             BackgroundGeolocation.getCurrentLocation((position) => {
@@ -161,6 +167,7 @@ export default class Tracker extends Component {
         var d = new Date();
         var n = d.getTime();
         this.setState({ startTracking: false, stopTracking: true, saveData: true, previousTime: n });
+        this.sendNotification();
         BackgroundGeolocation.on('location', (position) => {
             this.animateToRegion(position.latitude, position.longitude);
             let dateTime = this.getCurrentDate();
@@ -216,25 +223,54 @@ export default class Tracker extends Component {
         let d = new Date();
         let time = d.getTime();
         let elapsedTime = time - this.state.previousTime;
-        this.setState({previousTime: time});
+        this.setState({ previousTime: time });
         //weight the time according to the level of pollution
         if (pollution >= 0 && pollution < 12) {
-           elapsedTime = 0;
+            elapsedTime = 0;
         } else if (pollution >= 12 && pollution < 35.4) {
-            elapsedTime = elapsedTime/4;
+            elapsedTime = elapsedTime / 4;
         } else if (pollution >= 35.4 && pollution < 55.4) {
-            elapsedTime = elapsedTime/2;
+            elapsedTime = elapsedTime / 2;
         }
         //convert time to minutes
-        elapsedTime = (elapsedTime / 1000)/60;
+        elapsedTime = (elapsedTime / 1000) / 60;
         total = this.state.exposureTime + elapsedTime;
         //If the user has spent an hour (weighted) in bad air send a notification
-        if(total >= 60){
-            //send notification
-            this.setState({exposureTime: 0});
+        if (total >= 60) {
+            this.sendNotification();
+            this.setState({ exposureTime: 0 });
         } else {
-            this.setState({exposureTime: total});
+            this.setState({ exposureTime: total });
         }
+    }
+
+    sendNotification() {
+        PushNotification.localNotification({
+            ticker: "My Notification Ticker", // (optional)
+            autoCancel: true, // (optional) default: true
+            largeIcon: "ic_launcher", // (optional) default: "ic_launcher"
+            smallIcon: "ic_notification", // (optional) default: "ic_notification" with fallback for "ic_launcher"
+            bigText: "My big text that will be shown when notification is expanded", // (optional) default: "message" prop
+            subText: "This is a subText", // (optional) default: none
+            color: "red", // (optional) default: system default
+            vibrate: true, // (optional) default: true
+            vibration: 300, // vibration length in milliseconds, ignored if vibrate=false, default: 1000
+            tag: 'some_tag', // (optional) add tag to message
+            group: "group", // (optional) add group to message
+            ongoing: false, // (optional) set whether this is an "ongoing" notification
+
+            /* iOS and Android properties */
+            title: "Local Notification", // (optional)
+            message: "My Notification Message", // (required)
+            playSound: false, // (optional) default: true
+            soundName: 'default', // (optional) Sound to play when the notification is shown. Value of 'default' plays the default sound. It can be set to a custom sound such as 'android.resource://com.xyz/raw/my_sound'. It will look for the 'my_sound' audio file in 'res/raw' directory and play it. default: 'default' (default sound is played)
+            number: '10', // (optional) Valid 32 bit integer specified as string. default: none (Cannot be zero)
+            actions: '["Yes", "No"]',  // (Android only) See the doc for notification actions to know more
+        });
+    }
+
+    _onNotification(notification) {
+        console.log(notification);
     }
 
     animateToRegion(lat, lng) {
@@ -362,7 +398,7 @@ export default class Tracker extends Component {
                 exposureData = JSON.stringify(savedData);
             }
             await AsyncStorage.setItem(EXPOSUREDATA, exposureData);
-            this.setState({saveData:false});
+            this.setState({ saveData: false });
         } catch (error) {
             alert(error);
         }
