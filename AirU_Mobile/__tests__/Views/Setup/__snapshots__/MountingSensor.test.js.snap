@@ -47,6 +47,43 @@ exports[`Snapshot ConnectionSetup Setup 1`] = `
     />
   </View>
   <View
+    onLayout={[Function]}
+    style={
+      Object {
+        "alignContent": "center",
+        "flex": 1,
+        "justifyContent": "flex-start",
+        "paddingLeft": 50,
+      }
+    }
+  >
+    <Text>
+      Enter a name for your sensor
+    </Text>
+    <TextInput
+      allowFontScaling={true}
+      autoCorrect={false}
+      editable={true}
+      keyboardType="default"
+      onChangeText={[Function]}
+      placeholder="Sensor Name"
+      secureTextEntry={false}
+      style={
+        Object {
+          "alignContent": "center",
+          "backgroundColor": "white",
+          "borderColor": "black",
+          "borderWidth": 1,
+          "height": 40,
+          "justifyContent": "center",
+          "paddingBottom": 10,
+          "width": "50%",
+        }
+      }
+      underlineColorAndroid="transparent"
+    />
+  </View>
+  <View
     style={
       Object {
         "alignContent": "flex-start",
@@ -111,43 +148,6 @@ exports[`Snapshot ConnectionSetup Setup 1`] = `
         }
       />
     </View>
-  </View>
-  <View
-    onLayout={[Function]}
-    style={
-      Object {
-        "alignContent": "center",
-        "flex": 1,
-        "justifyContent": "flex-start",
-        "paddingLeft": 50,
-      }
-    }
-  >
-    <Text>
-      Enter a name for your sensor
-    </Text>
-    <TextInput
-      allowFontScaling={true}
-      autoCorrect={false}
-      editable={true}
-      keyboardType="default"
-      onChangeText={[Function]}
-      placeholder="Sensor Name"
-      secureTextEntry={false}
-      style={
-        Object {
-          "alignContent": "center",
-          "backgroundColor": "white",
-          "borderColor": "black",
-          "borderWidth": 1,
-          "height": 40,
-          "justifyContent": "center",
-          "paddingBottom": 10,
-          "width": "50%",
-        }
-      }
-      underlineColorAndroid="transparent"
-    />
   </View>
   <View
     style={
