@@ -80,10 +80,35 @@ export default class ConnectionSetup extends Component<Props> {
             }
 
             // adjust name to match sensor
-            if (device.name === 'ESP_GATTS_DEMO') {
+            if (device.name === 'AIRU:746C') {
                 manager.stopDeviceScan();
-                this.setState({sensorID: device.id, bleConnected: true})
-                manager.destroy()
+                // connect to device and get MacID
+                device.connect()
+                    .then((device) => {
+                        return device.discoverAllServicesAndCharacteristics()
+                    })
+                    .then(() => {
+                        return manager.servicesForDevice(device.id)
+                    }).then((services) => {
+                        console.log("found chars via manager")
+                        return services
+                    }).then((services) => {
+                        return services[2].characteristics()
+                    }).then((chars) => {
+                        console.log("Found characteristics")
+                        return chars
+                    }).then((chars) => {
+                        // will always be chars[0].deviceID unless firmware changes
+                        this.setState({sensorID: chars[0].deviceID, bleConnected: true})
+                    }).then((res) => console.log("Wrote chars"))
+                    .then(() => {
+                        console.log("Canceling device, sensor ID set to " + this.state.sensorID)
+                        manager.cancelDeviceConnection(device.id)
+                    }).catch((exception) => {
+                        console.log("Exception raised")
+                        console.log(exception)
+                        this.setState({WiFiError: true})
+                    })
             }
         })
     }
@@ -113,7 +138,7 @@ export default class ConnectionSetup extends Component<Props> {
                 }
     
                 // adjust name to match sensor
-                if (device.name === 'ESP_GATTS_DEMO') {
+                if (device.name === 'AIRU:746C') {
                     manager.stopDeviceScan();
 
                     // connect to device, discover characteristics and services, write to char in service[3], 
@@ -123,7 +148,7 @@ export default class ConnectionSetup extends Component<Props> {
                             return device.discoverAllServicesAndCharacteristics()
                         })
                         .then(() => {
-                            return manager.servicesForDevice(this.state.sensorID)
+                            return manager.servicesForDevice(device.id)
                         }).then((services) => {
                             console.log("found chars via manager")
                             return services
@@ -135,14 +160,13 @@ export default class ConnectionSetup extends Component<Props> {
                         }).then((chars) => {
                             wifiInfo = this.state.WiFiName + '$' + this.state.WiFiPassword + '$'
                             base = base64.encode(wifiInfo)
-                            return manager.writeCharacteristicWithResponseForDevice(this.state.sensorID, chars[0].serviceUUID, 
+                            return manager.writeCharacteristicWithResponseForDevice(device.id, chars[0].serviceUUID, 
                                 chars[0].uuid, base)
                         }).then((res) => console.log("Wrote chars"))
                         .then(() => {
                             console.log("Canceling device")
-                            manager.cancelDeviceConnection(this.state.sensorID)
-                        }).then(() => {manager.destroy()})
-                        .then(() => {
+                            manager.cancelDeviceConnection(device.id)
+                        }).then(() => {
                             // pass parameters onwards
                             name = this.props.navigation.getParam(SENSOR_NAME, 'NameUndefined');
                             this.props.navigation.navigate('Privacy', { sensorName: name, sensorID: this.state.sensorID});
@@ -219,7 +243,7 @@ export default class ConnectionSetup extends Component<Props> {
                     <Text/>
                     {/* password */}
                     <TextInput editable={true} keyboardType='default' 
-                                autoCorrect={false} placeholder='Password' secureTextEntry={true} 
+                                autoCorrect={false} placeholder='Password' secureTextEntry={false} 
                                 style={styles.textInput}
                                 onChangeText={(value) => {this.setState({WiFiPassword: value})}}
                                 />
