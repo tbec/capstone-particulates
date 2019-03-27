@@ -94,17 +94,17 @@ export const sensorFuncs = {
 
         // add data. Will be null if server could not find, such as setting up a new sensor
         if (dataPoint.pm1 != null) {
-            currHour.pm1.push(parseInt(dataPoint.pm1.toFixed(2)))
+            currHour.pm1.push(parseFloat(dataPoint.pm1.toFixed(2)))
         } else {
             currHour.pm1.push(0)
         }
         if (dataPoint.pm25 != null) {
-            currHour.pm25.push(parseInt(dataPoint.pm25.toFixed(2)))
+            currHour.pm25.push(parseFloat(dataPoint.pm25.toFixed(2)))
         } else {
             currHour.pm25.push(0)
         }
         if (dataPoint.pm10 != null) {
-            currHour.pm10.push(parseInt(dataPoint.pm10.toFixed(2)))
+            currHour.pm10.push(parseFloat(dataPoint.pm10.toFixed(2)))
         } else {
             currHour.pm10.push(0)
         }
@@ -116,9 +116,9 @@ export const sensorFuncs = {
             currHour.pm10Avg = currHour.pm10Avg + currHour.pm10[i]
         }
 
-        currHour.pm1Avg = currHour.pm1Avg / currHour.pm1.length 
-        currHour.pm25Avg = currHour.pm25Avg / currHour.pm25.length 
-        currHour.pm10Avg = currHour.pm10Avg / currHour.pm10.length 
+        currHour.pm1Avg = parseFloat(currHour.pm1Avg / currHour.pm1.length)
+        currHour.pm25Avg = parseFloat(currHour.pm25Avg / currHour.pm25.length)
+        currHour.pm10Avg = parseFloat(currHour.pm10Avg / currHour.pm10.length)
 
         day.avg.pm1Avg = (day.avg.pm1Avg + currHour.pm1Avg) / 2
         day.avg.pm25Avg = (day.avg.pm25Avg + currHour.pm25Avg) / 2

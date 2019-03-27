@@ -8,7 +8,7 @@ import {Text as TextChart, G} from 'react-native-svg'
 import { Dropdown } from 'react-native-material-dropdown';
 import {sensorFuncs} from '../../Components/SensorObj'
 import { COLOR_GOOD, COLOR_HAZARDOUS, COLOR_MODERATE, COLOR_SENSITVE, COLOR_UNHEALTHY, COLOR_VERY_UNHEALTHY
-            , REFRESH} from '../../Components/Constants'
+            , REFRESH, WEB_URL_NO_MOBILE} from '../../Components/Constants'
 
 // component should never be called if AsyncStorage.getItem('Sensor') is not already set
 export default class SensorDisplay extends Component<Props> {
@@ -29,7 +29,7 @@ export default class SensorDisplay extends Component<Props> {
         
         lastUpdate = new Date(Date.now())
         this.state = {sensorList: [], data: [], selectedSensor: {sensorData: []}, selectedType: 'PM1', lastUpdated: lastUpdate,
-                        pickingType: false, period: 'hour', connected: true, error: '', sensorNumber: 0, timer: null}
+                        pickingType: false, period: 'hour', connected: true, error: '', sensorNumber: 0, timer: null, dataPoint: 0}
     }
 
     componentWillMount() {
@@ -115,7 +115,7 @@ export default class SensorDisplay extends Component<Props> {
         let deviceID = this.state.selectedSensor.id //'F45EAB9F6CFA'
 
         let url = urlBase + deviceID
-        url = 'http://neat-environs-205720.appspot.com/data/pollution/' + deviceID
+        url =  WEB_URL_NO_MOBILE + '/data/pollution/' + deviceID
 
         console.log('URL: ' + url)
 
@@ -137,7 +137,7 @@ export default class SensorDisplay extends Component<Props> {
                                 handler={this.sensorHandler}/>
                 <Graph sensor={this.state.selectedSensor} selectedType={this.state.selectedType} 
                         handler={this.graphDataHandler} period={this.state.period} date={this.state.lastUpdated}/>
-                <Information dataPoint={this.state.sensorNumber} selectedType={this.state.selectedType}/>
+                <Information dataPoint={this.state.dataPoint} selectedType={this.state.selectedType}/>
             </View>
         )
     }
