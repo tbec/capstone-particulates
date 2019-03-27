@@ -22,16 +22,11 @@ client = InfluxDBClient(host=INFLUX_HOST,
                          verify_ssl=INFLUX_VERIFY_SSL)
 
 
-from views import *
+from main import *
 
 
 
 if __name__ == "__main__":
-    try:
-        import googleclouddebugger
-        googleclouddebugger.enable()
-    except ImportError:
-        pass
     print("Running the application...")
     app.jinja_env.auto_reload = True
     app.run(threaded=True, host="localhost", port=5001, debug=True)

@@ -22,7 +22,7 @@
                                         <td> {{device.DeviceName}} </td>
                                         <td> {{device.DeviceId}} </td>
                                         <td> <a href="/devices/edit/{{device.DeviceId}}"><i class="fas fa-edit"></i> </a></td>
-                                        <td> <input type="checkbox"> </td>
+                                        <td> <button class="add-to-cart" id="{{device.DeviceId}}"><i class="fas fa-cart-plus"></i></button></td>
                                         <td><a href="/devices/remove/{{device.DeviceId}}"><i class="fas fa-times"></i></a></td>
                                 </tr>
                         {%endfor%}
@@ -66,5 +66,8 @@
         </div>
 
 <link rel="stylesheet" href="{{url_for('static', filename='style/devices.css')}}">
+<script src="{{url_for('static', filename='script/devices.js')}}"></script>
+
+
 
 {%endblock%}

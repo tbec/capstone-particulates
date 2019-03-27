@@ -2,19 +2,26 @@
 const layout = {
     init: function() {
         document.querySelector('.logout').addEventListener('click', () => {
-            fetch('/logout')
-            .then(function(response) {
-                return response.text();
-            })
-            .then(function(myText) {
-                console.log(myText);
-                window.location.href = '/'
-            });
+            console.log("Logging out")
+            this.clearLocalStorage();
+            // Log the user out
+            // fetch('/logout')
+            // .then(function(response) {
+            //     return response.text();
+            // })
+            // .then(function(myText) {
+            //     console.log(myText);
+            //     window.location.href = '/'
+            // });
         })
         
+    },
+    clearLocalStorage: function(){
+        localStorage.clear();
     }
 }
 
+layout.init();
 
 function toggleSelected(btn){
     
@@ -29,7 +36,7 @@ function toggleSelected(btn){
 // Grabs all the nav options adding the event listener for clicking on changing view
 function initSelectedAction(){
 
-    var options = ["index", "account", "map", "graph", "download", "devices"];
+    var options = ["index", "account", "map", "analytics", "download", "devices"];
     console.log("Hit this");
 
     var navBtns = document.getElementsByClassName('logo');

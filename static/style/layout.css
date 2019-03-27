@@ -24,11 +24,11 @@ h3{
     font-weight: 100;
 }
 
-#content p{
+/* #content p{
     padding-top: 20px;
     padding-bottom: 0px;
     margin-bottom: 25px;
-}
+} */
 
 .sidenav{
     width: 60px;
@@ -40,6 +40,7 @@ h3{
     background-color:  #f8f8f8;
     border-right: 1px solid #c7c7c7;
     font-family: Lato,Helvetica Neue,Helvetica,Arial,sans-serif;
+    z-index: 3;
 }
 
 .top-nav{

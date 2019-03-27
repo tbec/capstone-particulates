@@ -50,6 +50,7 @@ class AddDeviceAPI(FlaskForm):
     username = StringField('Username', validators=[DataRequired(), Length(min=4, max=20)])
     deviceid = StringField('Device ID', validators=[DataRequired(), Length(min=12, max=12)])
     devicename = StringField("Device Name", validators=[DataRequired(), Length(min=1, max=15)])
+    visible = BooleanField("Visable")
 
 class LoginFormAPI(FlaskForm):
     username = TextField('Username', validators=[DataRequired(), Length(min=4, max=15)])

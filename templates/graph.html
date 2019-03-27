@@ -1,73 +1,48 @@
-{% extends 'layout.html' %}
+<html>
+  <head>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['bar']});
+      google.charts.setOnLoadCallback(drawChart);
 
-{%block content%}
-<!-- <p>Logged in: {{ user.username }}</p> -->
-<div class="outer-wrapper">
-    <div class="inner-upper">
-            <form class="nav-form" method="POST" action="/graph">
-                <select class="menu" name="selected">
-                    <option value = "bar">Bar Graph</option>
-                    <option value = "circle">Circle Graph</option>
-                </select>
-                <input class="button" type="submit" value="view">
-            </form>
-            <div class="header">Breakdown of CO(Carbon Monoxide), NO(Nitric Oxide), PM1, PM2.5, PM10 </div>
-    </div>
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Year', 'Sales', 'Expenses', 'Profit'],
+          ['2014', 1000, 400, 200],
+          ['2015', 1170, 460, 250],
+          ['2016', 660, 1120, 300],
+          ['2017', 1030, 540, 350],
+          ['2014', 1000, 400, 200],
+          ['2015', 1170, 460, 250],
+          ['2016', 660, 1120, 300],
+          ['2017', 1030, 540, 350],
+          ['2014', 1000, 400, 200],
+          ['2015', 1170, 460, 250],
+          ['2016', 660, 1120, 300],
+          ['2017', 1030, 540, 350],
+          ['2014', 1000, 400, 200],
+          ['2015', 1170, 460, 250],
+          ['2016', 660, 1120, 300],
+          ['2017', 1030, 540, 350],
+          ['2015', 1170, 460, 250],
+          ['2016', 660, 1120, 300],
+          ['2017', 1030, 540, 350]
+        ]);
 
-    {%if bGraph%}    
-    <div class="inner-bottom-b">    
-                <!-- <div class="bottom-top"> -->
-                        <div class="bottom-top-left chart-element">
-        
-                        </div>
-                        <div class="bottom-top-right chart-element">
-        
-                        </div>
-        
-                <!-- </div> -->
-                
-                <!-- <div class="bottom-bottom"> -->
-                    <div class="bottom-bottom-left chart-element">
-        
-                    </div>
-                    <div class="bottom-bottom-right chart-element">
-        
-                    </div>
-                <!-- </div> -->
-        
-    {% elif cGraph%}
-    <div class="inner-bottom-c">  
-        <div class="inner-left">
+        var options = {
+          chart: {
+            title: 'Company Performance',
+            subtitle: 'Sales, Expenses, and Profit: 2014-2017',
+          }
+        };
 
-        </div>
-        <div class="inner-right">
-            
-        </div>
-    {%endif%}
-    </div>
-</div>
+        var chart = new google.charts.Bar(document.getElementById('columnchart_material'));
 
-
-<link rel="stylesheet" href="{{url_for('static',filename='style/graph.css')}}">
-<script src="//d3js.org/d3.v4.min.js"></script>
-<script type = "text/javascript" src="{{url_for('static',filename='script/graph.js')}}"></script>
-<script type="text/javascript">
-
-    var b = {{bGraph|tojson}};
-    var c = {{cGraph|tojson}};
-    
-    if(b){
-        console.log("Its a bargraph")
-        draw_graph("CO",".bottom-top-left");
-        draw_graph("NO",".bottom-top-right");
-        draw_graph("PM2.5",".bottom-bottom-left");
-        draw_graph("PM1",".bottom-bottom-right");
-    }
-    if(c){
-        console.log("Its a circle graph")
-        draw_circle(["NO","CO",], ".inner-right");
-        draw_circle(["PM1","PM2.5","PM10"], ".inner-left");
-    }
-
+        chart.draw(data, google.charts.Bar.convertOptions(options));
+      }
     </script>
-{%endblock%}
+  </head>
+  <body>
+    <div id="columnchart_material" style="width: 800px; height: 500px;"></div>
+  </body>
+</html>

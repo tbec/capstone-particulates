@@ -1,10 +1,203 @@
 var c;
-function draw_graph(field_name, anchor){
-    // console.log("Called")
-    // console.log("In the js function")
-    // console.log("Variable names: Field Name: " + field_name )
-    // console.log("Variable names: anchor: " + anchor )
 
+
+document.getElementById("preview-parameters").addEventListener("click", function(){
+    console.log("query");
+});
+
+// function downloadDataSet(params){
+//     console.log("Making Post request");
+//     console.log(params);
+//     var url = "http://127.0.0.1:5000/downloadcsv";
+//     var data = JSON.stringify(params);
+    
+    
+//     fetch(url, 
+//         {
+//         method: 'POST', // or 'PUT'
+//         body: data, // data can be `string` or {object}!
+//         headers:{
+//             'Content-Type': 'application/json'
+//         }
+//         }
+//     ).then(response => {
+//         const reader = response.body.getReader();
+//         return new ReadableStream({
+//             start(controller) {
+//               return pump();
+//               function pump() {
+//                   console.log("pumping");
+//                 return reader.read().then(({ done, value }) => {
+//                   // When no more data needs to be consumed, close the stream
+//                   if (done) {
+//                       controller.close();
+//                       return;
+//                   }
+//                   // Enqueue the next data chunk into our target stream
+//                   controller.enqueue(value);
+//                   return pump();
+//                 });
+//               }
+//             }  
+//         })
+//     })
+//     .then(stream => new Response(stream))
+//     .then(response => response.blob())
+//     .then(blob => URL.createObjectURL(blob))
+//     .then(url => saveAs(url, 'download.csv'))
+// }
+
+// function saveAs(blob, fileName) {
+//     var url = blob;
+
+//     var anchorElem = document.createElement("a");
+//     anchorElem.style = "display: none";
+//     anchorElem.href = url;
+//     anchorElem.download = fileName;
+
+//     document.body.appendChild(anchorElem);
+//     anchorElem.click();
+
+//     document.body.removeChild(anchorElem);
+
+//     // On Edge, revokeObjectURL should be called only after
+//     // a.click() has completed
+//     setTimeout(function() {
+//         window.URL.revokeObjectURL(url);
+//     }, 1000);
+// }
+// // Goes through the Analytics download options and gets all their values
+// function getDownloadParams(){
+//     var data = {};
+
+//     var particleTypes = document.getElementsByClassName("download-pm-type");
+//     for(var i = 0; i < particleTypes.length; i++){
+//         if(particleTypes[i].checked){
+//             data[particleTypes[i].name] = true;
+//         }
+//     }
+
+//     var operations = document.getElementsByName("download-operation");
+//     for(var i = 0; i < operations.length;i++)
+//     {
+//         if(operations[i].checked){
+//             data["operation"] = operations[i].value;
+//             break;
+//         }
+//     }
+
+//     data["from-date"] = document.getElementById("download-from-date").value;
+//     data["from-time"] = document.getElementById("download-from-time").value;
+//     data["to-date"] = document.getElementById("download-to-date").value;
+//     data["to-time"] = document.getElementById("download-to-time").value;
+
+//     var box = document.getElementById("query-limit-value");
+//     if(box.value != ""){
+//         data["limit"] = box.value;
+//     }
+//     else{
+//         data["limit"] = null;
+//     }
+
+//     return data;
+// };
+
+// // Blocks the form from being submitted and does a manual Fetch call
+// document.getElementById("download-parameters").addEventListener("click", function(event){
+//     console.log("preventing default");
+//     event.preventDefault();
+//     var params = getDownloadParams();
+//     downloadDataSet(params);
+// });
+
+document.getElementById("download-limit").addEventListener("click", function(){
+    var btn = document.getElementById("download-limit");
+    var box = document.getElementById("query-limit-value");
+
+    // Going from not checked (disabled) to checked (enable)
+    if(!btn.checked){
+        box.disabled = true;
+        box.value = "";
+    }
+    else{
+        box.disabled = false;
+    }
+});
+
+// Turns the analytics view for preview on
+function showPreviewOptions(){
+    var previewDiv = document.getElementById("preview-form-container");
+    var downloadDiv = document.getElementById("download-form-container");
+    // Turn the preview option on
+    downloadDiv.classList.add("hide-display");
+    downloadDiv.classList.remove("show-display-flex-row")
+
+    previewDiv.classList.add("show-display-flex-row");
+    previewDiv.classList.remove("hide-display");
+}
+
+// Turns the analytics view on for download
+function showDownloadOptions(){
+    var previewDiv = document.getElementById("preview-form-container");
+    var downloadDiv = document.getElementById("download-form-container");
+    // Turn the Download option on as we are going from not checked to checked
+    downloadDiv.classList.remove("hide-display");
+    downloadDiv.classList.add("show-display-flex-row")
+
+    previewDiv.classList.remove("show-display-flex-row");
+    previewDiv.classList.add("hide-display");
+}
+
+function setDownloadOptions(){
+
+    // Takes all the pollution options from the preview selection and copies them to the download preview
+    document.getElementsByName("pm1")[1].checked = document.getElementsByName("pm1")[0].checked 
+    document.getElementsByName("pm2.5")[1].checked = document.getElementsByName("pm2.5")[0].checked 
+    document.getElementsByName("pm10")[1].checked = document.getElementsByName("pm10")[0].checked 
+    document.getElementsByName("no")[1].checked = document.getElementsByName("no")[0].checked 
+    document.getElementsByName("co")[1].checked = document.getElementsByName("co")[0].checked 
+    document.getElementsByName("Humidity")[1].checked = document.getElementsByName("Humidity")[0].checked 
+    document.getElementsByName("Temperature")[1].checked = document.getElementsByName("Temperature")[0].checked 
+
+    // Selects the correct query option
+    if(document.getElementById("max").checked){
+        document.getElementById("download-max").checked = true;
+
+    }
+    else if(document.getElementById("min").checked){
+        document.getElementById("download-min").checked = true;
+    }
+    else if(document.getElementById("mean").checked){
+        document.getElementById("download-mean").checked = true;
+
+    }
+    else{
+        document.getElementById("download-default").checked = true;
+    }
+
+    // Sets the time restraints from the preview to the download
+    document.getElementById("download-from-date").value = document.getElementById("from-date").value
+    document.getElementById("download-from-time").value = document.getElementById("from-time").value
+    document.getElementById("download-to-date").value = document.getElementById("to-date").value
+    document.getElementById("download-to-time").value = document.getElementById("to-time").value
+}
+
+document.getElementById("toggle-switch").addEventListener("click", function(){
+    console.log("toggling");
+    var toggleBox = document.getElementById("toggled-checkbox");
+
+    if(!toggleBox.checked){
+        // Turn the Download option on as we are going from not checked to checked
+        showDownloadOptions();
+        setDownloadOptions();
+    }
+    else{
+        // Turn the preview option on
+        showPreviewOptions();
+    }
+});
+
+function draw_graph(field_name, anchor){
 
     // set the dimensions and margins of the graph
     var margin = {top: 40, right: 20, bottom: 30, left: 40};
@@ -217,4 +410,4 @@ function draw_circle(field_names, anchor){
     });
 }
 
-// draw_graph("CO", circle,bar);
+
