@@ -204,12 +204,11 @@ export default class Tracker extends Component {
         });
         BackgroundGeolocation.start();
     }
-
     async getPollution(lat, lng, time) {
         try {
             let params = 'lat=' + lat + '&long=' + lng + '&timestamp=' + time + '&times=1000'
             let response = await fetch(
-                'https://neat-environs-205720.appspot.com/data/pollution?' + params, { method: 'GET' },
+                'https://download-dot-neat-environs-205720.appspot.com/data/pollution?' + params, { method: 'GET' },
             );
             let responseJson = await response.json();
             return responseJson;
@@ -250,16 +249,15 @@ export default class Tracker extends Component {
             autoCancel: true,
             largeIcon: "ic_launcher",
             smallIcon: "ic_notification",
-            bigText: "My big text that will be shown when notification is expanded",
-            subText: "This is a subText",
-            color: "green",
+            bigText: "You have spent an unhealthy amount of time in poor air quality, you may want to consider getting indoors or taking a break.",
+            color: "red",
             vibrate: true,
             vibration: 300,
-            title: "Notification Title",
-            message: "Notification Message",
+            title: "AirU warning",
+            message: "You have spent an unhealthy amount of time in poor air quality, you may want to consider getting indoors or taking a break.",
             playSound: true,
             soundName: 'default',
-            actions: '["Accept", "Reject"]',
+            actions: '["Ok"]',
           });
     }
 
