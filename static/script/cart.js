@@ -58,7 +58,7 @@ const cartLogic = {
             for(; i < buttons.length; i++){
                 if(buttons[i].checked){
                     // Deletes the ID from the cart
-                    cartLogic.deleteFromCart(buttons[i].parentElement.innerText, "allCart")
+                    cartLogic.deleteFromCart(buttons[i].parentElement.previousElementSibling.innerText, "allCart")
                     // Removes the card for the screen
                     cartLogic.delete_selected(buttons[i]);
                 }
@@ -79,7 +79,7 @@ const cartLogic = {
             for(; i < buttons.length; i++){
                 if(buttons[i].checked){
                     // Deletes the ID from the cart
-                    cartLogic.deleteFromCart(buttons[i].parentElement.innerText, "workCart")
+                    cartLogic.deleteFromCart(buttons[i].parentElement.previousSibling.innerText, "workCart")
                     // Removes the card for the screen
                     cartLogic.delete_selected(buttons[i]);
                 }
@@ -115,8 +115,8 @@ const cartLogic = {
             // Deletes the node, removes it from the cart, updates local storage
             console.log("Deleting the current node");
 
-            cartLogic.delete_selected(e.target);
-            cartLogic.deleteFromCart(e.target.parentElement.innerText, "allCart");
+            cartLogic.delete_selected(e.target.parentElement);
+            cartLogic.deleteFromCart(e.target.parentElement.parentElement.previousElementSibling.innerText, "allCart");
             cartLogic.removeFromLocalStorage("cart");
             cartLogic.saveToLocal("cart", cartLogic.cart);
         });
@@ -126,11 +126,25 @@ const cartLogic = {
             // Deletes the node, removes it from the cart, updates local storage
             console.log("Deleting the current node");
 
-            cartLogic.delete_selected(e.target);
-            cartLogic.deleteFromCart(e.target.parentElement.innerText, "workCart");
+            cartLogic.delete_selected(e.target.parentElement);
+            cartLogic.deleteFromCart(e.target.parentElement.parentElement.previousElementSibling.innerText, "workCart");
             cartLogic.removeFromLocalStorage("workCart");
             cartLogic.saveToLocal("workCart", cartLogic.workCart);
         });
+
+        $(".all-cart").on("click", ".add-singlenode", function(e){
+            console.log("plus");
+            var node = {};
+            node["id"] = e.target.parentElement.parentElement.innerText;
+            if(!cartLogic.inCart(node,cartLogic.workCart)){
+                cartLogic.addNodeToCart(node, "workCart");
+                cartLogic.createCartNodeItem(node, ".working-cart", "working-cart-selection");
+                // Clear the Local storage and save the new cart
+                cartLogic.removeFromLocalStorage("workCart");
+                cartLogic.saveToLocal("workCart", cartLogic.workCart);
+            }
+
+        })
 
         
         $('#preview-query-parameters-form').submit(function(eventObj) {
@@ -142,8 +156,8 @@ const cartLogic = {
         function downloadDataSet(params){
             console.log("Making Post request");
             console.log(params);
-            // var url = "http://127.0.0.1:5000/downloadcsv";
-            var url = "https://download-dot-neat-environs-205720.appspot.com/downloadcsv"
+            var url = "http://127.0.0.1:5000/downloadcsv";
+            // var url = "https://download-dot-neat-environs-205720.appspot.com/downloadcsv"
             var data = params;
             
             
@@ -389,7 +403,7 @@ const cartLogic = {
     },
     delete_selected: function(target){
         // Grabs the parent element and it's grandparent
-        var parent = target.parentElement;
+        var parent = target.parentElement.parentElement;
         var g_parent = parent.parentElement;
 
         // Changes the opacity to trigger the transition styling then removes the element after .5 seconds
@@ -427,21 +441,78 @@ const cartLogic = {
 
         var div = document.createElement('div');
         div.classList.add('box');
-        div.innerHTML = i.id;
 
-        var del = document.createElement('input');
-        del.type="submit";
-        del.value="delete";
-        del.name="selected-item"
-        del.classList.add('delete');
+        var div_left = document.createElement("div");
+        div_left.classList.add("box-left");
+        div_left.innerHTML = i.id.toUpperCase();
 
+        var addOrDel = document.createElement("h4");
+        var del = document.createElement('h4');
         var check = document.createElement('input');
-        check.type="checkbox";
-        check.name= inputType;
+        // If its in the "ALL Cart" give it an exit and plus sign
+        if(cartClass == ".all-cart"){
+            addOrDel.value = "adder";
+            addOrDel.innerHTML = '<i class="fas fa-plus"></i>';
+            addOrDel.classList.add("add-singlenode")
 
-        div.appendChild(del);
-        div.appendChild(check);
+            // del.type="submit";
+            del.value="delete";
+            del.innerHTML = '<i class="fas fa-times times"></i>'
+            del.name="selected-item"
+            del.classList.add('delete');
+            del.classList.add("sub-right");
+            div_left.append(addOrDel);
+
+
+            check.type="checkbox";
+            check.classList.add("sub-right");
+            check.classList.add("cart-checkbox");
+            check.name= inputType;
+        } 
+        else{
+
+            div_left.classList.add("working-card");
+
+            // If its in the working cart, give it a minus instead of an X
+            del.value = "deleter";
+            del.innerHTML = '<i class="fas fa-minus"></i>';
+            del.classList.add('delete');
+            del.classList.add("sub-right");
+            del.classList.add("remove-singlenode");
+
+            check.type="checkbox";
+            check.classList.add("sub-right");
+            check.classList.add("work-checkbox");
+            check.name= inputType;
+        }
+
+        var div_right = document.createElement("div");
+        div_right.classList.add("box-right");
+
+        // var del = document.createElement('h4');
+        // // del.type="submit";
+        // del.value="delete";
+        // del.innerHTML = '<i class="fas fa-times times"></i>'
+        // del.name="selected-item"
+        // del.classList.add('delete');
+        // del.classList.add("sub-right");
+
+
+        // var check = document.createElement('input');
+        // check.type="checkbox";
+        // check.classList.add("sub-right");
+        // check.classList.add("cart-checkbox");
+        // check.name= inputType;
+
+        div_right.appendChild(del);
+        div_right.appendChild(check);
+        div.appendChild(div_left);
+        div.appendChild(div_right);
         right.appendChild(div);
+
+        // div.appendChild(del);
+        // div.appendChild(check);
+        // right.appendChild(div);
     },
     addNodesToCart: function(nodes, cartClass, inputType){
         for(var i = 0; i < nodes.length; i++){
@@ -456,7 +527,7 @@ const cartLogic = {
         var buttons = cartLogic.getByName('all-cart-selection');
         var i = 0;
         for(; i < buttons.length; i++){
-            var node = {id: buttons[i].parentElement.innerText};
+            var node = {id: buttons[i].parentElement.previousElementSibling.innerText};
             if(buttons[i].checked && !cartLogic.inCart(node, cartLogic.workCart)){
                 // Deletes the ID from the cart
                 cartLogic.addNodeToCart(node, "workCart");

@@ -13,8 +13,8 @@ const deviceManager = {
     addToCart: function(id){
         console.log(id)
 
-        // var url = 'http://127.0.0.1:5000/mydevice/info';
-        var url ="https://download-dot-neat-environs-205720.appspot.com/mydevice/info"
+        var url = 'http://127.0.0.1:5000/mydevice/info';
+        // var url ="https://download-dot-neat-environs-205720.appspot.com/mydevice/info"
         var data = {"id": id};
 
         fetch(url, {
@@ -32,7 +32,8 @@ const deviceManager = {
         });
     },
     addNodetoCart: function(node){
-        cart = this.getCart();
+        this.startCartIfNotExist();
+        var cart = this.getCart();
         if(!this.nodeInCart(cart, node)){
             cart.push(node);
             this.saveCart(cart);
@@ -42,6 +43,11 @@ const deviceManager = {
             console.log("nope");
         }
         
+    },
+    startCartIfNotExist: function(){
+        if(localStorage["cart"] == undefined){
+            localStorage["cart"] = "[]";
+        }
     },
     getCart: function(){
         return JSON.parse(localStorage["cart"]);

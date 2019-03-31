@@ -1,5 +1,4 @@
 {% extends 'layout.html' %}
-
 {%block content%}
 <style>
 
@@ -26,57 +25,239 @@
     .closed{
         width: 0px;
     }
-        
-    .box{
-        /* background-color: white; */
-        width: 70%;
-        margin: 10 auto;
-        background: #ffffff;
-        line-height: 2em;
-        padding: 0 0.5em;
-        overflow: hidden;
 
-        /* Set the opacity property of the element and a transition to fadout */
-        opacity: 1;
-        -webkit-transition: opacity 300ms linear;
-        transition: opacity 300ms linear;
+    h3,h4{
+        margin: 10px 2px;
+    }
+
+    .sub-right{
+        margin-left: 20px;
+    }
+
+    i:hover{
+        cursor: pointer;
+    }
+
+    .times{
+        color: #d12c2c;
+    }
+
+    .trashcan{
+        margin-left: 20px;
+        margin-top: 1px;
+        font-size: 25px;
+        color: #d12c2c;
+    }
+
+    #map-cart-controls{
+        display: flex;
+        flex-direction: row;
+    }
+
+    .map-checkbox{
+        transform: scale(1.2);
+    }
+
+    #mass-selected{
+        transform: scale(1.5);
+        margin: 20px 0px 0px 12px;
+    }
+
+    .map-header-container{
+        margin: 0px auto;
+        height: 55px;
+        width: 95%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+    }
+
+    .map-option-container{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        height: 100%;
+    }
+
+    .heatmap-option-body{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        align-items: center;
+        width: 100%;
+        height:70%;
+
+    }
+    .map-option-header{
+        width: 100%;
+        height: 30%;
+        text-align: center;
+    }
+    .map-option-header p{
+        margin: 0px auto;
+        font-size:1em;
+        font-weight: 800;
+        text-decoration: underline;
+    }
+
+    #tool-options{
+        width: 30%;
+    }
+
+    #heatmap-options{
+        width: 40%;
+    }
+
+    #cart-options{
+        width: 30%;
+    }
+
+
+
+    #map-option-body{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+        width: 100%;
+        height:70%;
+    }
+
+    #map-option-body-left{
+        height: 100%;
+        margin: 0px auto;
+        display: flex;
+        flex-direction: column;
+    }
+
+    #map-option-body button{
+        width: 100px;
+        height: 25px;
+    }
+
+
+
+    .btn{
+        border-radius: 6px;
+        font-size: 11px;
+        color: #fff;
+    }
+
+    .btn-danger{
+        background-color: #d9534f;
+        border-color: #d9534f;
+    }
+
+    .btn-warning{
+        background-color: #f0ad4e;
+        border-color: #eea236;
+    }
+
+    .btn-success{
+        background-color: #5cb85c;
+        border-color: #4cae4c;
+    }
+
+    .heatmap-option-body button{
+        width: 100px;
+        height: 25px;
+    }
+
+    .finder{
+        color: #f0ad4e;
+        margin-top: 5px;
         
+    }
+
+    select{
+        width: 140px;
+        height: 25px;
+        color: #fff;
+        background-color:#d9534f;
+        text-align-last:center;
+    }
+
+    .info-box{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
     }
 
 
 </style>
 <!-- <p>Logged in: {{ user.username }}</p>  -->
 
+<div class="map-header-container">
+        <div class="map-option-container" id="tool-options">
 
-<button id="delete-button">Delete Selected Shape</button>
-<button id="load-cart">Add to Cart</button>
-<button id="delete-all-button">Delete All Shapes</button>
-<button id="toggle-cart-button">Toggle Cart</button>
-<select>
-    <option disabled selected value> -- Parameter -- </option>
-    <option value="pm2.5">PM2.5</option>
-    <option value="pm1">PM1</option>
-    <option value="pm10">PM10</option>
-    <option value="temperature">Temperature</option>
-    <option value="humidity">Humidity</option>
-    <option value="co">CO</option>
-    <option value="no">NO</option>
-</select>
-<button id="toggle-heat-map-on">Toggle Heatmap</button>
-<button id="toggle-heat-map-off">Heatmap Off</button>
+            <div class="map-option-header">
+                <p>Drawing Options</p>
+            </div>
+            <div id="map-option-body">
+                            <button class="btn btn-danger" id="delete-all-button">Delete All</button>
+                            <button class="btn btn-warning" id="delete-button">Delete Shape</button>
+                            <button class="btn btn-success" id="load-cart">Get Devices</button>
+                </div>
+
+        </div>
+        <div class="map-option-container" id="heatmap-options">
+
+                <div class="map-option-header">
+                        <p>Heatmap Options</p>
+
+                </div>
+                <div class="heatmap-option-body">
+                     <select>
+                        <option disabled selected value> -- Parameter -- </option>
+                        <option value="pm2.5">PM2.5</option>
+                        <option value="pm1">PM1</option>
+                        <option value="pm10">PM10</option>
+                        <option value="temperature">Temperature</option>
+                        <option value="humidity">Humidity</option>
+                        <option value="co">CO</option>
+                        <option value="no">NO</option>
+                    </select>
+                    <button id="toggle-heat-map-on" class="btn btn-success">Toggle Heatmap</button>
+                    <button id="toggle-heat-map-off" class="btn btn-warning">Heatmap Off</button>
+                </div>
+        </div>
+
+        <div class="map-option-container" id="cart-options">
+
+                <div class="map-option-header">
+                        <p>Cart Options</p>
+
+                </div>
+
+                <div class="heatmap-option-body">
+                    <button id="close-flag-icons" class="btn btn-danger">Close Icons</button>
+                    <button id="toggle-cart-button-on" class="btn btn-success">View</button>
+                    <button id="toggle-cart-button-off" class="btn btn-warning">Hide</button>
+                </div>
+        </div>
+
+
+</div>
 <div id="outer-container">
     <div id="map"></div>
 
     <div class="cart">
-        <input id="delete-all-cart-items" type="button" value="delete">
-        <input type="checkbox" id="mass-selected">
-
+        <!-- <input id="delete-all-cart-items" type="button" value="delete"> -->
+        <div id="map-cart-controls">
+            <h3 id= "delete-all-cart-items" value="delete">
+                <i class="fas fa-trash trashcan"></i>
+            </h3>
+            <input type="checkbox" id="mass-selected">
+        </div>
     </div>
 
 </div>
 
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="{{url_for('static', filename='style/data.css')}}">
+
     <script src="{{url_for('static', filename='script/map.js')}}"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA6ykJy9dcSsPpZ5QvMkmkAGQd6MpbfkV4&callback=initMap&libraries=drawing,visualization"
     async defer></script>
@@ -97,6 +278,13 @@
             if(heatmap)
                 heatmap.setMap(null);
         }
+
+        $(".cart").on("click",".focus-view", function(e){
+            console.log(e.target.parentElement.parentElement.innerText);
+            map.setZoom(14);
+            map.panTo(nodeToCoords[e.target.parentElement.parentElement.innerText]["coords"]);
+            nodeToCoords[e.target.parentElement.parentElement.innerText]["window"].open(map,nodeToCoords[e.target.parentElement.parentElement.innerText]["marker"]);
+        });
         
         // Toggles off the map
         document.getElementById("toggle-heat-map-off").addEventListener("click", function(e){
@@ -188,9 +376,9 @@
             for(; i < buttons.length; i++){
                 if(buttons[i].checked){
                     // Deletes the ID from the cart
-                    deleteFromCart(buttons[i].parentElement.innerText)
+                    deleteFromCart(buttons[i].parentElement.previousElementSibling.innerText)
                     // Removes the card for the screen
-                    delete_selected(buttons[i]);
+                    delete_selected(buttons[i].parentElement);
                 }
             }
 
@@ -255,8 +443,8 @@
             // Deletes the node, removes it from the cart, updates local storage
             console.log("Deleting the current node");
 
-            delete_selected(e.target);
-            deleteFromCart(e.target.parentElement.innerText);
+            delete_selected(e.target.parentElement.parentElement);
+            deleteFromCart(e.target.parentElement.parentElement.previousElementSibling.innerText);
             clearLocalStorage();
             saveCartToLocal();
         });
@@ -271,6 +459,7 @@
 
         // Add single Node to cart
         function addNodeToCart(node){
+            node['id']= node["id"].toUpperCase();
             cart.push(node);
         }
 
@@ -299,11 +488,16 @@
         }
         
         // Hooks up the event listener for the toggle cart button
-        document.getElementById("toggle-cart-button").addEventListener("click", toggleClass);
+        document.getElementById("toggle-cart-button-on").addEventListener("click", toggleClassOn);
+        document.getElementById("toggle-cart-button-off").addEventListener("click", toggleClassOff);
 
         // Toggles the closed attribute for the cart to colapse
-        function toggleClass(){
-            document.querySelector(".cart").classList.toggle("closed");
+        function toggleClassOn(){
+            document.querySelector(".cart").classList.remove("closed");
+        }
+
+        function toggleClassOff(){
+            document.querySelector(".cart").classList.add("closed");
         }
 
         // Creates a cart "card" with that node id on it
@@ -312,20 +506,50 @@
 
             var div = document.createElement('div');
             div.classList.add('box');
-            div.innerHTML = i.id;
+            // div.innerHTML = i.id;
 
-            var del = document.createElement('input');
-            del.type="submit";
+            // Creates an inner Left Div object that has ID and search btn
+            var box_left = document.createElement("div");
+            box_left.classList.add("box-left");
+            box_left.innerHTML = i.id.toUpperCase();
+
+            var find = document.createElement('h4');
+            // del.type="submit";
+            find.value="find";
+            find.innerHTML = '<i class="fas fa-search-location focus-view"></i>'
+            // <i class="fas fa-times"></i>
+            find.name="find-item"
+            find.classList.add('finder');
+
+
+
+            box_left.appendChild(find);
+
+            //Creates an Inner right div tag that holds the delete and check box
+            var box_right = document.createElement("div");
+            box_right.classList.add("box-right");
+
+
+            var del = document.createElement('h4');
+            // del.type="submit";
             del.value="delete";
+            del.innerHTML = '<i class="fas fa-times times"></i>'
+            // <i class="fas fa-times"></i>
             del.name="selected-item"
             del.classList.add('delete');
+            del.classList.add("sub-right");
 
             var check = document.createElement('input');
             check.type="checkbox";
             check.name="selected-checkbox";
+            check.classList.add("sub-right");
+            check.classList.add("map-checkbox")
 
-            div.appendChild(del);
-            div.appendChild(check);
+            box_right.appendChild(del);
+            box_right.appendChild(check);
+
+            div.appendChild(box_left);
+            div.appendChild(box_right);
             right.appendChild(div);
         };
 
@@ -347,7 +571,6 @@
 
         // Keeps track of the shapes drawn and the color of it
         var areasDrawn = [];
-        var color = '#1E90FF';
 
         // Checks whether the current node is in the cart
         function inCart(node){
@@ -464,7 +687,17 @@
             selectedShape = shape;
         }
 
+        // Goes through and closes all the flag window icons that were selected
+        document.querySelector("#close-flag-icons").addEventListener("click", function(){
+            for(var id in nodeToCoords){
+                nodeToCoords[id]["window"].close();
+            }
+        });
+
+        // Keeps a translation of device ID to flag coords
+        var nodeToCoords = {};
         var map;
+
         // Call back function that the api will use to authorize api calls
         function initMap() {
 
@@ -577,18 +810,23 @@
                 }
             }
 
+
             // Adds a marker and pop up for each sensor
             function add(node){
+
+                var markerCoords = {"lat" : node.lat, "lng": node.long};
+                nodeToCoords[node["id"]] = {};
+                nodeToCoords[node["id"]]["coords"] = markerCoords;
                 var marker = new google.maps.Marker({
-                position : {"lat" : node.lat, "lng": node.long},
-                map: map,
-                icon : "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
+                    position : markerCoords,
+                    map: map,
+                    icon : "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
             });
 
             var currentId = String(node.id);
             var infoContent = `<div class='info-box'>
                                     <div class='info-box-id'>VALUE</div>
-                                    <button class="add-single-button" id="VALUE"> Add To Cart </button>
+                                    <button class="add-single-button btn btn-success" id="VALUE"> Add To Cart </button>
                                 </div>
             `;
 
@@ -599,6 +837,9 @@
             var infoWindow = new google.maps.InfoWindow({
                 content: infoContent
             });
+            nodeToCoords[node["id"]]["window"] = infoWindow;
+            nodeToCoords[node["id"]]["marker"] = marker;
+
 
             // console.log(infoContent);
             // console.log(node.id);
