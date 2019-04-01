@@ -18,7 +18,23 @@ th{
     position: sticky;
     top: 0px;
     background-color: #ffffff;
+    text-align: center;
 }
+th p, td p{
+    text-align: center;
+}
+
+td a{
+    margin-left: 25px;
+    font-size: 18px;
+}
+
+td h5{
+    margin-left: 50px;
+    margin-bottom: 0px;
+    font-size: 18px;
+}
+
 
 /* Creates a scroll bar if the number of devices exceeds height */
 .header-container{

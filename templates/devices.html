@@ -8,22 +8,22 @@
 
                 <table class="device-table">
                         <tr>
-                                <th align="left" class="theaders">Device Name</th>
-                                <th align="left"  class="theaders">Device ID</th>
-                                <th align="left" class="theaders">Edit</th>
-                                <th align="left" class="theaders">Add to Cart</th>
-                                <th align="left" class="theaders">Delete</th>
+                                <th class="theaders"><p>Device Name</p></th>
+                                <th class="theaders"><p>Device ID</p></th>
+                                <th class="theaders"><p>Edit</p></th>
+                                <th class="theaders"><p>Add to Cart</p></th>
+                                <th class="theaders"><p>Delete</p></th>
 
         
                         </tr>
 
                         {%for device in devices %}
                                 <tr>
-                                        <td> {{device.DeviceName}} </td>
-                                        <td> {{device.DeviceId}} </td>
-                                        <td> <a href="/devices/edit/{{device.DeviceId}}"><i class="fas fa-edit"></i> </a></td>
-                                        <td> <button class="add-to-cart" id="{{device.DeviceId}}"><i class="fas fa-cart-plus"></i></button></td>
-                                        <td><a href="/devices/remove/{{device.DeviceId}}"><i class="fas fa-times"></i></a></td>
+                                        <td> <p> {{device.DeviceName}}</p> </td>
+                                        <td> <p>{{device.DeviceId}} </p></td>
+                                        <td> <a href="/devices/edit/{{device.DeviceId}}"><i class="fas fa-edit" style="color: #f0ad4e;"></i> </a></td>
+                                        <td> <h5 class="add-to-cart" id="{{device.DeviceId}}"><i class="fas fa-cart-plus" style="color: #5cb85c;"></i></h5> </td>
+                                        <td><a href="/devices/remove/{{device.DeviceId}}"><i class="fas fa-times" style="color: #d12c2c;"></i></a></td>
                                 </tr>
                         {%endfor%}
 

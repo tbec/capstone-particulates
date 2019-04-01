@@ -36,8 +36,8 @@ function toggleSelected(btn){
 // Grabs all the nav options adding the event listener for clicking on changing view
 function initSelectedAction(){
 
-    var options = ["index", "account", "map", "analytics", "download", "devices"];
-    console.log("Hit this");
+    var options = ["index", "account", "map", "analytics", "devices", ""];
+    // console.log("Hit this");
 
     var navBtns = document.getElementsByClassName('logo');
     var i;
@@ -52,6 +52,8 @@ function initSelectedAction(){
     console.log(currentPage);
 
     if (options.includes(currentPage)){
+        if(currentPage == "")
+            currentPage = "index"
         var navSelected = document.getElementsByName(currentPage);
         navSelected[0].parentElement.classList.add("selected");
 

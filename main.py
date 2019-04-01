@@ -202,11 +202,16 @@ def getData():
     validParameter, errorMessage = validateQueryParameters(params)
     values = []
     devicesDataFrames = []
-    devices = validateDeviceNames(params["ids"].split(","))
+    # devices = validateDeviceNames(params["ids"].split(","))
+    devices = params["ids"].split(",")
     
     if len(devices) == 0:
-        validParameter = False
-        errorMessage = "No devices were selected."
+        if (params["ids"] is None or params["ids"] == ""):
+            validParameter = False
+            errorMessage = "No devices were selected."
+        else:
+            devices = []
+            devices.append(params["ids"])
     if not validParameter:
         flash(errorMessage, category='alert alert-danger')
     else:

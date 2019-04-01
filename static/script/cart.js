@@ -13,6 +13,10 @@ const cartLogic = {
             cartLogic.getModal().style.display = "none";
             document.getElementById("circle-graph").checked = true;
 
+            // Removes the chart out of the Modal when you click off
+            var graphNode = document.querySelector(".piechart_3d").firstChild;
+            if(graphNode)
+                document.querySelector(".piechart_3d").removeChild(graphNode)
             removeOptions();
         }
         
@@ -28,6 +32,11 @@ const cartLogic = {
             if (event.target == cartLogic.getModal()) {
                 cartLogic.getModal().style.display = "none";
                 document.getElementById("circle-graph").checked = true;
+
+                // Removes the chart out of the Modal when you click off
+                var graphNode = document.querySelector(".piechart_3d").firstChild;
+                if(graphNode)
+                    document.querySelector(".piechart_3d").removeChild(graphNode)
                 removeOptions();
             }
 
@@ -268,8 +277,14 @@ const cartLogic = {
         document.getElementById("download-parameters").addEventListener("click", function(event){
             console.log("preventing default");
             event.preventDefault();
-            var params = getDownloadParams();
-            downloadDataSet(params);
+            if(cartLogic.listWorkingSet() != "")
+            {
+                var params = getDownloadParams();
+                downloadDataSet(params);
+            }
+            else{
+                alert("No devices in the Query Set.");
+            }
         });
 
         // Sets up the handler for the button that is created for graph view options
@@ -372,7 +387,9 @@ const cartLogic = {
         var btn = document.createElement("button")
         btn.type="submit"
         btn.id = "submit-graph-options";
-        btn.innerText = "Submit";
+        btn.innerText = "View";
+        btn.classList.add("btn");
+        btn.classList.add("btn-success")
 
         right_div.appendChild(btn);
     },
@@ -579,31 +596,34 @@ const cartLogic = {
 
         // For each device Reponse and Data
         for(var deviceId in data){
-
+            var deviceHasData = data[deviceId].length > 0;
             // Create a div with device id as a header
             var deviceDiv = this.createDiv();
             deviceDiv.classList.add("device-info-header")
 
             // Create device info text
-            var deviceH3 = this.createH3();
+            var deviceH3 = this.createH4();
             deviceH3.innerText = deviceId;
             deviceH3.classList.add("header-info-text");
             deviceDiv.append(deviceH3);
-
+            // Adds a clickable pointer over ID if it has return value
+            if(deviceHasData){
+                deviceH3.classList.add("clickable-row");
+            }
             // Create another one that displays result size
-            deviceH3 = this.createH3();
+            deviceH3 = this.createH4();
             deviceH3.classList.add("header-info-text");
 
             // If the device has a result set show the size
-            var deviceHasData = data[deviceId].length > 0;
             if(deviceHasData){
                 deviceH3.innerText = data[deviceId].length;
+                deviceH3.classList.add("clickable-row");
                 // append it to the div
                 deviceDiv.append(deviceH3);
-                var iconH3 = this.createH3();
+                var iconH3 = this.createH4();
                 iconH3.classList.add("header-info-text");
                 iconH3.innerHTML = '<i class="fas fa-chart-bar chart-logo header-info-graph"></i>';
-
+                iconH3.classList.add("clickable-row");
                 deviceDiv.append(iconH3);
             }
             else{
@@ -677,8 +697,8 @@ const cartLogic = {
     createDiv: function(){
         return document.createElement("div");
     },
-    createH3: function(){
-        return document.createElement("h3");
+    createH4: function(){
+        return document.createElement("h4");
     },
     setParameters: function(rawParameters){
         x = 2;
@@ -812,7 +832,13 @@ const graphLogic ={
 
                 // Clear the dictionary.
                 keys.forEach(function(key){
-                    dataDict[key] = 0;
+                    if(noCaps.includes(key)){
+                        dataDict[key] = 0;
+
+                    }
+                    else{
+                        dataDict[key.toUpperCase()] = 0;
+                    }
                 });
             }
 
@@ -857,7 +883,7 @@ const graphLogic ={
         function drawGraph(dataSet){
             var data = google.visualization.arrayToDataTable(dataSet);
             var options = {
-                title: 'Average Particulate Matter.',
+                title: 'Measurement Distribution',
                 is3D: true,
             };
         

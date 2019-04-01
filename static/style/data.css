@@ -34,12 +34,17 @@
   }
 
   .graph-option-div{
+      display: flex;
+      flex-direction: row;
       width: 100%;
       height: 15%;
   }
   #graph-toggle{
     width: 100%;
     height: 20%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
     /* background-color: green; */
   }
   /* Modal Content */
@@ -224,13 +229,14 @@ label{
     flex-direction: column;
     align-items: center;
     width: 271px;
+    height: 83px;
 }
 
 #datetime-range-download{
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 282px;
+    width: 291px;
 }
 
 #button-options{
@@ -372,7 +378,7 @@ table {
   }
 
 #query-limit-value{
-    width: 58px;
+    width: 56px;
 }
 
 #query-filename-value{
@@ -393,10 +399,12 @@ table {
   }
   .device-info-header h2{
     color: #d02b2b;
-    font-size: 13px;
-    font-weight: 500;
+    font-size: 18px;
+    font-weight: 600;
     width: 50%;
+    text-decoration: underline;
 }
+
 
   .table-div{
       height: 50px;
@@ -411,6 +419,10 @@ table {
 
 .header-info-text{
     width: 33%;
+}
+
+.clickable-row:hover{
+    cursor: pointer;
 }
 
 
@@ -482,4 +494,28 @@ table {
 /* Makes the slider itself round */
   .slider.round:before {
     border-radius: 50%;
+  }
+
+  #myModal{
+      /* display: block; */
+      padding-top: 30px;
+  }
+
+  .modal-content{
+    height: 85%;
+  }
+
+  .graph-option-div label{
+        font-size: 16px;
+        font-weight: 400;
+        margin-left: 20px;
+        padding-top: 0px;
+  }
+
+  .graph-option-div input{
+    transform: scale(1.3);
+  }
+
+  #submit-graph-options{
+      height: 45px;
   }
