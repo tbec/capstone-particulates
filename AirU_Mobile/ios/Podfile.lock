@@ -17,6 +17,8 @@ PODS:
     - React/RCTNetwork
   - React/RCTNetwork (0.57.5):
     - React/Core
+  - RNKeychain (3.1.1):
+    - React
   - RNSVG (6.5.2):
     - React
   - yoga (0.57.5.React)
@@ -26,6 +28,7 @@ DEPENDENCIES:
   - react-native-ble-plx (from `../node_modules/react-native-ble-plx`)
   - react-native-ble-plx-swift (from `../node_modules/react-native-ble-plx`)
   - React/RCTImage (from `../node_modules/react-native`)
+  - RNKeychain (from `../node_modules/react-native-keychain`)
   - RNSVG (from `../node_modules/react-native-svg`)
   - yoga (from `../node_modules/react-native/ReactCommon/yoga/Yoga.podspec`)
 
@@ -40,6 +43,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-ble-plx"
   react-native-ble-plx-swift:
     :path: "../node_modules/react-native-ble-plx"
+  RNKeychain:
+    :path: "../node_modules/react-native-keychain"
   RNSVG:
     :path: "../node_modules/react-native-svg"
   yoga:
@@ -50,9 +55,10 @@ SPEC CHECKSUMS:
   React: 1fe0eb13d90b625d94c3b117c274dcfd2e760e11
   react-native-ble-plx: 7ad27c5a97bdb07ca77cf92badacd990e350c32c
   react-native-ble-plx-swift: 283d93356064625d8d825b0814203628afe381f0
+  RNKeychain: 5381e340056c23de103d73ae59cbddc6ffc21d97
   RNSVG: 6252323c0312735f0af5f58b5adf2965b6a9ffbf
   yoga: b1ce48b6cf950b98deae82838f5173ea7cf89e85
 
-PODFILE CHECKSUM: 65638240333bcc06ea1be94bfaf4602040fabed1
+PODFILE CHECKSUM: 572a979fe065274183b4002badaec65ffc3e857a
 
 COCOAPODS: 1.5.3

@@ -1,3 +1,7 @@
+import {AsyncStorage} from 'react-native'
+import {SENSOR_ARRAY} from '../Components/Constants'
+import React from 'react'
+
 /**
  * Information related to sensor
  * 
@@ -22,7 +26,8 @@ export const sensorFuncs = {
     },
 
     getName: function(sensor) {
-        return sensor.name
+        let name = sensor.sensorName
+        return name
     },
 
     getPrivacy: function (sensor) {
@@ -46,16 +51,16 @@ export const sensorFuncs = {
      * Create new empty day
      */
     emptyDay: function() {
-        let dataPoint = {pm1: [], pm25: [], pm10: [], pm1Avg: 0, pm25Avg: 0, pm10Avg: 0}
         var _data = []
 
         for (i = 0; i < 24; i++) {
-            _data.push(dataPoint)
+            _data.push({pm1: [], pm25: [], pm10: [], pm1Avg: 0.00, pm25Avg: 0.00, pm10Avg: 0.00})
         }
 
         let _date = new Date(Date.now())
         _date = new Date(_date.setHours(0,0,0))
-        let emptyDay = {date: _date, data: _data}
+        _avg = {pm1Avg: 0, pm25Avg: 0, pm10Avg: 0}
+        let emptyDay = {date: _date, data: _data, avg: _avg}
         return emptyDay
     },
 
@@ -67,39 +72,67 @@ export const sensorFuncs = {
      * @param dataSet Entire sensor dataset
      * @returns sensor with updated data
      */
-    addData: function(sensor, dataPoint, dataSet) {
+    addData: function(sensorList, position, dataPoint, dataSet) {
         // setup
+        let sensor = sensorList[position]
+        
+        // get date
         let date = new Date(Date.now())
         let dateStart = new Date(Date.now())
         dateStart = new Date(dateStart.setHours(0,0,0))
         let dayOfWeek = date.getDay()
         let day = dataSet[dayOfWeek]
+        dayDate = new Date(day.date)
 
         // if dates are different, update day
-        if (day.date.valueOf != dateStart.valueOf) {
+        if (dayDate.getDate() != dateStart.getDate()) {
             day = sensorFuncs.emptyDay()
         }
 
         let hour = date.getHours()
-        let today = day.data[hour]
+        let currHour = day.data[hour]
 
-        // add data
-        today.pm1.push(dataPoint.pm1)
-        today.pm25.push(dataPoint.pm25)
-        today.pm10.push(dataPoint.pm10)
+        // add data. Will be null if server could not find, such as setting up a new sensor
+        if (dataPoint.pm1 != null) {
+            currHour.pm1.push(parseFloat(dataPoint.pm1.toFixed(2)))
+        } else {
+            currHour.pm1.push(0)
+        }
+        if (dataPoint.pm25 != null) {
+            currHour.pm25.push(parseFloat(dataPoint.pm25.toFixed(2)))
+        } else {
+            currHour.pm25.push(0)
+        }
+        if (dataPoint.pm10 != null) {
+            currHour.pm10.push(parseFloat(dataPoint.pm10.toFixed(2)))
+        } else {
+            currHour.pm10.push(0)
+        }
 
-        reducer = (first, second, length) => (first + second) / length;
+        // update averages and reduce to 2 decimalsd)
+        for (i = 0; i < currHour.pm1.length; i++) {
+            currHour.pm1Avg = currHour.pm1Avg + currHour.pm1[i]
+            currHour.pm25Avg = currHour.pm25Avg + currHour.pm25[i]
+            currHour.pm10Avg = currHour.pm10Avg + currHour.pm10[i]
+        }
 
-        // update averages
-        today.pm1Avg = today.pm1.reduce(reducer)
-        today.pm25Avg = today.pm25.reduce(reducer)
-        today.pm10Avg = today.pm10.reduce(reducer)
+        currHour.pm1Avg = parseFloat(currHour.pm1Avg / currHour.pm1.length)
+        currHour.pm25Avg = parseFloat(currHour.pm25Avg / currHour.pm25.length)
+        currHour.pm10Avg = parseFloat(currHour.pm10Avg / currHour.pm10.length)
 
-        // set data point and return
-        day.data[hour] = today
+        day.avg.pm1Avg = (day.avg.pm1Avg + currHour.pm1Avg) / 2
+        day.avg.pm25Avg = (day.avg.pm25Avg + currHour.pm25Avg) / 2
+        day.avg.pm10Avg = (day.avg.pm10Avg + currHour.pm10Avg) / 2
+
+        // set data point
+        day.data[hour] = currHour
         sensor.sensorData[dayOfWeek] = day
 
-        // save sensor?
+        // save sensor and return
+        sensorList[position] = sensor
+        jsonList = JSON.stringify(sensorList)
+        AsyncStorage.setItem(SENSOR_ARRAY, jsonList)
+
         return sensor
     }
 }

@@ -6,9 +6,11 @@ AirU_Mobile/package_lock.json
 AirU_Mobile/ios/Podfile.lock
 AirU_Mobile/package-lock.json
 AirU_Mobile/ios/Podfile.lock
-AirU_Mobile/ios/Podfile~
 AirU_Mobile/package-lock.json
 .DS_Store
 *.pyc
 AirU_Mobile/ios/Podfile.lock
 AirU_Mobile/ios/Podfile~
+.idea/vcs.xml
+.idea/workspace.xml
+.idea/codeStyles/Project.xml

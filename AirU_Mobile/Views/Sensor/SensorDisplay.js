@@ -7,7 +7,8 @@ import { BarChart, Grid} from 'react-native-svg-charts'
 import {Text as TextChart, G} from 'react-native-svg'
 import { Dropdown } from 'react-native-material-dropdown';
 import {sensorFuncs} from '../../Components/SensorObj'
-import { COLOR_GOOD, COLOR_HAZARDOUS, COLOR_MODERATE, COLOR_SENSITVE, COLOR_UNHEALTHY, COLOR_VERY_UNHEALTHY } from '../../Components/Constants'
+import { COLOR_GOOD, COLOR_HAZARDOUS, COLOR_MODERATE, COLOR_SENSITVE, COLOR_UNHEALTHY, COLOR_VERY_UNHEALTHY
+            , REFRESH, WEB_URL_NO_MOBILE} from '../../Components/Constants'
 
 // component should never be called if AsyncStorage.getItem('Sensor') is not already set
 export default class SensorDisplay extends Component<Props> {
@@ -15,7 +16,8 @@ export default class SensorDisplay extends Component<Props> {
         super(Props);
         
         // bindings
-        this.getSensors.bind(this);
+        this.getSensors = this.getSensors.bind(this);
+        this.getTimer = this.getTimer.bind(this);
         this.dataTypeHandler = this.dataTypeHandler.bind(this)
         this.periodHandler = this.periodHandler.bind(this)
         this.graphDataHandler = this.graphDataHandler.bind(this)
@@ -27,24 +29,35 @@ export default class SensorDisplay extends Component<Props> {
         
         lastUpdate = new Date(Date.now())
         this.state = {sensorList: [], data: [], selectedSensor: {sensorData: []}, selectedType: 'PM1', lastUpdated: lastUpdate,
-                        pickingType: false, period: 'hour', connected: true, error: '', dataPoint: 0, timer: null}
+                        pickingType: false, period: 'hour', connected: true, error: '', sensorNumber: 0, timer: null, dataPoint: 0}
     }
 
     componentWillMount() {
         this.getSensors()
-        let _timer = setInterval(this.getData, 10000) // every 5 minutes
-        this.getData()
-        this.setState({timer: _timer})
+        this.getTimer()
     }
 
     componentWillUnmount() {
         this.clearInterval(this.state.timer)
     }
 
+    // setup timer for 
+    async getTimer() {
+        await AsyncStorage.getItem(REFRESH).then((_retrieveData) => {
+            if (_retrieveData == null) {
+                _timer = setInterval(this.getData, 30000) // every 30 seconds by default
+                return _timer
+            } else {
+                _timer = setInterval(this.getData, JSON.parse(_retrieveData))
+                return _timer
+            }}).then((_timer) => { this.setState({timer: _timer})})
+    }
+
     // gets list of saved sensors
     async getSensors() {
         let sensorsList = await this.getSensorList();
         this.setState({sensorList: sensorsList, selectedSensor: sensorsList[0]})
+        this.getData()
     }
 
     async getSensorList() {
@@ -74,6 +87,8 @@ export default class SensorDisplay extends Component<Props> {
 
     /** WEB CALLS **/
     async getData() {
+        //TODO: ADJUST TO DO ALL SENSORS INSTEAD OF ONLY CURRENTLY SELECTED ONE
+
         data = await this.webCall()
         if (data == null) {
             this.setState({connected: false})
@@ -88,19 +103,19 @@ export default class SensorDisplay extends Component<Props> {
         _pm25 = json["PM2.5"]
 
         // add datapoint and update state
-        dataPoint = {pm1: _pm1, pm10: _pm10, pm25: _pm25, time: _time}
-        selectSensor = sensorFuncs.addData(this.state.selectedSensor, 
-                dataPoint, sensorFuncs.getDataSet(this.state.selectedSensor))
+        dataToAdd = {pm1: _pm1, pm10: _pm10, pm25: _pm25, time: _time}
+        selectSensor = sensorFuncs.addData(this.state.sensorList, this.state.sensorNumber, 
+            dataToAdd, sensorFuncs.getDataSet(this.state.selectedSensor))
 
-        this.setState({data: selectSensor.sensorrData, lastUpdated: new Date(Date.now())})
+        this.setState({connected: true, data: selectSensor.sensorData, lastUpdated: new Date(Date.now())})
     }
 
     async webCall() {
         let urlBase = WEB_URL + '/data/pollution/'
-        let deviceID = 'A81B6A7A6116' //this.state.selectedSensor.id
+        let deviceID = this.state.selectedSensor.id //'F45EAB9F6CFA'
 
         let url = urlBase + deviceID
-        url = 'http://neat-environs-205720.appspot.com/data/pollution/F45EAB9C48E6'
+        url =  WEB_URL_NO_MOBILE + '/data/pollution/' + deviceID
 
         console.log('URL: ' + url)
 
@@ -109,10 +124,12 @@ export default class SensorDisplay extends Component<Props> {
     }
 
     render() {
+        let connStatus = this.state.connected ? 'Connected' : 'Not Connected'
+
         return (
             <View style={{flex: 3}}>
                 <Text style={{textAlign: 'center', paddingBottom: 10}}>
-                    Not Connected
+                    {connStatus}
                 </Text>
                 <Period period={this.state.period} handler={this.periodHandler}/>
                 <DataType value={this.state.selectedType} handler={this.dataTypeHandler}/>
@@ -140,6 +157,7 @@ export default class SensorDisplay extends Component<Props> {
 class Graph extends Component<Props> {
     constructor(props) {
         super(props)
+        this.computeDayAverage = this.computeDayAverage.bind(this)
     }
 
     pollutionColor(pollution) {
@@ -158,10 +176,32 @@ class Graph extends Component<Props> {
         }
     }
 
+    computeDayAverage(start, end, type, dataDays) {
+        val = 0
+        if (type == "PM1") {
+            for (i = start; i < end; i ++) {
+                val = val + dataDays[i].pm1Avg
+            }
+        } else if (type == "PM25") {
+            for (i = start; i < end; i ++) {
+                val = val + dataDays[i].pm25Avg
+            }
+        } else {
+            for (i = start; i < end; i ++) {
+                val = val + dataDays[i].pm10Avg
+            }
+        }
+        length = end - start
+        val = val / length
+        val = val.toFixed(2)
+        return val
+    }
+
     render() {
         // period to show for data
         var data = this.props.sensor.sensorData
 
+        // choose which view to show
         if (data.length == 0) {
             data = [0]
         } else if (this.props.period == 'hour') {
@@ -176,6 +216,67 @@ class Graph extends Component<Props> {
             } else {
                 data = data.pm10
             }
+
+            // only show past 8 data points to avoid filling up graph
+            if (data.length > 7)
+                data = data.slice(data.length-7)
+
+        } else if (this.props.period == 'day') {
+            currDay = this.props.date.getDay()
+            dataDays = data[currDay].data
+            data = []
+            if (this.props.selectedType == "PM1") {
+                data.push(this.computeDayAverage(0, 4, "PM1", dataDays))
+                data.push(this.computeDayAverage(4, 8, "PM1", dataDays))
+                data.push(this.computeDayAverage(8, 12, "PM1", dataDays))
+                data.push(this.computeDayAverage(12, 16, "PM1", dataDays))
+                data.push(this.computeDayAverage(16, 20, "PM1", dataDays))
+                data.push(this.computeDayAverage(20, 23, "PM1", dataDays))
+            } else if (this.props.selectedType == "PM25") {
+                data.push(this.computeDayAverage(0, 4, "PM25", dataDays))
+                data.push(this.computeDayAverage(4, 8, "PM25", dataDays))
+                data.push(this.computeDayAverage(8, 12, "PM25", dataDays))
+                data.push(this.computeDayAverage(12, 16, "PM25", dataDays))
+                data.push(this.computeDayAverage(16, 20, "PM25", dataDays))
+                data.push(this.computeDayAverage(20, 23, "PM25", dataDays))
+            } else {
+                data.push(this.computeDayAverage(0, 4, "PM10", dataDays))
+                data.push(this.computeDayAverage(4, 8, "PM10", dataDays))
+                data.push(this.computeDayAverage(8, 12, "PM10", dataDays))
+                data.push(this.computeDayAverage(12, 16, "PM10", dataDays))
+                data.push(this.computeDayAverage(16, 20, "PM10", dataDays))
+                data.push(this.computeDayAverage(20, 23, "PM10", dataDays))
+            }
+        }  else if (this.props.period == 'week') {
+            dataDays = data
+            data = []
+            if (this.props.selectedType == "PM1") {
+                data.push(dataDays[0].avg.pm1Avg)
+                data.push(dataDays[1].avg.pm1Avg)
+                data.push(dataDays[2].avg.pm1Avg)
+                data.push(dataDays[3].avg.pm1Avg)
+                data.push(dataDays[4].avg.pm1Avg)
+                data.push(dataDays[5].avg.pm1Avg)
+                data.push(dataDays[6].avg.pm1Avg)
+            } else if (this.props.selectedType == "PM25") {
+                data.push(dataDays[0].avg.pm25Avg)
+                data.push(dataDays[1].avg.pm25Avg)
+                data.push(dataDays[2].avg.pm25Avg)
+                data.push(dataDays[3].avg.pm25Avg)
+                data.push(dataDays[4].avg.pm25Avg)
+                data.push(dataDays[5].avg.pm25Avg)
+                data.push(dataDays[6].avg.pm25Avg)
+            } else {
+                data.push(dataDays[0].avg.pm10Avg)
+                data.push(dataDays[1].avg.pm10Avg)
+                data.push(dataDays[2].avg.pm10Avg)
+                data.push(dataDays[3].avg.pm10Avg)
+                data.push(dataDays[4].avg.pm10Avg)
+                data.push(dataDays[5].avg.pm10Avg)
+                data.push(dataDays[6].avg.pm10Avg)
+            }
+        } else {
+            data = [0]
         }
 
         if (data.length == 0) {

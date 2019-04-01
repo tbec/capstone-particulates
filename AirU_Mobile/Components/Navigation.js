@@ -32,6 +32,7 @@ import Tracker from '../Views/Tracker/Tracker'
 
 // settings if needed
 import EditDevice from '../Views/Settings/EditDevice'
+import Refresh from '../Views/Settings/Refresh'
 
 /**
  * Navigator used for moving between screens using react-navigation library. 
@@ -103,6 +104,7 @@ const Router = createStackNavigator(
 
     // Settings
     EditDevice: {screen: EditDevice},
+    Refresh: {screen: Refresh}
   },
   {
     initalRouteName: 'Home',

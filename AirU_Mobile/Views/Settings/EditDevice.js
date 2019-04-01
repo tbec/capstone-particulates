@@ -201,7 +201,7 @@ export default class EditDevice extends Component<Props> {
                     <Text/>
                     <Button title="Update Settings"
                             onPress={() => this.editDevice()}
-                            disabled={(sendingData)}
+                            disabled={(this.state.sendingData)}
                             color='crimson' 
                         />
                     <Text>{this.state.error}</Text>

@@ -6,8 +6,9 @@ import React, {Component} from 'react';
 import {View, Text, AsyncStorage,
          TextInput, KeyboardAvoidingView, Button, Image, ImageBackground} from 'react-native';
 import styles from '../../StyleSheets/Styles'
-import { LOGIN_NAME, PASSWORD, TEST_MODE, WEB_URL} from '../../Components/Constants'
+import { LOGIN_NAME, TEST_MODE, WEB_URL, PASSWORD} from '../../Components/Constants'
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview'
+import {accountFuncs} from '../../Components/CommonFuncs'
 
 /**
  * Logs into system
@@ -42,12 +43,14 @@ export default class Login extends Component<Props> {
 
         // make API call to login passing in login/password
         let result = await this.webCall();
-        // let json = JSON.parse(result);
 
         // if success, save locally and continue
         if (result != null && JSON.parse(result).success) {
             AsyncStorage.setItem(LOGIN_NAME, this.state.login)
             AsyncStorage.setItem(PASSWORD, this.state.password)
+            accountFuncs.saveAccount(this.state.login, this.state.password)
+            accountFuncs.updateArrays()
+
             let toReturn = this.props.navigation.getParam('return', false);
             if (toReturn) {
                 this.props.navigation.goBack()

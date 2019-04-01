@@ -13,7 +13,7 @@ import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 import com.oblador.vectoricons.VectorIconsPackage;
-
+import com.oblador.keychain.KeychainPackage;
 
 import java.util.Arrays;
 import java.util.List;
@@ -36,7 +36,8 @@ public class MainApplication extends Application implements ReactApplication {
             new BlePackage(),
             new SvgPackage(),
             new MapsPackage(),
-            new VectorIconsPackage()
+	  new VectorIconsPackage(),
+	    new KeychainPackage()
       );
     }
 

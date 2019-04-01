@@ -2,91 +2,107 @@ import React, {Component} from 'react';
 import {View, TouchableHighlight, Text, ImageBackground, Image, AsyncStorage} from 'react-native';
 import {NavigationActions} from 'react-navigation'
 import  styles  from '../StyleSheets/Styles';
-import {LOGIN_NAME, PASSWORD, WEB_URL} from '../Components/Constants'
+import {LOGIN_NAME, PASSWORD, WEB_URL, SENSOR_ARRAY} from '../Components/Constants'
+import {sensorFuncs} from '../Components/SensorObj'
+import { accountFuncs } from '../Components/CommonFuncs';
 
 export default class Home extends Component<Props> {
     constructor(props) {
         super(props)
 
         this.updateArrays = this.updateArrays.bind(this)
-        this.webCall = this.webCall.bind(this)
-        this.login = this.login.bind(this)
+        this.getSensorsWebCall = this.getSensorsWebCall.bind(this)
     }
 
     componentWillMount() {
-        this.updateArrays()
+        //this.updateArrays()
+        accountFuncs.updateArrays()
     }
 
+    /**
+     * Get sensors from server and add locally
+     */
     async updateArrays() {
         let _login
 
-        await AsyncStorage.getItem(LOGIN_NAME).then((_retrieveData) => {
-            if (_retrieveData == null) {
-                return
-            } else {
-                _login = _retrieveData
-            }})
-
-        let res = await this.login(_login)
+        // try to login, return if could not or credentials not saved
+        let res = await accountFuncs.loginKeychain()
+        if (res == null) {
+            return
+        }
         
+        // if successfully logged in, get account sensors
         if (res != null && JSON.parse(res).success) {
-            let sensors = await this.webCall()
-            sensors = sensors.replace()
+            let sensors = await this.getSensorsWebCall()
             let sensorJSON = JSON.parse(sensors)
-            console.log("Got JSON")
+            console.log("Got sensor JSON")
+
+            // if no data, remove all sensors?
+            if (sensorJSON == null) {
+                AsyncStorage.setItem(SENSOR_ARRAY, null)
+                return
+            }
+
+            sensorList = await AsyncStorage.getItem(SENSOR_ARRAY).then(res => JSON.parse(res))
+            var newSensorList = []
+            var inSensor = false
 
             // for each loop to go through and add sensors
+            for (let currSensor of sensorJSON) {
+                inSensor = false
 
-            // get data for each
-            
+                // check if exists
+                if (sensorList != null) {
+                    for (let listSensor of sensorList) {
+                        if (currSensor.DeviceName == sensorFuncs.getName(listSensor)) {
+                            inSensor = true
+                            break;
+                        }
+                    }
+                }
+
+                if (inSensor) {
+                    continue;
+                }
+
+                // if did not find, add to list
+                _id = currSensor.DeviceId
+                _name = currSensor.DeviceName
+                _privacy = false
+                _sensorData = sensorFuncs.emptyWeek()
+
+                let newSensor = {id: _id, sensorName: _name, privacy: _privacy, sensorData: _sensorData};
+                newSensorList.push(newSensor)
+            }
+
+            if (sensorList == null) {
+                sensorList = []
+            }
+
+            sensorList.push(newSensorList)
+            AsyncStorage.setItem(SENSOR_ARRAY, JSON.stringify(sensorList))
+            console.log("Wrote sensors")
+
+            // get data for each?
         }
     }
 
-    async webCall() {
+    /**
+     * Gets sensors associated with account
+     */
+    async getSensorsWebCall() {
         let urlBase = WEB_URL + '/user/devices'
         let url = urlBase
 
         console.log('URL: ' + url)
 
+        // format returned [DeviceID: .... DeviceName: ....]
         return fetch(url, {method: 'GET', credentials: 'include' })
             .then((response) => response.json())
             .then((responseJson) => {
             return responseJson })
           .catch((error) => { 
               console.error(log)
-              return null
-        })
-    }
-
-    /**
-     * Logs into the site, must call before adding device
-     */
-    async login(login) {
-        let password
-
-        await AsyncStorage.getItem(PASSWORD).then((_retrieveData) => {
-            if (_retrieveData == null) {
-                // error
-            }
-            else {
-                password = _retrieveData
-            }
-        })
-
-        let urlBase = WEB_URL + '/login?'
-        let user = 'username=' + login
-        let passwordParam = '&password=' + password
-
-        let url = urlBase + user + passwordParam
-
-        console.log('URL: ' + url)
-
-        return fetch(url, {method: 'POST', credentials: 'include' })
-            .then((response) => response.json())
-            .then((responseJson) => {
-            return responseJson })
-            .catch((error) => { 
-              console.log(error)
               return null
         })
     }

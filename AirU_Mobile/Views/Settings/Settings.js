@@ -5,6 +5,7 @@ import {Text, View, TouchableHighlight, ImageBackground, Linking, Alert, AsyncSt
 import styles from '../../StyleSheets/Styles'
 import { SENSOR_ARRAY, LOGIN_NAME, PASSWORD, WEB_URL } from '../../Components/Constants'
 import { StackActions, NavigationActions } from 'react-navigation';
+import {accountFuncs} from '../../Components/CommonFuncs'
 
 /**
  * Main settings window, contains various buttons to perform actions
@@ -60,6 +61,7 @@ export default class Settings extends Component {
                 {text: 'Cancel', style: 'cancel'},
                 {text: 'OK', onPress: () => {
                     AsyncStorage.clear();
+                    accountFuncs.removeAccount()
                     let reset = StackActions.reset({
                         index: 0, 
                         actions:  [NavigationActions.navigate({
@@ -80,8 +82,11 @@ export default class Settings extends Component {
             [
                 {text: 'Cancel', style: 'cancel'},
                 {text: 'OK', onPress: () => {
+                    // clear parameters
                     AsyncStorage.setItem(LOGIN_NAME, null)
                     AsyncStorage.setItem(PASSWORD, null)
+                    accountFuncs.removeAccount()
+
                     let url = WEB_URL + '/logout'
                     fetch(url, {method: 'POST', credentials: 'include' })
                         .catch((error) => { console.error(error)})
@@ -116,6 +121,7 @@ export default class Settings extends Component {
                     <View style={[styles.home, {flex: 10}]}>
                         {log}
                         {editDevice}
+                        <Setting text="Adjust Data Rate" action={() => this.props.navigation.navigate('Refresh', {return: true})}/>
                         <Setting text="Reset Settings" action={() => this.reset()}/>
                         <Setting text="Contact AirU" action={() => Linking.openURL('mailto:aqandu@utah.edu')}/>
                     </View>
