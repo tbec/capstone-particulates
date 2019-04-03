@@ -59,7 +59,7 @@ export const sensorFuncs = {
 
         let _date = new Date(Date.now())
         _date = new Date(_date.setHours(0,0,0))
-        _avg = {pm1Avg: 0, pm25Avg: 0, pm10Avg: 0}
+        _avg = {pm1Avg: 0.00, pm25Avg: 0.00, pm10Avg: 0.00}
         let emptyDay = {date: _date, data: _data, avg: _avg}
         return emptyDay
     },
@@ -116,13 +116,14 @@ export const sensorFuncs = {
             currHour.pm10Avg = currHour.pm10Avg + currHour.pm10[i]
         }
 
-        currHour.pm1Avg = parseFloat(currHour.pm1Avg / currHour.pm1.length)
-        currHour.pm25Avg = parseFloat(currHour.pm25Avg / currHour.pm25.length)
-        currHour.pm10Avg = parseFloat(currHour.pm10Avg / currHour.pm10.length)
+        currHour.pm1Avg = parseFloat((currHour.pm1Avg / currHour.pm1.length).toFixed(2))
+        currHour.pm25Avg = parseFloat((currHour.pm25Avg / currHour.pm25.length).toFixed(2))
+        currHour.pm10Avg = parseFloat((currHour.pm10Avg / currHour.pm10.length).toFixed(2))
 
-        day.avg.pm1Avg = (day.avg.pm1Avg + currHour.pm1Avg) / 2
-        day.avg.pm25Avg = (day.avg.pm25Avg + currHour.pm25Avg) / 2
-        day.avg.pm10Avg = (day.avg.pm10Avg + currHour.pm10Avg) / 2
+        // update daily averages
+        day.avg.pm1Avg = parseFloat(((day.avg.pm1Avg + currHour.pm1Avg) / 2).toFixed(2))
+        day.avg.pm25Avg = parseFloat(((day.avg.pm25Avg + currHour.pm25Avg) / 2).toFixed(2))
+        day.avg.pm10Avg = parseFloat(((day.avg.pm10Avg + currHour.pm10Avg) / 2).toFixed(2))
 
         // set data point
         day.data[hour] = currHour
