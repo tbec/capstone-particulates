@@ -87,7 +87,7 @@ export default class Login extends Component<Props> {
         return (
             <KeyboardAwareScrollView style={[styles.container, {backgroundColor: '#b3e6ff'}]}>
                         <View style={{height: 200, alignItems: 'center', justifyContent: 'center', paddingTop: 20}}>
-                            <Image source={require('../../Resources/red_cloud.jpeg')} 
+                            <Image source={require('../../Resources/red_cloud2.jpeg')} 
                                             style={{width: '50%', height: '70%'}}/>
                         </View>
                         <KeyboardAvoidingView style={styles.textGroupBox}>

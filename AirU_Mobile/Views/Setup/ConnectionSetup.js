@@ -123,8 +123,13 @@ export default class ConnectionSetup extends Component<Props> {
                 this.setState({WiFiError: true})
                 return
             } else {
-                name = this.props.navigation.getParam(SENSOR_NAME, 'NameUndefined');
-                this.props.navigation.navigate('Privacy', { sensorName: name, sensorID: this.state.sensorID});
+                retVal = this.props.navigation.getParam("return", false)
+                if (retVal) {
+                    this.props.navigation.goBack()
+                } else {
+                    name = this.props.navigation.getParam(SENSOR_NAME, 'NameUndefined');
+                    this.props.navigation.navigate('Privacy', { sensorName: name, sensorID: this.state.sensorID});
+                }
             }
         }
 

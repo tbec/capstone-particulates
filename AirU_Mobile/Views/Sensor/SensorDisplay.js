@@ -91,7 +91,7 @@ export default class SensorDisplay extends Component<Props> {
         var num = 0
 
         for (currSensor of this.state.sensorList) {
-            data = await this.webCall()
+            data = await this.webCall(currSensor)
             if (data == null) {
                 this.setState({connected: false})
                 return
@@ -205,7 +205,7 @@ class Graph extends Component<Props> {
     render() {
         // period to show for data
         var data = this.props.sensor.sensorData
-        var xData
+        var xData = []
 
         // choose which view to show
         if (data.length == 0) {
@@ -329,7 +329,7 @@ class Graph extends Component<Props> {
         }))
 
         return (
-            <View style={{ flexDirection: 'row', height: 300, paddingVertical: 5}}>
+            <View style={{ flexDirection: 'row', height: 250, paddingVertical: 5}}>
                 <BarChart
                     style={{ flex: 1 }}
                     data={colorData}
@@ -343,13 +343,6 @@ class Graph extends Component<Props> {
                     <Grid direction={Grid.Direction.HORIZONTAL}/>
                     <Labels/>
                 </BarChart>
-                <XAxis
-                    style={{ marginHorizontal: -10 }}
-                    data={ xData }
-                    formatLabel={ (value, index) => index }
-                    contentInset={{ left: 10, right: 10 }}
-                    svg={{ fontSize: 10, fill: 'black' }}
-                />
             </View>
         )
     }
