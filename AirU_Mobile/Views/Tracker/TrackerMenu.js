@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Button, Text, FlatList } from 'react-native';
+import { View, Button, Text, FlatList, TouchableOpacity } from 'react-native';
 import { AsyncStorage } from 'react-native';
 import { EXPOSUREDATA } from '../../Components/Constants';
 
@@ -25,11 +25,22 @@ export default class TrackerMenu extends Component<Props> {
         this.updateList();
         return (
             <View>
-                <Button title="Start New" onPress={this.startNew.bind(this)} style={{ margin: 3 }}></Button>
+                <View style={{ padding: 10 }}>
+                    <Button title="Start New" onPress={this.startNew.bind(this)}></Button>
+                </View>
                 <FlatList
+                    style={{ marginTop: 20 }}
                     data={this.state.savedData}
-                    renderItem={({ item }) => <Text onPress={this.viewData.bind(this, item)}
-                        style={{ color: 'blue', fontSize: 30, borderBottomWidth: 2, textAlign: "center", margin: 5 }}>{item.key}</Text>}
+                    renderItem={({ item, index }) =>
+                        <View style={{ flex: 1, flexDirection: 'row', alignSelf: 'stretch' }}>
+                            <Text onPress={this.viewData.bind(this, item)}
+                                style={{ fontSize: 30, textAlign: "center", padding: 10 }}>{item.title}</Text>
+                            <TouchableOpacity style={{ backgroundColor: 'red', height: 40, borderRadius: 7, marginTop: 12, position: 'absolute', right: 10, padding: 10 }}
+                                onPress={this.deleteData.bind(this, index)}>
+                                <Text style={{ color: 'white', fontWeight: 'bold' }}>Delete</Text>
+                            </TouchableOpacity>
+                        </View>
+                    }
                 />
             </View>);
     }
@@ -44,6 +55,12 @@ export default class TrackerMenu extends Component<Props> {
         this.props.navigation.navigate('Tracker', {
             path: path
         });
+    }
+
+    deleteData(index) {
+        this.state.savedData.splice(index, 1);
+        AsyncStorage.setItem(EXPOSUREDATA, JSON.stringify(this.state.savedData));
+        this.updateList();
     }
 
 }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Platform, Alert, StyleSheet, Text, View, Button, Slider, ActivityIndicator } from 'react-native';
+import { Platform, Alert, StyleSheet, Text, View, Button, Slider, ActivityIndicator, TouchableOpacity, Image } from 'react-native';
 import NavBar from '../../Components/NavBar';
 import TrackerGraph from './TrackerGraph';
 import MapView, { Polyline, Marker, PROVIDER_GOOGLE } from 'react-native-maps';
@@ -29,7 +29,8 @@ export default class Tracker extends Component {
             saveData: true,
             graph: false,
             previousTime: 0,
-            exposureTime: 0
+            exposureTime: 0,
+            markerImage: require('../../Resources/pin.png')
         };
         if (params != undefined) {
             this.state.allPoints = params.allPoints,
@@ -101,8 +102,8 @@ export default class Tracker extends Component {
         }
         currentPosition = <Marker
             coordinate={this.state.currentPosition}
-            image={require('../../Resources/pin.png')}
-        />
+            image={this.state.markerImage}
+        ><Text style={{ opacity: 0}}>hack</Text></Marker>
         if (this.state.startTracking) {
             button = <Button title="Start Tracking" onPress={this.startTracking.bind(this)}></Button>
         }
@@ -114,9 +115,17 @@ export default class Tracker extends Component {
         }
         if (this.state.graph) {
             currentPosition = null;
-            trackerGraph = <TrackerGraph data={this.state.pollutionData} selectedIndex={this.state.sliderValue} navigation={this.props.navigation}></TrackerGraph>
+            trackerGraph =
+                <View>
+                    <Text style={{ backgroundColor: 'white', fontWeight: 'bold', textAlign: 'center', fontSize: 24 }}>PM2.5 Levels</Text>
+                    <TrackerGraph data={this.state.pollutionData} selectedIndex={this.state.sliderValue} navigation={this.props.navigation}></TrackerGraph>
+                    <View>
+                        <Button title="More Info" onPress={this.moreInfo.bind(this)}></Button>
+                    </View>
+                </View>
             slider = <View style={sliderStyles.container}>
                 <Slider
+                    style={{ transform: [{ scaleX: 1.3 }, { scaleY: 1.3 }] }}
                     step={1}
                     maximumValue={this.state.pollutionData.length - 1}
                     onValueChange={this.change.bind(this)}
@@ -125,7 +134,7 @@ export default class Tracker extends Component {
             </View>
             icon = <Marker
                 coordinate={this.state.markerPos}
-                image={require('../../Resources/pin.png')}
+                image={this.state.markerImage}
             />
             let saveButton;
             if (this.state.saveData) {
@@ -158,7 +167,9 @@ export default class Tracker extends Component {
                     </MapView>
                     {gettingLocation}
                     {slider}
-                    {button}
+                    <View style={{ margin: 15 }}>
+                        {button}
+                    </View>
                 </View>
                 {trackerGraph}
             </View>
@@ -170,7 +181,7 @@ export default class Tracker extends Component {
         this.setState({ startTracking: false, stopTracking: true, saveData: true, previousTime: n });
         BackgroundGeolocation.on('location', (position) => {
             this.animateToRegion(position.latitude, position.longitude);
-            let dateTime = this.getCurrentDate();
+            let dateTime = this.getCurrentDate().time;
             this.getPollution(position.latitude.toString(), position.longitude.toString(), dateTime).then((pollutionJson) => {
                 let pollutionData = JSON.parse(pollutionJson);
                 let newPoint = {
@@ -258,7 +269,7 @@ export default class Tracker extends Component {
             playSound: true,
             soundName: 'default',
             actions: '["Ok"]',
-          });
+        });
     }
 
     animateToRegion(lat, lng) {
@@ -271,37 +282,6 @@ export default class Tracker extends Component {
         this.mapView.animateToRegion(r, 50);
     }
 
-    generateCoordinates() {
-        fakePath = [
-            { latitude: 37.8025259, longitude: -122.4351431, pollution: .1, color: this.pollutionColor(.1) },
-            { latitude: 37.7896386, longitude: -122.421646, pollution: .2, color: this.pollutionColor(.2) },
-            { latitude: 37.7665248, longitude: -122.4161628, pollution: .3, color: this.pollutionColor(.3) },
-            { latitude: 37.7734153, longitude: -122.4577787, pollution: .6, color: this.pollutionColor(.6) },
-            { latitude: 37.7948605, longitude: -122.4596065, pollution: .9, color: this.pollutionColor(.9) },
-            { latitude: 37.8025259, longitude: -122.4351431, pollution: .1, color: this.pollutionColor(.1) }
-        ];
-        newPath = [];
-        split = 20;
-        for (var i = 0; i < 5; i++) {
-            start = fakePath[i];
-            end = fakePath[i + 1];
-            latIncrement = Math.abs(start.latitude - end.latitude) / split;
-            lngIncrement = Math.abs(start.longitude - end.longitude) / split;
-            for (var j = 0; j < split; j++) {
-                newLat = start.latitude < end.latitude ? start.latitude + (latIncrement * j) : start.latitude - (latIncrement * j);
-                newLng = start.longitude < end.longitude ? start.longitude + (lngIncrement * j) : start.longitude - (lngIncrement * j);
-                newCoordinate = {
-                    latitude: newLat,
-                    longitude: newLng,
-                    pollution: this.estimatePollution(start.pollution, end.pollution, split, j),
-                    color: this.calculateGradientColor(start.color, end.color, split, j)
-                }
-                newPath.push(newCoordinate);
-            }
-        }
-        newPath.push(fakePath[fakePath.length - 1]);
-        return newPath;
-    }
 
     getCurrentDate() {
         let date = new Date();
@@ -312,8 +292,10 @@ export default class Tracker extends Component {
         let minute = date.getMinutes();
         let seconds = date.getSeconds();
         //2019-02-06 12:45:19
-        return year.toString() + '-' + this.leadingZeroes(month) + '-' + this.leadingZeroes(day) + ' ' +
-            this.leadingZeroes(hour) + ":" + this.leadingZeroes(minute) + ":" + this.leadingZeroes(seconds);
+        return {
+            time: year.toString() + '-' + this.leadingZeroes(month) + '-' + this.leadingZeroes(day) + ' ' + this.leadingZeroes(hour) + ":" + this.leadingZeroes(minute) + ":" + this.leadingZeroes(seconds),
+            title: date.toDateString()
+        };
     }
 
     leadingZeroes(num) {
@@ -368,9 +350,11 @@ export default class Tracker extends Component {
         try {
             let exposureData = "";
             let savedData = await AsyncStorage.getItem(EXPOSUREDATA);
+            let time = this.getCurrentDate();
             if (savedData == null) {
                 exposureData = JSON.stringify([{
-                    key: this.getCurrentDate(),
+                    key: time.time,
+                    title: time.title,
                     pathArray: this.state.pathArray,
                     pollutionData: this.state.pollutionData,
                     allPoints: this.state.allPoints
@@ -378,7 +362,8 @@ export default class Tracker extends Component {
             } else {
                 savedData = JSON.parse(savedData);
                 savedData.push({
-                    key: this.getCurrentDate(),
+                    key: time.time,
+                    title: time.title,
                     pathArray: this.state.pathArray,
                     pollutionData: this.state.pollutionData,
                     allPoints: this.state.allPoints
@@ -390,6 +375,12 @@ export default class Tracker extends Component {
         } catch (error) {
             alert(error);
         }
+    }
+
+    moreInfo() {
+        this.props.navigation.navigate('PollutionInfo', {
+            pollution: this.state.pollutionData[this.state.sliderValue]
+        });
     }
 
     //estimates the pollution level between two data points
@@ -475,7 +466,7 @@ export default class Tracker extends Component {
 
 sliderStyles = StyleSheet.create({
     container: {
-        width: 300,
+        width: 250,
         height: 25,
     },
     text: {

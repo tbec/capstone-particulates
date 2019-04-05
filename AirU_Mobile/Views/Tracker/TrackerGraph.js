@@ -14,11 +14,8 @@ export default class TrackerGraph extends Component<Props>
         const selectedIndex = this.props.selectedIndex;
         const Tooltip = ({ x, y }) => (
             <G
-                x={ x(selectedIndex) - (75 / 2) }
+                x={ x(selectedIndex) - (65 / 2) }
                 key={ 'tooltip' }
-                onPress={ () => this.props.navigation.navigate('PollutionInfo', {
-                    pollution: data[selectedIndex]
-                  }) }
             >
                 <G y={ y(data[ selectedIndex ]) - 35 }>
                     <Rect
@@ -30,7 +27,7 @@ export default class TrackerGraph extends Component<Props>
                         rx={ 10 }
                     />
                     <Text
-                        x={ 50 / 2 }
+                        x={ 45 / 2 }
                         dy={ 10 }
                         alignmentBaseline={ 'middle' }
                         textAnchor={ 'middle' }
@@ -39,7 +36,7 @@ export default class TrackerGraph extends Component<Props>
                         { `${data[selectedIndex]}` }
                     </Text>
                 </G>
-                <G x={ 75 / 2 }>
+                <G x={ 50 / 2 }>
                     <Circle
                         cy={ y(data[ selectedIndex ]) }
                         r={ 6 }
@@ -53,13 +50,15 @@ export default class TrackerGraph extends Component<Props>
 
         return (
             <LineChart
-                style={{ height: 200, backgroundColor: "#000" }}
+                style={{ height: 150, backgroundColor: "white" }}
                 data={ data }
                 svg={{
                     stroke: 'rgb(0, 0, 255)',
                     strokeWidth: 2,
                 }}
-                contentInset={{ top: 40, bottom: 20, left: 25, right: 25 }}
+                yMin={0}
+                yMax={70}
+                contentInset={{ top: 25, bottom: 20, left: 40, right: 25 }}
                 curve={ shape.curveLinear }
             >
                 <Grid/>
