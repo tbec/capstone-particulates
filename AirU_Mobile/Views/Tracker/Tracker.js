@@ -383,14 +383,6 @@ export default class Tracker extends Component {
         });
     }
 
-    //estimates the pollution level between two data points
-    estimatePollution(p1, p2, split, splitIndex) {
-        difference = Math.abs(p1 - p2);
-        increment = difference / split * splitIndex;
-        result = (p2 > p1) ? p1 + increment : p1 - increment;
-        return parseFloat(result.toFixed(3));
-    }
-
     calculateGradientColor(startColor, endColor, split, splitIndex) {
         //get the red green and blue number values from their hex strings
         //values will be between 0 and 255
