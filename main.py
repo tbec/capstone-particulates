@@ -11,7 +11,7 @@ from forms import *
 from sqlalchemy import and_, or_
 
 # Imports for flask, login management, and security
-from flask import Flask, redirect, render_template, url_for, request, flash, abort, jsonify, json, send_file, make_response
+from flask import Flask, redirect, render_template, url_for, request, flash, abort, jsonify, json, send_file, make_response, send_from_directory
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_user, login_required,logout_user, current_user
 from datetime import datetime
@@ -26,13 +26,35 @@ loginManager.login_view = "index"
 
 ################ App Routes  ################
 
+@app.route("/contact")
+def contact():
+    active = False
+    if current_user.is_active:
+        active = True
+    return render_template("contact.html", active=active)
 
+@app.route("/welcome")
+def welcome():
+    active = False
+    if current_user.is_active:
+        active = True
+    return render_template("welcome.html", active=active)
+
+
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory("./",
+                               'favicon.ico', mimetype='ximage/vnd.microsoft.icon')
 @app.route('/')
 def index():
     if current_user.is_active:
         return render_template('index.html',username=current_user.Username,logged_in= True)
-    return redirect(url_for('login'))
+    return redirect(url_for('welcome'))
     
+@app.route("/tutorial")
+def tutorial():
+    return render_template("tutorial.html")
+
 @app.route("/devices",methods=["GET"])
 @login_required
 def devices():
@@ -205,7 +227,7 @@ def getData():
     # devices = validateDeviceNames(params["ids"].split(","))
     devices = params["ids"].split(",")
     
-    if len(devices) == 0:
+    if len(devices) == 0 or devices[0] == "":
         if (params["ids"] is None or params["ids"] == ""):
             validParameter = False
             errorMessage = "No devices were selected."
@@ -236,7 +258,7 @@ def map():
 def logout():
     # Reset the MAC ID for devices, log the user out
     logout_user()
-    return redirect(url_for('index'))
+    return redirect(url_for('welcome'))
 
 #TODO dont make it a file but data itself
 @app.route('/download')

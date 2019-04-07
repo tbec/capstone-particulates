@@ -1,0 +1,64 @@
+.red{
+    color: #d9534e;
+}
+
+.grey{
+    color: #cfcfcf;
+}
+
+.tut-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.tut-item {
+    background-color: #f8f8f8;
+    border-radius: 10px;
+    border: 1px solid #cfcfcf;
+}
+
+.tut-body{
+    margin: 0 auto;
+    width: 50%;
+}
+.gif{
+    margin-top: 80px;
+}
+
+.flex-row{
+    display: flex;
+    flex-direction: row;
+}
+
+.flex-column{
+    display: flex;
+    flex-direction: column;
+}
+
+
+.tut-devices{
+    background-color: #f8f8f8;
+    border-radius: 10px;
+    border: 1px solid #cfcfcf;
+}
+
+.tut-map{
+    background-color: #f8f8f8;
+    border-radius: 10px;
+    border: 1px solid #cfcfcf;
+    justify-content: center;
+}
+
+
+
+.tut-inner-body{
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+}
+
+.tut-specific{
+    display: flex;
+    flex-direction: row;
+}

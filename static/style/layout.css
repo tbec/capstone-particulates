@@ -69,7 +69,10 @@ h3{
     justify-content: center;
 }
 
+.menu-option a{
+    color: #777;
 
+}
 .menu-option a:visited{
     color: #777;
 }
@@ -175,4 +178,9 @@ h3{
   
   .tooltip:hover .tooltiptext {
     visibility: visible;
+  }
+
+  img{
+      width: 90%;
+      margin-left: 4px;
   }

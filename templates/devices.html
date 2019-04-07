@@ -30,7 +30,17 @@
                 </table>
 
         </div>
-
+        <div class="add-container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                        {% for category, message in messages %}
+                                {%if "_login" in category%}
+                                        <div class="{{category}}">{{ message }}</div>
+                                {%endif%}
+                        {% endfor %}
+                {% endif %}
+        {% endwith %}
+        </div>
         <h2 class="acc-header">Add Device</h2>
 
         <div class="add-container">

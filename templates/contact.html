@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<head>
+    <title>Welcome</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='style/contact.css')}}">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+
+</head>
+<body>
+    <div class="main">
+        <div class="main-header">
+            <div class="header-logo red">
+                <h1>THE PARTICULATES</h1>
+            </div>
+            <div class="right">
+                    <div class="menu-option menu-border">
+                            <a href="/welcome"> Welcome</a>
+                        </div>
+                        {%if active%}
+                    <div class="menu-option menu-border">
+                            <a href="/"> Dashboard</a>
+                        </div>
+                        {%endif%}
+                    <div class="menu-option menu-border">
+                        <a href="#">Docs </a> 
+                    </div>
+                    <div class="menu-option menu-border">
+                        <a href="/contact">Contact</a> 
+                    </div>
+                    <div class="menu-option">
+                        {%if active%}
+                            <a class="logout" href="/logout"> Sign out </a>
+                        {%else%}
+                            <a class="login" href="/login"> Sign in </a>
+
+                        {%endif%}
+                        </div>
+
+
+                </div>
+        </div>
+        <div class="main-body">
+                <div class="parallax">
+                        <img class="logo" src="{{url_for('static', filename='img/particulates.jpg')}}">
+                    </div>
+                <div class="project-description">
+                    <!-- <h1>About the Team</h1> -->
+
+                    <div class="info">
+                        <div class="info-img">
+                                <img class="pic" src="{{url_for('static', filename='img/trevor.png')}}">
+                            </div>
+                        <div class="info-text">
+                            <div>
+                                <p>Trevor Chapman</p>
+                            </div>
+                            <div>
+                                <p>unid@umail.com</p>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="info">
+                        <div class="info-img">
+                                <img class="pic" src="{{url_for('static', filename='img/connor.png')}}">
+                            </div>
+                        <div class="info-text">
+                            <div>
+                                <p>Connor Otterbachman</p>
+                            </div>
+                            <div>
+                                <p>unid@umail.com</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info">
+                            <div class="info-img">
+                                    <img class="pic" src="{{url_for('static', filename='img/trenton.png')}}">
+                                </div>
+                            <div class="info-text">
+                                <div>
+                                    <p>Trenton Taylor</p>
+                                </div>
+                                <div>
+                                    <p>unid@umail.com</p>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="info">
+                                <div class="info-img">
+                                        <img class="pic" src="{{url_for('static', filename='img/gater.png')}}">
+                                    </div>
+                                <div class="info-text">
+                                    <div>
+                                        <p>Gaitlan Knudson</p>
+                                    </div>
+                                    <div>
+                                       <p>unid@umail.com</p>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                </div>
+        </div>
+
+        </div>
+    </div>
+
+    
+</body>
+

@@ -1,0 +1,182 @@
+.parallax {
+    /* The image used */
+    /* background-image: url("../img/particulates.jpg"); */
+    /* Set a specific height */
+    margin: 0px auto;
+    height: 400px; 
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+img{
+    width: 70%;
+    height: 100%;
+    margin: 0 auto;
+}
+.top-nav{
+    /* background-color: green; */
+    height: 20px;
+    margin-top: 12px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+/* Holds the nav options and logo */
+.main-header{
+    display: flex;
+    flex-direction: row;
+
+}
+
+.header-logo{
+    width: 40%;
+    height: 90px;
+}
+
+.right{
+    width: 60%;
+    height: 90px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.menu-option{
+    width: 20%;
+    height: 20px;
+}
+.right div{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+a{
+    text-decoration: none;
+    font-size: 20px;
+    color: #888;
+    font-family: "Gotham SSm A","Gotham SSm B",proxima-nova,"Helvetica Neue",helvetica,arial,sans-serif;
+}
+
+a:hover {
+    color: #d9534e;
+}
+
+a:active {
+    text-decoration: underline;
+  }
+
+.menu-border{
+    border-right: 1px solid #c7c7c7;
+}
+
+.header-logo h1{
+    margin-left: 35px;
+    margin-bottom: 0px;
+    margin-top: 25px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 35px;
+}
+.container{
+    margin-top: 0xp;
+
+
+}
+
+.main-body{
+    height: 100%;
+    width: 95%;
+    margin: 0 auto;
+}
+
+.main{
+    width: 80%;
+    background-color: #fafafa;
+    margin: 0 auto;
+}
+body{
+    width: 96vw;
+    height: 98vh;
+    margin: 0px 20px 0px 20px;
+    
+    background-color: #fff;
+}
+
+p{
+    font-size: 20px;
+}
+
+
+.project-description h1{
+    text-align: center;
+    font-size: 40px;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #d9534e;
+}
+
+
+.project-description p{
+    font-size: 24px;
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+}
+
+.red{
+    color: #d9534e;
+}
+
+i{
+    font-size: 100px;
+}
+
+.info{
+    width: 50%;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.info-text{
+    width: 75%;
+    height: 100%;
+}
+
+.info-text div{
+    text-align: center;
+    display: flex; 
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+label{
+    margin-right: 20px;
+}
+
+.info-img{
+    width: 25%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.project-description{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.pic{
+    width: 100%;
+    height: 80%;
+}
