@@ -167,7 +167,7 @@ export default class EditDevice extends Component<Props> {
             <View style={styles.container}>
                 <KeyboardAwareScrollView style={[styles.container, {backgroundColor: '#b3e6ff'}]}>
                     <View style={{height: 200, alignItems: 'center', justifyContent: 'center', paddingTop: 20}}>
-                        <Image source={require('../../Resources/red_cloud2.jpeg')} 
+                        <Image source={require('../../Resources/red_cloud2.png')} 
                                         style={{width: '50%', height: '60%'}}/>
                     </View>
                     <Text/>
