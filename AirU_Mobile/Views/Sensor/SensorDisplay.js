@@ -87,7 +87,6 @@ export default class SensorDisplay extends Component<Props> {
 
     /** WEB CALLS **/
     async getData() {
-        //TODO: ADJUST TO DO ALL SENSORS INSTEAD OF ONLY CURRENTLY SELECTED ONE
         var num = 0
 
         for (currSensor of this.state.sensorList) {

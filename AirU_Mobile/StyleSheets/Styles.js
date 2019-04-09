@@ -82,7 +82,7 @@ export const styles = StyleSheet.create({
         width: '50%', height: 40, alignContent: 'center', justifyContent: 'center', paddingBottom: 10
     }, 
     textInputLabel: {
-        color: 'red', fontWeight: 'bold', paddingBottom: 5
+        color: 'red', fontWeight: 'bold', paddingBottom: 5, paddingTop: 5, fontSize: 15
     },
     textGroupBox: {
         flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'

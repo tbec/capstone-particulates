@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Text, AsyncStorage,
+import {View, Text, AsyncStorage, ImageBackground, 
          TextInput, KeyboardAvoidingView, Button, Image} from 'react-native';
 import styles from '../../StyleSheets/Styles'
 import { LOGIN_NAME, PASSWORD, TEST_MODE, WEB_URL } from '../../Components/Constants'
@@ -51,63 +51,67 @@ export default class RegisterAccount extends Component<Props> {
 
     render() {
         return (
-            <KeyboardAwareScrollView style={{backgroundColor: '#b3e6ff'}}>
-                    <View style={{height: 200, alignItems: 'center', justifyContent: 'center', paddingTop: 20}}>
-                        <Image source={require('../../Resources/red_cloud2.png')} 
-                                        style={{width: '50%', height: '70%'}}/>
-                    </View>
-                    <KeyboardAvoidingView style={{flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
-                    <Text style={styles.textInputLabel}>First Name</Text>
-                        <TextInput editable={true} keyboardType='default' 
-                                autoCorrect={false} placeholder='First Name' secureTextEntry={false} 
-                                style={styles.textInput}
-                                onChangeText={(value) => {this.setState({firstName: value})}}
-                                />
-                    </KeyboardAvoidingView>
-                    <KeyboardAvoidingView style={{flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
-                    <Text style={styles.textInputLabel}>Last Name</Text>
-                        <TextInput editable={true} keyboardType='default' 
-                                autoCorrect={false} placeholder='Last Name' secureTextEntry={false} 
-                                style={styles.textInput}
-                                onChangeText={(value) => {this.setState({lastName: value})}}
-                                />
-                    </KeyboardAvoidingView>
-                    <KeyboardAvoidingView style={{flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
-                    <Text style={styles.textInputLabel}>Username</Text>
-                        <TextInput editable={true} keyboardType='default' 
-                                autoCorrect={false} placeholder='Username' secureTextEntry={false} 
-                                style={styles.textInput}
-                                onChangeText={(value) => {this.setState({username: value})}}
-                                />
-                    </KeyboardAvoidingView>
-                    <KeyboardAvoidingView style={{flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+            <View>
+                <ImageBackground source={require('../../Resources/login_background.jpg')} style={{width: '100%', height: '100%'}}>
+                    <KeyboardAwareScrollView>  
+                        <View style={{height: 200, alignItems: 'center', justifyContent: 'center', paddingTop: 10}}>
+                            <Image source={require('../../Resources/red_cloud2.png')} 
+                                            style={{width: '50%', height: '70%'}}/>
+                        </View>
+                        <KeyboardAvoidingView style={{flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+                            <Text style={styles.textInputLabel}>First Name</Text>
+                            <TextInput editable={true} keyboardType='default' 
+                                    autoCorrect={false} placeholder='First Name' secureTextEntry={false} 
+                                    style={styles.textInput}
+                                    onChangeText={(value) => {this.setState({firstName: value})}}
+                                    />
+                        </KeyboardAvoidingView>
+                        <KeyboardAvoidingView style={{flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+                            <Text style={styles.textInputLabel}>Last Name</Text>
+                            <TextInput editable={true} keyboardType='default' 
+                                    autoCorrect={false} placeholder='Last Name' secureTextEntry={false} 
+                                    style={styles.textInput}
+                                    onChangeText={(value) => {this.setState({lastName: value})}}
+                                    />
+                        </KeyboardAvoidingView>
+                        <KeyboardAvoidingView style={{flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+                            <Text style={styles.textInputLabel}>Username</Text>
+                            <TextInput editable={true} keyboardType='default' 
+                                    autoCorrect={false} placeholder='Username' secureTextEntry={false} 
+                                    style={styles.textInput}
+                                    onChangeText={(value) => {this.setState({username: value})}}
+                                    />
+                        </KeyboardAvoidingView>
+                        <KeyboardAvoidingView style={{flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
                         <Text style={styles.textInputLabel}>Email</Text>
-                        <TextInput editable={true} keyboardType='default' 
-                                autoCorrect={false} placeholder='Email' secureTextEntry={false} 
-                                style={styles.textInput}
-                                onChangeText={(value) => {this.setState({email: value})}}
-                                />
-                    </KeyboardAvoidingView>
-                    <KeyboardAvoidingView style={{flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+                            <TextInput editable={true} keyboardType='default' 
+                                    autoCorrect={false} placeholder='Email' secureTextEntry={false} 
+                                    style={styles.textInput}
+                                    onChangeText={(value) => {this.setState({email: value})}}
+                                    />
+                        </KeyboardAvoidingView>
+                        <KeyboardAvoidingView style={{flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
                         <Text style={styles.textInputLabel}>Password</Text>
-                        <TextInput editable={true} keyboardType='default' 
-                                autoCorrect={false} placeholder='Password' secureTextEntry={true} 
-                                style={styles.textInput}
-                                onChangeText={(value) => {this.setState({password: value})}}
-                                />
-                    </KeyboardAvoidingView>
-                    <Text/>
-                    <Text/>
-                    <Button title="Register"
-                        onPress={() => this.register()}
-                        color='red' 
-                        disabled={(this.state.login == "" || this.state.password == "" || this.state.email == "")}
-                    />
-                    <Text/>
-                    <Text style={{height: 50, color: "red", textAlign: 'center'}}>
-                        {this.state.error}
-                    </Text>
-            </KeyboardAwareScrollView>
+                            <TextInput editable={true} keyboardType='default' 
+                                    autoCorrect={false} placeholder='Password' secureTextEntry={true} 
+                                    style={styles.textInput}
+                                    onChangeText={(value) => {this.setState({password: value})}}
+                                    />
+                        </KeyboardAvoidingView>
+                        <Text/>
+                        <Text/>
+                        <Text style={{height: 40, color: "red", textAlign: 'center'}}>
+                            {this.state.error}
+                        </Text>
+                        <Text/>
+                        <Button title="Register"
+                            onPress={() => this.register()}
+                            color='red' 
+                            disabled={(this.state.login == "" || this.state.password == "" || this.state.email == "")}
+                        />
+                    </KeyboardAwareScrollView>
+                </ImageBackground>
+            </View>
         );
     }
 }

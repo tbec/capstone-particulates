@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Text, View, Image, TextInput, Button, KeyboardAvoidingView, ScrollView, Alert} from 'react-native';
+import {Text, View, Image, TextInput, Button, KeyboardAvoidingView, ScrollView, Alert, ActivityIndicator} from 'react-native';
 import NavBar from '../../Components/NavBar';
 import { BleManager } from 'react-native-ble-plx';
 import { TEST_MODE, SENSOR_NAME, SENSOR_ID } from '../../Components/Constants'
@@ -214,8 +214,7 @@ export default class ConnectionSetup extends Component<Props> {
             sensID=<Text style={{textAlign: 'center', fontWeight: 'bold'}}>{this.state.sensorID}</Text>
         }
         else {
-            sensID=<Image source={require('../../Resources/Loading.gif')} 
-                                style={{width: 100, height: 100, alignContent: 'center', justifyContent: 'center'}}/>
+            sensID=<ActivityIndicator size="large"/>
         }
         
         return (
