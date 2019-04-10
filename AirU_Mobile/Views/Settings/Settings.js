@@ -114,14 +114,11 @@ export default class Settings extends Component {
         return (
             <View style={styles.container}>
             <ImageBackground source={require('../../Resources/home_background.jpg')} style={{width: '100%', height: '100%'}}>
-                    <View style={{flex: 1, alignContent: 'flex-start', 
-                                    justifyContent: 'center', flexDirection: 'row', paddingTop: 20}}>
-                        <Text>Settings</Text>
-                    </View>
                     <View style={[styles.home, {flex: 10}]}>
                         {log}
                         {editDevice}
                         <Setting text="Adjust Data Rate" action={() => this.props.navigation.navigate('Refresh', {return: true})}/>
+                        <Setting text="Notifications" action={() => this.props.navigation.navigate('Notifications')}/>
                         <Setting text="Reset Settings" action={() => this.reset()}/>
                         <Setting text="Contact AirU" action={() => Linking.openURL('mailto:aqandu@utah.edu')}/>
                     </View>

@@ -27,13 +27,13 @@ export default class TrackerMenu extends Component<Props> {
     render() {
         this.updateList();
         let dialog;
-        if(this.state.editing){
+        if (this.state.editing) {
             dialog = <DialogInput isDialogVisible={this.state.isDialogVisible}
-            title={"Edit"}
-            hintInput ={this.state.savedData[this.state.editingIndex].title}
-            submitInput={ (inputText) => {this.sendInput(inputText)} }
-            closeDialog={ () => {this.setState({editing: false})}}>
-</DialogInput>
+                title={"Edit"}
+                hintInput={this.state.savedData[this.state.editingIndex].title}
+                submitInput={(inputText) => { this.sendInput(inputText) }}
+                closeDialog={() => { this.setState({ editing: false }) }}>
+            </DialogInput>
         }
         return (
             <View>
@@ -71,13 +71,13 @@ export default class TrackerMenu extends Component<Props> {
     }
 
     editTitle(index) {
-        this.setState({editing: true, editingIndex: index});
+        this.setState({ editing: true, editingIndex: index });
     }
 
     sendInput(newTitle) {
         this.state.savedData[this.state.editingIndex].title = newTitle;
         AsyncStorage.setItem(EXPOSUREDATA, JSON.stringify(this.state.savedData));
-        this.setState({savedData: this.state.savedData, editing: false});
+        this.setState({ savedData: this.state.savedData, editing: false });
     }
 
     deleteData(index) {

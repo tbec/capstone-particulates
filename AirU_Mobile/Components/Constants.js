@@ -26,3 +26,5 @@ export const WEB_URL_NO_MOBILE = 'https://download-dot-neat-environs-205720.apps
 
 // Settings Constants
 export const REFRESH = 'RefreshRate'
+export const SENSITIVE = 'sensitive'
+export const NOTIFICATIONS = 'notifications'

@@ -6,8 +6,8 @@ import MapView, { Polyline, Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import styles from '../../StyleSheets/Styles';
 import { NavigationActions } from 'react-navigation';
 import BackgroundGeolocation from 'react-native-mauron85-background-geolocation';
-import { AsyncStorage } from 'react-native';
-import { EXPOSUREDATA } from '../../Components/Constants';
+import { AsyncStorage, DeviceEventEmitter } from 'react-native';
+import { EXPOSUREDATA, NOTIFICATIONS } from '../../Components/Constants';
 import PushNotification from 'react-native-push-notification';
 
 
@@ -60,11 +60,6 @@ export default class Tracker extends Component {
             activitiesInterval: 10000,
             stopOnStillActivity: false,
         });
-        PushNotification.configure({
-            onNotification: (notification) => {
-                console.log(notification);
-            }
-        });
         if (!this.state.graph) {
             BackgroundGeolocation.getCurrentLocation((position) => {
                 this.animateToRegion(position.latitude, position.longitude);
@@ -103,7 +98,7 @@ export default class Tracker extends Component {
         currentPosition = <Marker
             coordinate={this.state.currentPosition}
             image={this.state.markerImage}
-        ><Text style={{ opacity: 0}}>hack</Text></Marker>
+        ><Text style={{ opacity: 0 }}>hack</Text></Marker>
         if (this.state.startTracking) {
             button = <Button title="Start Tracking" onPress={this.startTracking.bind(this)}></Button>
         }
@@ -176,6 +171,7 @@ export default class Tracker extends Component {
         );
     }
     async startTracking() {
+        this.sendNotification();
         var d = new Date();
         var n = d.getTime();
         this.setState({ startTracking: false, stopTracking: true, saveData: true, previousTime: n });
@@ -255,20 +251,21 @@ export default class Tracker extends Component {
     }
 
     sendNotification() {
-        console.log("send notification called");
-        PushNotification.localNotification({
-            autoCancel: true,
-            largeIcon: "ic_launcher",
-            smallIcon: "ic_notification",
-            bigText: "You have spent an unhealthy amount of time in poor air quality, you may want to consider getting indoors or taking a break.",
-            color: "red",
-            vibrate: true,
-            vibration: 300,
-            title: "AirU warning",
-            message: "You have spent an unhealthy amount of time in poor air quality, you may want to consider getting indoors or taking a break.",
-            playSound: true,
-            soundName: 'default',
-            actions: '["Ok"]',
+        AsyncStorage.getItem(NOTIFICATIONS, (error, result) => {
+            if (result != 'false') {
+                PushNotification.localNotification({
+                    id: '0',
+                    autoCancel: true,
+                    bigText: "You have spent an unhealthy amount of time in polluted air, you may want to consider getting indoors or taking a break.",
+                    vibrate: true,
+                    vibration: 300,
+                    title: "AirU Warning",
+                    message: "You have spent an unhealthy amount of time in polluted air, you may want to consider getting indoors or taking a break.",
+                    playSound: true,
+                    soundName: 'default',
+                    actions: '["Ok"]',
+                });
+            }
         });
     }
 
@@ -383,7 +380,7 @@ export default class Tracker extends Component {
         });
     }
 
-    calculateGradientColor(startColor, endColor, split, splitIndex) {
+    calculateGradientColor(startColor, endColor, percentage) {
         //get the red green and blue number values from their hex strings
         //values will be between 0 and 255
         startRed = parseInt("0x" + startColor.substring(1, 3));
@@ -398,13 +395,13 @@ export default class Tracker extends Component {
         blueInterval = Math.abs(startBlue - endBlue);
         //we will either be adding to or taking away from the color values depending on whether the end color is greater than the start color
         //the amount we increment by will be the overall interval divided by the sections that the line is 'split' into
-        redInc = (endRed > startRed) ? redInterval / split : -redInterval / split;
-        blueInc = (endBlue > startBlue) ? blueInterval / split : -blueInterval / split;
-        greenInc = (endGreen > startGreen) ? greenInterval / split : -greenInterval / split;
+        redInc = redInterval * percentage;
+        blueInc = blueInterval * percentage;
+        greenInc = greenInterval * percentage;
         //the resulting color values will be the starting color + the increment multiplied by the place we are along the gradient line(split index)
-        resultRed = Math.round(startRed + (redInc * splitIndex));
-        resultBlue = Math.round(startBlue + (blueInc * splitIndex));
-        resultGreen = Math.round(startGreen + (greenInc * splitIndex));
+        resultRed = Math.round(startRed + redInc);
+        resultBlue = Math.round(startBlue + blueInc);
+        resultGreen = Math.round(startGreen + greenInc);
         //convert these numbers back into hex and form our hex color string
         redHex = (resultRed).toString(16);
         blueHex = (resultBlue).toString(16);
@@ -445,11 +442,11 @@ export default class Tracker extends Component {
 
     pollutionColor(pollution) {
         if (pollution >= 0 && pollution < 12) {
-            return "#00ff00";
+            return this.calculateGradientColor("#00ff00", "#ffff00", pollution / 12);
         } else if (pollution >= 12 && pollution < 35.4) {
-            return "#ffff00";
+            return this.calculateGradientColor("#ffff00", "#ffa500", (pollution - 12) / (35.4 - 12));
         } else if (pollution >= 35.4 && pollution < 55.4) {
-            return "#ffa500";
+            return this.calculateGradientColor("#ffa500", "#ff0000", (pollution - 35.4) / (55.4 - 35.4));
         } else if (pollution >= 55.4) {
             return "#ff0000";
         }

@@ -33,6 +33,7 @@ import Tracker from '../Views/Tracker/Tracker'
 // settings if needed
 import EditDevice from '../Views/Settings/EditDevice'
 import Refresh from '../Views/Settings/Refresh'
+import Notifications from '../Views/Settings/Notifications'
 
 /**
  * Navigator used for moving between screens using react-navigation library. 
@@ -44,7 +45,7 @@ import Refresh from '../Views/Settings/Refresh'
 const TabNavigator = createBottomTabNavigator(
   {
     Sensor: {screen: Sensor},
-    TrackerMenu: {screen: TrackerMenu},
+    Track: {screen: TrackerMenu},
     Map: {screen: Map},
     Settings: {screen: Settings}
   },
@@ -57,7 +58,7 @@ const TabNavigator = createBottomTabNavigator(
         if (routeName == 'Sensor') {
           return <Icon name={Platform.OS === "ios" ? "ios-analytics" : "md-analytics"} size={20}/>
         }
-        else if (routeName == 'TrackerMenu') {
+        else if (routeName == 'Track') {
           return <Icon name={Platform.OS === "ios" ? "ios-bonfire" : "md-bonfire"} size={20}/>
         }
         else if (routeName == 'Map') {
@@ -80,7 +81,7 @@ const Router = createStackNavigator(
     Home: {screen: Home},
     Settings: {screen: Settings}, 
     Map: {screen: Map},
-    TrackerMenu: {screen: TrackerMenu},
+    Track: {screen: TrackerMenu},
     Tabs: {screen: TabNavigator, initalRouteName: 'Home'},
 
     // sensor setup
@@ -104,7 +105,8 @@ const Router = createStackNavigator(
 
     // Settings
     EditDevice: {screen: EditDevice},
-    Refresh: {screen: Refresh}
+    Refresh: {screen: Refresh},
+    Notifications: {screen: Notifications}
   },
   {
     initalRouteName: 'Home',

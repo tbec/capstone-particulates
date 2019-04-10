@@ -19,6 +19,11 @@
       android:allowBackup="false"
       android:theme="@style/AppTheme"
       android:screenOrientation="portrait">
+      <!-- Set custom default icon. This is used when no icon is set for incoming notification messages. -->
+<meta-data
+    android:name="com.google.firebase.messaging.default_notification_icon"
+    android:resource="@drawable/ic_notification" />
+<!-- Set color used with incoming notification messages. This is used when no color is set for the incoming notification message. -->
       <meta-data  android:name="com.dieam.reactnativepushnotification.notification_channel_name"
                 android:value="YOUR NOTIFICATION CHANNEL NAME"/>
         <meta-data  android:name="com.dieam.reactnativepushnotification.notification_channel_description"

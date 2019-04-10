@@ -132,7 +132,7 @@ export default class Home extends Component<Props> {
                                 onPress={() => this.props.navigation.navigate({
                                     routeName: 'Tabs',
                                     params: {},
-                                    action: NavigationActions.navigate({routeName: 'TrackerMenu'})})}>
+                                    action: NavigationActions.navigate({routeName: 'Track'})})}>
                                     <Text style={styles.buttonText}>Personal Tracker</Text>
                             </TouchableHighlight>
                             {/* AQandU Map page */}
