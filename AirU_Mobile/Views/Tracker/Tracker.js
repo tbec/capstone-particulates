@@ -83,7 +83,7 @@ export default class Tracker extends Component {
     }
 
     render() {
-        let button, trackerGraph, slider, icon, currentPosition, gettingLocation;
+        let button, trackerGraph, slider, icon, currentPosition, gettingLocation, notificationButton;
         const sliderValue = this.state.sliderValue;
         if (this.state.gettingLocation) {
             gettingLocation = <ActivityIndicator size="large" color="#0000ff" style={{
@@ -94,6 +94,11 @@ export default class Tracker extends Component {
                 alignItems: 'center',
                 justifyContent: 'center'
             }} />
+        }
+        if (!this.state.graph) {
+            notificationButton = <View style={{width: 50}}>
+                <Button title="!" onPress={this.sendNotification.bind(this)}></Button>
+            </View>
         }
         currentPosition = <Marker
             coordinate={this.state.currentPosition}
@@ -162,16 +167,16 @@ export default class Tracker extends Component {
                     </MapView>
                     {gettingLocation}
                     {slider}
-                    <View style={{ margin: 15 }}>
+                    <View style={{ margin: 15, flexDirection: 'row' }}>
                         {button}
                     </View>
                 </View>
+                {notificationButton}
                 {trackerGraph}
             </View>
         );
     }
     async startTracking() {
-        this.sendNotification();
         var d = new Date();
         var n = d.getTime();
         this.setState({ startTracking: false, stopTracking: true, saveData: true, previousTime: n });
@@ -256,6 +261,8 @@ export default class Tracker extends Component {
                 PushNotification.localNotification({
                     id: '0',
                     autoCancel: true,
+                    largeIcon: "ic_launcher", // (optional) default: "ic_launcher"
+                    smallIcon: "ic_notification", // (optional) default: "ic_notification" with fallback for "ic_launcher"
                     bigText: "You have spent an unhealthy amount of time in polluted air, you may want to consider getting indoors or taking a break.",
                     vibrate: true,
                     vibration: 300,

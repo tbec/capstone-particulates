@@ -38,14 +38,14 @@ export default class Notifications extends Component<Props> {
                     <CheckBox
                         containerStyle={{ backgroundColor: '#00000000' }}
                         left
-                        title='Receive notification warnings when having been exposed to dangerous levels of pollution for extended periods of time'
+                        title='Check this box if you would like to receive notification warnings when having been exposed to dangerous levels of pollution for extended periods of time'
                         checked={this.state.on}
                         onPress={() => this.setState({ on: !this.state.on })}
                     />
                     <CheckBox
                         containerStyle={{ backgroundColor: '#00000000' }}
                         left
-                        title='Receive pollution warning notifications for individuals such as those with asthma, heart conditions, the elderly, or those participating in strenuous exercise'
+                        title='Check this box as well if you need warning notifications for sensitive individuals such as those with asthma, heart conditions, the elderly, or those participating in strenuous exercise'
                         checked={this.state.sensitive}
                         onPress={() => this.setState({ sensitive: !this.state.sensitive })}
                     />
