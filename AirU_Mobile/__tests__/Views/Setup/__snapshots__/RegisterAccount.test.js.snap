@@ -1,342 +1,382 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Snapshot test for Confirmation Setup 1`] = `
-<RCTScrollView
-  contentInset={
-    Object {
-      "bottom": 0,
+<View>
+  <View
+    accessibilityIgnoresInvertColors={true}
+    style={
+      Object {
+        "height": "100%",
+        "width": "100%",
+      }
     }
-  }
-  getTextInputRefs={[Function]}
-  onContentSizeChange={[Function]}
-  onLayout={[Function]}
-  onScroll={[Function]}
-  scrollEventThrottle={200}
-  scrollToBottomOnKBShow={false}
-  scrollToInputAdditionalOffset={75}
-  startScrolledToBottom={false}
-  style={
-    Object {
-      "backgroundColor": "#b3e6ff",
-    }
-  }
->
-  <View>
-    <View
-      style={
+  >
+    <Image
+      source={
         Object {
-          "alignItems": "center",
-          "height": 200,
-          "justifyContent": "center",
-          "paddingTop": 20,
+          "testUri": "../../../Resources/login_background.jpg",
         }
       }
-    >
-      <Image
-        source={
-          Object {
-            "testUri": "../../../Resources/red_cloud.jpeg",
-          }
-        }
-        style={
-          Object {
-            "height": "70%",
-            "width": "50%",
-          }
-        }
-      />
-    </View>
-    <View
-      onLayout={[Function]}
       style={
-        Object {
-          "alignItems": "center",
-          "flex": 1,
-          "flexDirection": "column",
-          "justifyContent": "center",
-        }
-      }
-    >
-      <Text
-        style={
-          Object {
-            "color": "red",
-            "fontWeight": "bold",
-            "paddingBottom": 5,
-          }
-        }
-      >
-        First Name
-      </Text>
-      <TextInput
-        allowFontScaling={true}
-        autoCorrect={false}
-        editable={true}
-        keyboardType="default"
-        onChangeText={[Function]}
-        placeholder="First Name"
-        secureTextEntry={false}
-        style={
-          Object {
-            "alignContent": "center",
-            "backgroundColor": "white",
-            "borderColor": "black",
-            "borderWidth": 1,
-            "height": 40,
-            "justifyContent": "center",
-            "paddingBottom": 10,
-            "width": "50%",
-          }
-        }
-        underlineColorAndroid="transparent"
-      />
-    </View>
-    <View
-      onLayout={[Function]}
-      style={
-        Object {
-          "alignItems": "center",
-          "flex": 1,
-          "flexDirection": "column",
-          "justifyContent": "center",
-        }
-      }
-    >
-      <Text
-        style={
-          Object {
-            "color": "red",
-            "fontWeight": "bold",
-            "paddingBottom": 5,
-          }
-        }
-      >
-        Last Name
-      </Text>
-      <TextInput
-        allowFontScaling={true}
-        autoCorrect={false}
-        editable={true}
-        keyboardType="default"
-        onChangeText={[Function]}
-        placeholder="Last Name"
-        secureTextEntry={false}
-        style={
-          Object {
-            "alignContent": "center",
-            "backgroundColor": "white",
-            "borderColor": "black",
-            "borderWidth": 1,
-            "height": 40,
-            "justifyContent": "center",
-            "paddingBottom": 10,
-            "width": "50%",
-          }
-        }
-        underlineColorAndroid="transparent"
-      />
-    </View>
-    <View
-      onLayout={[Function]}
-      style={
-        Object {
-          "alignItems": "center",
-          "flex": 1,
-          "flexDirection": "column",
-          "justifyContent": "center",
-        }
-      }
-    >
-      <Text
-        style={
-          Object {
-            "color": "red",
-            "fontWeight": "bold",
-            "paddingBottom": 5,
-          }
-        }
-      >
-        Username
-      </Text>
-      <TextInput
-        allowFontScaling={true}
-        autoCorrect={false}
-        editable={true}
-        keyboardType="default"
-        onChangeText={[Function]}
-        placeholder="Username"
-        secureTextEntry={false}
-        style={
-          Object {
-            "alignContent": "center",
-            "backgroundColor": "white",
-            "borderColor": "black",
-            "borderWidth": 1,
-            "height": 40,
-            "justifyContent": "center",
-            "paddingBottom": 10,
-            "width": "50%",
-          }
-        }
-        underlineColorAndroid="transparent"
-      />
-    </View>
-    <View
-      onLayout={[Function]}
-      style={
-        Object {
-          "alignItems": "center",
-          "flex": 1,
-          "flexDirection": "column",
-          "justifyContent": "center",
-        }
-      }
-    >
-      <Text
-        style={
-          Object {
-            "color": "red",
-            "fontWeight": "bold",
-            "paddingBottom": 5,
-          }
-        }
-      >
-        Email
-      </Text>
-      <TextInput
-        allowFontScaling={true}
-        autoCorrect={false}
-        editable={true}
-        keyboardType="default"
-        onChangeText={[Function]}
-        placeholder="Email"
-        secureTextEntry={false}
-        style={
-          Object {
-            "alignContent": "center",
-            "backgroundColor": "white",
-            "borderColor": "black",
-            "borderWidth": 1,
-            "height": 40,
-            "justifyContent": "center",
-            "paddingBottom": 10,
-            "width": "50%",
-          }
-        }
-        underlineColorAndroid="transparent"
-      />
-    </View>
-    <View
-      onLayout={[Function]}
-      style={
-        Object {
-          "alignItems": "center",
-          "flex": 1,
-          "flexDirection": "column",
-          "justifyContent": "center",
-        }
-      }
-    >
-      <Text
-        style={
-          Object {
-            "color": "red",
-            "fontWeight": "bold",
-            "paddingBottom": 5,
-          }
-        }
-      >
-        Password
-      </Text>
-      <TextInput
-        allowFontScaling={true}
-        autoCorrect={false}
-        editable={true}
-        keyboardType="default"
-        onChangeText={[Function]}
-        placeholder="Password"
-        secureTextEntry={true}
-        style={
-          Object {
-            "alignContent": "center",
-            "backgroundColor": "white",
-            "borderColor": "black",
-            "borderWidth": 1,
-            "height": 40,
-            "justifyContent": "center",
-            "paddingBottom": 10,
-            "width": "50%",
-          }
-        }
-        underlineColorAndroid="transparent"
-      />
-    </View>
-    <Text />
-    <Text />
-    <View
-      accessibilityRole="button"
-      accessibilityStates={
         Array [
-          "disabled",
+          Object {
+            "bottom": 0,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          },
+          Object {
+            "height": "100%",
+            "width": "100%",
+          },
+          undefined,
         ]
       }
-      accessible={true}
-      isTVSelectable={true}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
-      style={
+    />
+    <RCTScrollView
+      contentInset={
         Object {
-          "opacity": 1,
+          "bottom": 0,
         }
       }
+      getTextInputRefs={[Function]}
+      onContentSizeChange={[Function]}
+      onLayout={[Function]}
+      onScroll={[Function]}
+      scrollEventThrottle={200}
+      scrollToBottomOnKBShow={false}
+      scrollToInputAdditionalOffset={75}
+      startScrolledToBottom={false}
     >
-      <View
-        style={
-          Array [
-            Object {},
-            Object {},
-          ]
-        }
-      >
-        <Text
-          disabled={true}
+      <View>
+        <View
           style={
-            Array [
-              Object {
-                "color": "#007AFF",
-                "fontSize": 18,
-                "padding": 8,
-                "textAlign": "center",
-              },
-              Object {
-                "color": "red",
-              },
-              Object {
-                "color": "#cdcdcd",
-              },
-            ]
+            Object {
+              "alignItems": "center",
+              "height": 200,
+              "justifyContent": "center",
+              "paddingTop": 10,
+            }
           }
         >
-          Register
+          <Image
+            source={
+              Object {
+                "testUri": "../../../Resources/aqLogo.png",
+              }
+            }
+            style={
+              Object {
+                "height": "70%",
+                "width": "50%",
+              }
+            }
+          />
+        </View>
+        <View
+          onLayout={[Function]}
+          style={
+            Object {
+              "alignItems": "center",
+              "flex": 1,
+              "flexDirection": "column",
+              "justifyContent": "center",
+            }
+          }
+        >
+          <Text
+            style={
+              Object {
+                "color": "red",
+                "fontSize": 15,
+                "fontWeight": "bold",
+                "paddingBottom": 5,
+                "paddingTop": 5,
+              }
+            }
+          >
+            First Name
+          </Text>
+          <TextInput
+            allowFontScaling={true}
+            autoCorrect={false}
+            editable={true}
+            keyboardType="default"
+            onChangeText={[Function]}
+            placeholder="First Name"
+            secureTextEntry={false}
+            style={
+              Object {
+                "alignContent": "center",
+                "backgroundColor": "white",
+                "borderColor": "black",
+                "borderWidth": 1,
+                "height": 40,
+                "justifyContent": "center",
+                "paddingBottom": 10,
+                "width": "50%",
+              }
+            }
+            underlineColorAndroid="transparent"
+          />
+        </View>
+        <View
+          onLayout={[Function]}
+          style={
+            Object {
+              "alignItems": "center",
+              "flex": 1,
+              "flexDirection": "column",
+              "justifyContent": "center",
+            }
+          }
+        >
+          <Text
+            style={
+              Object {
+                "color": "red",
+                "fontSize": 15,
+                "fontWeight": "bold",
+                "paddingBottom": 5,
+                "paddingTop": 5,
+              }
+            }
+          >
+            Last Name
+          </Text>
+          <TextInput
+            allowFontScaling={true}
+            autoCorrect={false}
+            editable={true}
+            keyboardType="default"
+            onChangeText={[Function]}
+            placeholder="Last Name"
+            secureTextEntry={false}
+            style={
+              Object {
+                "alignContent": "center",
+                "backgroundColor": "white",
+                "borderColor": "black",
+                "borderWidth": 1,
+                "height": 40,
+                "justifyContent": "center",
+                "paddingBottom": 10,
+                "width": "50%",
+              }
+            }
+            underlineColorAndroid="transparent"
+          />
+        </View>
+        <View
+          onLayout={[Function]}
+          style={
+            Object {
+              "alignItems": "center",
+              "flex": 1,
+              "flexDirection": "column",
+              "justifyContent": "center",
+            }
+          }
+        >
+          <Text
+            style={
+              Object {
+                "color": "red",
+                "fontSize": 15,
+                "fontWeight": "bold",
+                "paddingBottom": 5,
+                "paddingTop": 5,
+              }
+            }
+          >
+            Username
+          </Text>
+          <TextInput
+            allowFontScaling={true}
+            autoCorrect={false}
+            editable={true}
+            keyboardType="default"
+            onChangeText={[Function]}
+            placeholder="Username"
+            secureTextEntry={false}
+            style={
+              Object {
+                "alignContent": "center",
+                "backgroundColor": "white",
+                "borderColor": "black",
+                "borderWidth": 1,
+                "height": 40,
+                "justifyContent": "center",
+                "paddingBottom": 10,
+                "width": "50%",
+              }
+            }
+            underlineColorAndroid="transparent"
+          />
+        </View>
+        <View
+          onLayout={[Function]}
+          style={
+            Object {
+              "alignItems": "center",
+              "flex": 1,
+              "flexDirection": "column",
+              "justifyContent": "center",
+            }
+          }
+        >
+          <Text
+            style={
+              Object {
+                "color": "red",
+                "fontSize": 15,
+                "fontWeight": "bold",
+                "paddingBottom": 5,
+                "paddingTop": 5,
+              }
+            }
+          >
+            Email
+          </Text>
+          <TextInput
+            allowFontScaling={true}
+            autoCorrect={false}
+            editable={true}
+            keyboardType="default"
+            onChangeText={[Function]}
+            placeholder="Email"
+            secureTextEntry={false}
+            style={
+              Object {
+                "alignContent": "center",
+                "backgroundColor": "white",
+                "borderColor": "black",
+                "borderWidth": 1,
+                "height": 40,
+                "justifyContent": "center",
+                "paddingBottom": 10,
+                "width": "50%",
+              }
+            }
+            underlineColorAndroid="transparent"
+          />
+        </View>
+        <View
+          onLayout={[Function]}
+          style={
+            Object {
+              "alignItems": "center",
+              "flex": 1,
+              "flexDirection": "column",
+              "justifyContent": "center",
+            }
+          }
+        >
+          <Text
+            style={
+              Object {
+                "color": "red",
+                "fontSize": 15,
+                "fontWeight": "bold",
+                "paddingBottom": 5,
+                "paddingTop": 5,
+              }
+            }
+          >
+            Password
+          </Text>
+          <TextInput
+            allowFontScaling={true}
+            autoCorrect={false}
+            editable={true}
+            keyboardType="default"
+            onChangeText={[Function]}
+            placeholder="Password"
+            secureTextEntry={true}
+            style={
+              Object {
+                "alignContent": "center",
+                "backgroundColor": "white",
+                "borderColor": "black",
+                "borderWidth": 1,
+                "height": 40,
+                "justifyContent": "center",
+                "paddingBottom": 10,
+                "width": "50%",
+              }
+            }
+            underlineColorAndroid="transparent"
+          />
+        </View>
+        <Text />
+        <Text />
+        <Text
+          style={
+            Object {
+              "color": "red",
+              "height": 40,
+              "textAlign": "center",
+            }
+          }
+        >
+          
         </Text>
+        <Text />
+        <View
+          accessibilityRole="button"
+          accessibilityStates={
+            Array [
+              "disabled",
+            ]
+          }
+          accessible={true}
+          isTVSelectable={true}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "opacity": 1,
+            }
+          }
+        >
+          <View
+            style={
+              Array [
+                Object {},
+                Object {},
+              ]
+            }
+          >
+            <Text
+              disabled={true}
+              style={
+                Array [
+                  Object {
+                    "color": "#007AFF",
+                    "fontSize": 18,
+                    "padding": 8,
+                    "textAlign": "center",
+                  },
+                  Object {
+                    "color": "red",
+                  },
+                  Object {
+                    "color": "#cdcdcd",
+                  },
+                ]
+              }
+            >
+              Register
+            </Text>
+          </View>
+        </View>
       </View>
-    </View>
-    <Text />
-    <Text
-      style={
-        Object {
-          "color": "red",
-          "height": 50,
-          "textAlign": "center",
-        }
-      }
-    >
-      
-    </Text>
+    </RCTScrollView>
   </View>
-</RCTScrollView>
+</View>
 `;

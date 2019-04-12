@@ -25,23 +25,15 @@ export default class SetupNew extends Component<Props> {
      * Checks if users has previously logged into system to display appropriate view
      */
     checkLogin() {
-        accountFuncs.loginKeychain().then((_res) => {
-            if (accountFuncs.loginKeychain() != null) {
+        AsyncStorage.getItem(LOGIN_NAME).then((_retrieveData) => {
+            if (_retrieveData == null) {
                 this.setState({ loggedIn: false})
-            } else {
+            }
+            else {
                 this.setState({loggedIn: true})
-                this.props.navigation.navigate('ReviewFirst')
+                this.props.navigation.navigate('ReviewFirst');
             }
         })
-        // AsyncStorage.getItem(LOGIN_NAME).then((_retrieveData) => {
-        //     if (_retrieveData == null) {
-        //         this.setState({ loggedIn: false})
-        //     }
-        //     else {
-        //         this.setState({loggedIn: true})
-        //         this.props.navigation.navigate('ReviewFirst');
-        //     }
-        // })
     }
 
     // If logged in already go to review via navigator, otherwise have login first

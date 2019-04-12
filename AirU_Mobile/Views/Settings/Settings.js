@@ -41,8 +41,8 @@ export default class Settings extends Component {
         return await AsyncStorage.getItem(SENSOR_ARRAY).then(res => JSON.parse(res))
     }
 
-    checkLogin() {
-        let result = AsyncStorage.getItem(LOGIN_NAME)
+    async checkLogin() {
+        let result = await AsyncStorage.getItem(LOGIN_NAME)
         if (result == null) {
             this.setState({loggedIn: false})
         } else {
@@ -121,7 +121,6 @@ export default class Settings extends Component {
                     <View style={[styles.home, {flex: 10}]}>
                         {log}
                         {editDevice}
-                        <Setting text="Adjust Data Rate" action={() => this.props.navigation.navigate('Refresh', {return: true})}/>
                         <Setting text="Reset Settings" action={() => this.reset()}/>
                         <Setting text="Contact AirU" action={() => Linking.openURL('mailto:aqandu@utah.edu')}/>
                     </View>

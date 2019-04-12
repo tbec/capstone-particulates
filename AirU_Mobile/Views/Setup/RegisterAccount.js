@@ -55,7 +55,7 @@ export default class RegisterAccount extends Component<Props> {
                 <ImageBackground source={require('../../Resources/login_background.jpg')} style={{width: '100%', height: '100%'}}>
                     <KeyboardAwareScrollView>  
                         <View style={{height: 200, alignItems: 'center', justifyContent: 'center', paddingTop: 10}}>
-                            <Image source={require('../../Resources/red_cloud2.png')} 
+                            <Image source={require('../../Resources/aqLogo.png')} 
                                             style={{width: '50%', height: '70%'}}/>
                         </View>
                         <KeyboardAvoidingView style={{flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>

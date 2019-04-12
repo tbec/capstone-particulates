@@ -1,6 +1,6 @@
 // shows sensor data
 import React, {Component} from 'react';
-import {Text, View, WebView, TouchableHighlight, AsyncStorage, Platform} from 'react-native';
+import {Text, Image, View, ImageBackground, TouchableHighlight, AsyncStorage, Platform} from 'react-native';
 import styles from '../../StyleSheets/Styles'
 import Icon from 'react-native-vector-icons/Ionicons'
 import SensorDisplay from './SensorDisplay';
@@ -50,18 +50,23 @@ export default class Sensor extends Component<Props> {
         }
         // prompt to setup sensor
         else {
-            sensorPage = <View style={styles.home}>
-                            <Text>You have not registered any sensors to view data.</Text>
-                            <Text>Select below to register one now</Text>
+            sensorPage = <View style={styles.container}>
+                            <ImageBackground source={require('../../Resources/home_background.jpg')} style={{width: '100%', height: '100%'}}>
+                            <View style={styles.home}>
+                                <Text style={[styles.buttonText, {color: 'white', fontSize: 20}]}>You have not setup any sensors</Text>
+                                <Text style={[styles.buttonText, {color: 'white', fontSize: 20}]}>Tap below to get started</Text>
                                 <TouchableHighlight 
-                                        style={styles.button}
+                                        style={{alignItems: 'center', justifyContent: 'center', 
+                                            height: '50%', width: '90%', borderColor: 'white', borderWidth: 2}}
                                         activeOpacity={30}
                                         underlayColor="yellow"
                                         onPress={() => this.props.navigation.navigate('Setup')}>
-                                    <Text style={styles.buttonText}>Setup New Sensor</Text>
-                            </TouchableHighlight>
+                                    {/* <Text style={styles.buttonText}>Setup New Sensor</Text> */}
+                                    <Image source={require('../../Resources/sensor_image.png')} style={{width: '100%', height: '100%'}}/>
+                                </TouchableHighlight>
+                                </View>
+                            </ImageBackground>
                         </View>;
-
         }
         return (
             <View style={{flex: 1}}>

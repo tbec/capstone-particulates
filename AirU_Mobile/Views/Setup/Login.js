@@ -46,7 +46,7 @@ export default class Login extends Component<Props> {
 
         // if success, save locally and continue
         if (result != null && JSON.parse(result).success) {
-            // AsyncStorage.setItem(LOGIN_NAME, this.state.login)
+            AsyncStorage.setItem(LOGIN_NAME, this.state.login)
             // AsyncStorage.setItem(PASSWORD, this.state.password)
             accountFuncs.saveAccount(this.state.login, this.state.password)
             accountFuncs.updateArrays()
@@ -89,7 +89,7 @@ export default class Login extends Component<Props> {
                 <ImageBackground source={require('../../Resources/login_background.jpg')} style={{width: '100%', height: '100%'}}>
                     <KeyboardAwareScrollView style={styles.container}>
                                 <View style={{height: 200, alignItems: 'center', justifyContent: 'center', paddingTop: 10, }}>
-                                    <Image source={require('../../Resources/red_cloud2.png')} 
+                                    <Image source={require('../../Resources/aqLogo.png')} 
                                                     style={{width: '50%', height: '70%', opacity: 1.0}}/>
                                 </View>
                                 <KeyboardAvoidingView style={styles.textGroupBox}>

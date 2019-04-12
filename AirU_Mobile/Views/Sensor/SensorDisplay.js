@@ -1,6 +1,6 @@
 // shows sensor data
 import React, {Component} from 'react';
-import {Text, View, TouchableHighlight, AsyncStorage} from 'react-native';
+import {Text, View, TouchableHighlight, AsyncStorage, AppState} from 'react-native';
 import styles from '../../StyleSheets/Styles'
 import { SENSOR_ARRAY, WEB_URL } from '../../Components/Constants'
 import { BarChart, Grid, XAxis} from 'react-native-svg-charts'
@@ -88,6 +88,9 @@ export default class SensorDisplay extends Component<Props> {
     /** WEB CALLS **/
     async getData() {
         var num = 0
+        if (AppState.currentState == 'background') {
+            // schedule task and return
+        }
 
         for (currSensor of this.state.sensorList) {
             data = await this.webCall(currSensor)
@@ -114,6 +117,10 @@ export default class SensorDisplay extends Component<Props> {
         this.setState({connected: true, data: this.state.selectedSensor.sensorData, lastUpdated: new Date(Date.now())})
     }
 
+    /**
+     * Get pollution data for a sensor
+     * @param {sensor} sensor 
+     */
     async webCall(sensor) {
         let urlBase = WEB_URL + '/data/pollution/'
         let deviceID = sensor.id //'F45EAB9F6CFA'
@@ -380,6 +387,9 @@ class Period extends Component<Props> {
     }
 }
 
+/**
+ * Used for selecting data type dropdown
+ */
 class DataType extends Component<Props> {
     constructor(props) {
         super(props)
@@ -398,6 +408,9 @@ class DataType extends Component<Props> {
     }
 }
 
+/**
+ * Used for sensor dropdown
+ */
 class SensorPicker extends Component<Props> {
     constructor(props) {
         super(props)
@@ -419,6 +432,9 @@ class SensorPicker extends Component<Props> {
     }
 }
 
+/**
+ * Displays information about the current quality based on AirU measurements
+ */
 class Information extends Component<Props> {
     constructor(props) {
         super(props)

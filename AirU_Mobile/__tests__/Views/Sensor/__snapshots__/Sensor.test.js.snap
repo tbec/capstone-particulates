@@ -18,12 +18,6 @@ exports[`Snapshot ConnectionSetup Setup 1`] = `
       }
     }
   >
-    <Text>
-      You have not registered any sensors to view data.
-    </Text>
-    <Text>
-      Select below to register one now
-    </Text>
     <View
       accessible={true}
       isTVSelectable={true}
