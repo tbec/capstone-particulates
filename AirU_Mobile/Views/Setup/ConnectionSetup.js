@@ -80,7 +80,7 @@ export default class ConnectionSetup extends Component<Props> {
             }
 
             // adjust name to match sensor
-            if (device.name.startsWith('AIRU:')) { //'AIRU:746C'
+            if (device.name != null && device.name.startsWith('AIRU:')) { //'AIRU:746C'
                 manager.stopDeviceScan();
                 // connect to device and get MacID
                 device.connect()
@@ -143,7 +143,7 @@ export default class ConnectionSetup extends Component<Props> {
                 }
     
                 // adjust name to match sensor
-                if (device.name.startsWith('AIRU:')) { //AIRU:746C
+                if (device.name != null && device.name.startsWith('AIRU:')) { //AIRU:746C
                     manager.stopDeviceScan();
 
                     // connect to device, discover characteristics and services, write to char in service[3], 
