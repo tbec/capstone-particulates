@@ -1,9 +1,9 @@
 // shows sensor data
 import React, {Component} from 'react';
-import {Text, View, TouchableHighlight, AsyncStorage, AppState} from 'react-native';
+import {Text, View, TouchableHighlight, AsyncStorage, AppState, ImageBackground} from 'react-native';
 import styles from '../../StyleSheets/Styles'
 import { SENSOR_ARRAY, WEB_URL } from '../../Components/Constants'
-import { BarChart, Grid, XAxis} from 'react-native-svg-charts'
+import { BarChart, Grid} from 'react-native-svg-charts'
 import {Text as TextChart, G} from 'react-native-svg'
 import { Dropdown } from 'react-native-material-dropdown';
 import {sensorFuncs} from '../../Components/SensorObj'
@@ -335,7 +335,7 @@ class Graph extends Component<Props> {
         }))
 
         return (
-            <View style={{ flexDirection: 'row', height: 250, paddingVertical: 5}}>
+            <View style={{flexDirection: 'row', height: 250, paddingVertical: 5, backgroundColor: '#F9E9E6'}}>
                 <BarChart
                     style={{ flex: 1 }}
                     data={colorData}
@@ -483,7 +483,7 @@ class Information extends Component<Props> {
         }
 
         return(
-            <View style={{flex: 1, borderColor: 'black', borderWidth: 1}}>
+            <View style={{flex: 1, borderColor: 'black', borderWidth: 1, backgroundColor: 'white'}}>
                 <Text>{pollution}: {dataText}</Text>
             </View>
         )

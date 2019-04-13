@@ -45,6 +45,7 @@ export const accountFuncs = {
     /** Removes account details locally **/
     async removeAccount() {
         await Keychain.resetGenericPassword();
+        await Keychain.resetInternetCredentials();
     },
 
     /**
