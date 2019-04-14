@@ -41,8 +41,8 @@ export default class Settings extends Component {
         return await AsyncStorage.getItem(SENSOR_ARRAY).then(res => JSON.parse(res))
     }
 
-    checkLogin() {
-        let result = AsyncStorage.getItem(LOGIN_NAME)
+    async checkLogin() {
+        let result = await AsyncStorage.getItem(LOGIN_NAME)
         if (result == null) {
             this.setState({loggedIn: false})
         } else {

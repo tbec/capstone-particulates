@@ -1,6 +1,6 @@
 // shows sensor data
 import React, {Component} from 'react';
-import {Text, View, TouchableHighlight, AsyncStorage} from 'react-native';
+import {Text, View, TouchableHighlight, AsyncStorage, AppState, ImageBackground} from 'react-native';
 import styles from '../../StyleSheets/Styles'
 import { SENSOR_ARRAY, WEB_URL } from '../../Components/Constants'
 import { BarChart, Grid} from 'react-native-svg-charts'
@@ -87,32 +87,43 @@ export default class SensorDisplay extends Component<Props> {
 
     /** WEB CALLS **/
     async getData() {
-        //TODO: ADJUST TO DO ALL SENSORS INSTEAD OF ONLY CURRENTLY SELECTED ONE
-
-        data = await this.webCall()
-        if (data == null) {
-            this.setState({connected: false})
-            return
+        var num = 0
+        if (AppState.currentState == 'background') {
+            // schedule task and return
         }
 
-        // parse data
-        let json = JSON.parse(data);
-        _pm1 = json["PM1"]
-        _pm10 = json["PM10"]
-        _time = json["time"]
-        _pm25 = json["PM2.5"]
+        for (currSensor of this.state.sensorList) {
+            data = await this.webCall(currSensor)
+            if (data == null) {
+                this.setState({connected: false})
+                return
+            }
 
-        // add datapoint and update state
-        dataToAdd = {pm1: _pm1, pm10: _pm10, pm25: _pm25, time: _time}
-        selectSensor = sensorFuncs.addData(this.state.sensorList, this.state.sensorNumber, 
-            dataToAdd, sensorFuncs.getDataSet(this.state.selectedSensor))
+            // parse data
+            let json = JSON.parse(data);
+            _pm1 = json["PM1"]
+            _pm10 = json["PM10"]
+            _time = json["time"]
+            _pm25 = json["PM2.5"]
 
-        this.setState({connected: true, data: selectSensor.sensorData, lastUpdated: new Date(Date.now())})
+            // add datapoint and update state
+            dataToAdd = {pm1: _pm1, pm10: _pm10, pm25: _pm25, time: _time}
+            selectSensor = sensorFuncs.addData(this.state.sensorList, num, 
+                dataToAdd, sensorFuncs.getDataSet(currSensor))
+
+            num = num + 1
+        }
+
+        this.setState({connected: true, data: this.state.selectedSensor.sensorData, lastUpdated: new Date(Date.now())})
     }
 
-    async webCall() {
+    /**
+     * Get pollution data for a sensor
+     * @param {sensor} sensor 
+     */
+    async webCall(sensor) {
         let urlBase = WEB_URL + '/data/pollution/'
-        let deviceID = this.state.selectedSensor.id //'F45EAB9F6CFA'
+        let deviceID = sensor.id //'F45EAB9F6CFA'
 
         let url = urlBase + deviceID
         url =  WEB_URL_NO_MOBILE + '/data/pollution/' + deviceID
@@ -200,6 +211,7 @@ class Graph extends Component<Props> {
     render() {
         // period to show for data
         var data = this.props.sensor.sensorData
+        var xData = []
 
         // choose which view to show
         if (data.length == 0) {
@@ -217,9 +229,13 @@ class Graph extends Component<Props> {
                 data = data.pm10
             }
 
+            xData = [-6, -5 -4, -3, -2, -1, 0]
+            xData = xData.slice(data.length-7)
+
             // only show past 8 data points to avoid filling up graph
-            if (data.length > 7)
+            if (data.length > 7) {
                 data = data.slice(data.length-7)
+            }
 
         } else if (this.props.period == 'day') {
             currDay = this.props.date.getDay()
@@ -247,6 +263,9 @@ class Graph extends Component<Props> {
                 data.push(this.computeDayAverage(16, 20, "PM10", dataDays))
                 data.push(this.computeDayAverage(20, 23, "PM10", dataDays))
             }
+
+            xData = [0, 4, 8, 12, 4, 8]
+
         }  else if (this.props.period == 'week') {
             dataDays = data
             data = []
@@ -275,6 +294,9 @@ class Graph extends Component<Props> {
                 data.push(dataDays[5].avg.pm10Avg)
                 data.push(dataDays[6].avg.pm10Avg)
             }
+
+            xData = ['S', 'M', 'T', 'W', 'H', 'F', 'S']
+
         } else {
             data = [0]
         }
@@ -283,7 +305,7 @@ class Graph extends Component<Props> {
             data = [0]
         }
 
-        // create labels
+        // create value labels
         const CUT_OFF = 20
         const Labels = ({ x, y, bandwidth, colorData }) => (
             data.map((value, index) => (
@@ -303,6 +325,7 @@ class Graph extends Component<Props> {
             ))
         )
 
+        // set color and allow pressing labels to update information
         const colorData = data.map((value, index) => ({
             value,
             svg: {
@@ -312,7 +335,7 @@ class Graph extends Component<Props> {
         }))
 
         return (
-            <View style={{ flexDirection: 'row', height: 300, paddingVertical: 5}}>
+            <View style={{flexDirection: 'row', height: 250, paddingVertical: 5, backgroundColor: '#F9E9E6'}}>
                 <BarChart
                     style={{ flex: 1 }}
                     data={colorData}
@@ -320,7 +343,7 @@ class Graph extends Component<Props> {
                     spacing={0.2}
                     gridMin={0}
                     yMin={0} 
-                    yMax={200}
+                    yMax={50}
                     yAccessor={({ item }) => item.value}
                     animate={false}>
                     <Grid direction={Grid.Direction.HORIZONTAL}/>
@@ -364,6 +387,9 @@ class Period extends Component<Props> {
     }
 }
 
+/**
+ * Used for selecting data type dropdown
+ */
 class DataType extends Component<Props> {
     constructor(props) {
         super(props)
@@ -382,6 +408,9 @@ class DataType extends Component<Props> {
     }
 }
 
+/**
+ * Used for sensor dropdown
+ */
 class SensorPicker extends Component<Props> {
     constructor(props) {
         super(props)
@@ -403,6 +432,9 @@ class SensorPicker extends Component<Props> {
     }
 }
 
+/**
+ * Displays information about the current quality based on AirU measurements
+ */
 class Information extends Component<Props> {
     constructor(props) {
         super(props)
@@ -451,7 +483,7 @@ class Information extends Component<Props> {
         }
 
         return(
-            <View style={{flex: 1, borderColor: 'black', borderWidth: 1}}>
+            <View style={{flex: 1, borderColor: 'black', borderWidth: 1, backgroundColor: 'white'}}>
                 <Text>{pollution}: {dataText}</Text>
             </View>
         )

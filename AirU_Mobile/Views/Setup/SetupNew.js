@@ -6,6 +6,7 @@ import React, {Component} from 'react';
 import {AsyncStorage} from 'react-native'
 import Login from '../Setup/Login'
 import { LOGIN_NAME } from '../../Components/Constants'
+import {accountFuncs} from '../../Components/CommonFuncs'
 
 export default class SetupNew extends Component<Props> {
 
@@ -16,7 +17,7 @@ export default class SetupNew extends Component<Props> {
         this.checkLogin();
     }
 
-    componentWillReceiveProps(props) {
+    componentDidMount(props) {
         this.checkLogin();
     }
 

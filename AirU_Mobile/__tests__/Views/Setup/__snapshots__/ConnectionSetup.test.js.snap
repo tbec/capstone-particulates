@@ -61,20 +61,11 @@ exports[`Snapshot ConnectionSetup Setup 1`] = `
         }
       }
     >
-      <Image
-        source={
-          Object {
-            "testUri": "../../../Resources/Loading.gif",
-          }
-        }
-        style={
-          Object {
-            "alignContent": "center",
-            "height": 100,
-            "justifyContent": "center",
-            "width": 100,
-          }
-        }
+      <ActivityIndicator
+        animating={true}
+        color="#999999"
+        hidesWhenStopped={true}
+        size="large"
       />
     </View>
     <View
@@ -129,7 +120,7 @@ exports[`Snapshot ConnectionSetup Setup 1`] = `
         keyboardType="default"
         onChangeText={[Function]}
         placeholder="Password"
-        secureTextEntry={true}
+        secureTextEntry={false}
         style={
           Object {
             "alignContent": "center",

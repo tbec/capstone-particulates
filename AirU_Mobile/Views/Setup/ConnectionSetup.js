@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Text, View, Image, TextInput, Button, KeyboardAvoidingView, ScrollView, Alert} from 'react-native';
+import {Text, View, Image, TextInput, Button, KeyboardAvoidingView, ScrollView, Alert, ActivityIndicator} from 'react-native';
 import NavBar from '../../Components/NavBar';
 import { BleManager } from 'react-native-ble-plx';
 import { TEST_MODE, SENSOR_NAME, SENSOR_ID } from '../../Components/Constants'
@@ -80,7 +80,7 @@ export default class ConnectionSetup extends Component<Props> {
             }
 
             // adjust name to match sensor
-            if (device.name === 'AIRU:746C') {
+            if (device.name != null && device.name.startsWith('AIRU:')) { //'AIRU:746C'
                 manager.stopDeviceScan();
                 // connect to device and get MacID
                 device.connect()
@@ -123,8 +123,13 @@ export default class ConnectionSetup extends Component<Props> {
                 this.setState({WiFiError: true})
                 return
             } else {
-                name = this.props.navigation.getParam(SENSOR_NAME, 'NameUndefined');
-                this.props.navigation.navigate('Privacy', { sensorName: name, sensorID: this.state.sensorID});
+                retVal = this.props.navigation.getParam("return", false)
+                if (retVal) {
+                    this.props.navigation.goBack()
+                } else {
+                    name = this.props.navigation.getParam(SENSOR_NAME, 'NameUndefined');
+                    this.props.navigation.navigate('Privacy', { sensorName: name, sensorID: this.state.sensorID});
+                }
             }
         }
 
@@ -138,7 +143,7 @@ export default class ConnectionSetup extends Component<Props> {
                 }
     
                 // adjust name to match sensor
-                if (device.name === 'AIRU:746C') {
+                if (device.name != null && device.name.startsWith('AIRU:')) { //AIRU:746C
                     manager.stopDeviceScan();
 
                     // connect to device, discover characteristics and services, write to char in service[3], 
@@ -209,8 +214,7 @@ export default class ConnectionSetup extends Component<Props> {
             sensID=<Text style={{textAlign: 'center', fontWeight: 'bold'}}>{this.state.sensorID}</Text>
         }
         else {
-            sensID=<Image source={require('../../Resources/Loading.gif')} 
-                                style={{width: 100, height: 100, alignContent: 'center', justifyContent: 'center'}}/>
+            sensID=<ActivityIndicator size="large"/>
         }
         
         return (

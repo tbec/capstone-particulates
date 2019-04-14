@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Text, View, Image, KeyboardAvoidingView, TextInput, Button, AsyncStorage} from 'react-native';
+import {Text, View, Image, KeyboardAvoidingView, TextInput, Button, AsyncStorage, TouchableHighlight} from 'react-native';
 import RadioForm from 'react-native-simple-radio-button';
 import styles from '../../StyleSheets/Styles'
 import { SENSOR_ARRAY, WEB_URL, LOGIN_NAME, PASSWORD } from '../../Components/Constants'
@@ -167,7 +167,7 @@ export default class EditDevice extends Component<Props> {
             <View style={styles.container}>
                 <KeyboardAwareScrollView style={[styles.container, {backgroundColor: '#b3e6ff'}]}>
                     <View style={{height: 200, alignItems: 'center', justifyContent: 'center', paddingTop: 20}}>
-                        <Image source={require('../../Resources/red_cloud.jpeg')} 
+                        <Image source={require('../../Resources/red_cloud2.png')} 
                                         style={{width: '50%', height: '60%'}}/>
                     </View>
                     <Text/>
@@ -197,6 +197,14 @@ export default class EditDevice extends Component<Props> {
                         <Text style={styles.textInputLabel}>Privacy Setting</Text>
                         <RadioButtons privacy={this.state.privacy == false ? 0 : 1} handler={this.privacyHandler}/>
                     </View>
+                    <TouchableHighlight
+                        style={[styles.button, {alignContent: 'center'}]}
+                        activeOpacity={30}
+                        underlayColor="yellow"
+                        onPress={() => this.props.navigation.navigate('ConnectionSetup', {return: true})}
+                        >
+                        <Text style={styles.buttonText}>Modify WiFi Settings</Text>
+                    </TouchableHighlight>
                     <Text/>
                     <Text/>
                     <Button title="Update Settings"

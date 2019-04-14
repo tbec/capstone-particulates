@@ -8,6 +8,7 @@ import styles from '../../StyleSheets/Styles'
 import { NavigationActions, StackActions } from 'react-navigation'
 import { SENSOR_ARRAY, WEB_URL, LOGIN_NAME, PASSWORD, SENSOR_NAME, SENSOR_PRIVACY, SENSOR_ID } from '../../Components/Constants'
 import {sensorFuncs} from '../../Components/SensorObj'
+import {accountFuncs} from '../../Components/CommonFuncs'
 
 export default class Confirmation extends Component<Props> {
     constructor(props) {
@@ -87,10 +88,11 @@ export default class Confirmation extends Component<Props> {
         })
 
         // login
-        result = await this.login(username)
-        let res = JSON.parse(result)
+        // result = await this.login(username)
+        // let res = JSON.parse(result)
+        let res = await accountFuncs.loginKeychain() //TODO: CHECK ME!
 
-        if (!res.success) {
+        if (res == null) {
             // display error
             return false
         }

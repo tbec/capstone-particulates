@@ -51,11 +51,12 @@ export default class Home extends Component<Props> {
             for (let currSensor of sensorJSON) {
                 inSensor = false
 
-                // check if exists
+                // check if exists, if so add to list
                 if (sensorList != null) {
                     for (let listSensor of sensorList) {
                         if (currSensor.DeviceName == sensorFuncs.getName(listSensor)) {
                             inSensor = true
+                            newSensorList.push(currSensor)
                             break;
                         }
                     }
@@ -75,15 +76,13 @@ export default class Home extends Component<Props> {
                 newSensorList.push(newSensor)
             }
 
-            if (sensorList == null) {
-                sensorList = []
+            if (newSensorList == null) {
+                newSensorList = []
             }
 
-            sensorList.push(newSensorList)
-            AsyncStorage.setItem(SENSOR_ARRAY, JSON.stringify(sensorList))
+            // add sensor and finish
+            AsyncStorage.setItem(SENSOR_ARRAY, JSON.stringify(newSensorList))
             console.log("Wrote sensors")
-
-            // get data for each?
         }
     }
 
