@@ -5,7 +5,7 @@ import TrackerGraph from './TrackerGraph';
 import MapView, { Polyline, Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import styles from '../../StyleSheets/Styles';
 import { NavigationActions } from 'react-navigation';
-import BackgroundGeolocation from 'react-native-mauron85-background-geolocation';
+import BackgroundGeolocation from '@mauron85/react-native-background-geolocation';
 import { AsyncStorage, DeviceEventEmitter } from 'react-native';
 import { EXPOSUREDATA, NOTIFICATIONS } from '../../Components/Constants';
 import PushNotification from 'react-native-push-notification';

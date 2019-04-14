@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@mauron85/react-native-background-geolocation": "^0.5.3"
+  }
+}
