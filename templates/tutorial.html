@@ -215,6 +215,34 @@
                 <div class="tut-body">
                         <img class="gif mobile" src="{{url_for('static', filename='gif/Settings.gif')}}">
                 </div>
-        </div>    
+                <div class="tut-header">
+                <h1 id="tracker" class="red">Pollution Tracker</h1>
+                </div>
+
+                <div class="tracker-body">
+                        <div class="flex-row">
+                                <div class="tracker-text">
+                                                <p>From the tracker menu, press and hold on a saved path to rename it, press the delete button to remove it, or press start new to begin a new path.</p>
+                                        </div>
+                                        <img class="tracker-pic" src="{{url_for('static', filename='img/track1.png')}}">
+                        </div>
+                        <div class="flex-row">
+                                <div class="tracker-text">
+                                        <p>
+                                                        After obtaining your gps location, press the Start Tracking button to begin making a new path. Your location will continue to be gathered while the app is in the background and when the screen is locked until pressing the Stop Tracking button or closing the app.
+                                        </p>
+                                </div>
+                                <img class="tracker-pic" src="{{url_for('static', filename='img/track2.png')}}">
+                        </div>
+                        <div class="flex-row">
+                                        <div class="tracker-text">
+                                                <p>
+                                                                After completing the path, view data about your path by dragging the slider located at the bottom of the screen. This will show the pollution levels at various points along the path on the graph. Press the More Info button to view information about the pollution level shown on the graph.                                                </p>
+                                        </div>
+                                        <img class="tracker-pic" src="{{url_for('static', filename='img/track3.png')}}">
+                                </div>
+                </div>
+
+        </div>   
 </div>
 {%endblock%}

@@ -112,3 +112,18 @@ p{
     height: 500px;
     margin-left: 140px;
 }
+
+.tracker-body{
+    display: flex;
+    flex-direction: column;
+}
+
+.tracker-text{
+    align-content: center;
+    width: 40%;
+}
+
+.tracker-pic{
+    width: 30%;
+    height: 500px;
+}
