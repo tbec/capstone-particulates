@@ -14,6 +14,7 @@ const deviceManager = {
         console.log(id)
 
         var url = 'http://127.0.0.1:5000/mydevice/info';
+        // var url = "https://neat-environs-205720.appspot.com/mydevice/info"
         // var url ="https://download-dot-neat-environs-205720.appspot.com/mydevice/info"
         var data = {"id": id};
 
@@ -37,10 +38,10 @@ const deviceManager = {
         if(!this.nodeInCart(cart, node)){
             cart.push(node);
             this.saveCart(cart);
-            alert("Device Added to Cart!");
+            alert("Device Added to set.");
         }
         else{
-            console.log("nope");
+            alert("Device already in set.");
         }
         
     },

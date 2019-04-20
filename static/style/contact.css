@@ -14,7 +14,6 @@
 img{
     width: 70%;
     height: 100%;
-    margin: 0 auto;
 }
 .top-nav{
     /* background-color: green; */
@@ -135,17 +134,25 @@ i{
 }
 
 .info{
-    width: 50%;
+    width: 100%;
 
     display: flex;
     flex-direction: row;
-    justify-content: center;
-    align-items: center;
+    align-items: flex-start;
+}
+
+.info p{
+    margin-top: 5px;
+    font-size: 12px;
 }
 
 .info-text{
-    width: 75%;
-    height: 100%;
+    width: 50%;
+    margin-top: 20px;
+}
+.info-text p{
+    font-size: 18px;
+    line-height: 2;
 }
 
 .info-text div{
@@ -153,7 +160,7 @@ i{
     display: flex; 
     flex-direction: row;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
 }
 
 label{
@@ -161,22 +168,50 @@ label{
 }
 
 .info-img{
-    width: 25%;
+    width: 40%;
     height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    justify-content: flex-start;
 }
 
 .project-description{
     width: 100%;
     display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
+    flex-direction: column;
+    margin-top: 50px;
 }
 
-.pic{
+.pic-left{
+    margin-left: 0xp;
+}
+
+.pic-right{
+    padding-right: 0px;
+}
+
+.info-right{
     width: 100%;
-    height: 80%;
+
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-end;
+}
+
+.info-img-right p{
+    margin-top: 5px;
+    font-size: 12px;
+}
+
+.info-img-right{
+    width: 40%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.g{
+    margin-top: 50px;
 }

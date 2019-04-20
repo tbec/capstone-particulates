@@ -71,3 +71,4 @@ class ValidateDeviceIdAPI(FlaskForm):
 class ChangeDeviceNameAPI(FlaskForm):
     devicename = StringField("Device Name", validators=[DataRequired(), Length(min=1, max=15)])
     deviceid = StringField('Device ID', validators=[DataRequired(), Length(min=12, max=12)])
+    visibilty = BooleanField("Visable")

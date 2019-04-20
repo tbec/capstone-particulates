@@ -43,8 +43,8 @@ def welcome():
 
 @app.route('/favicon.ico')
 def favicon():
-    return send_from_directory("./",
-                               'favicon.ico', mimetype='ximage/vnd.microsoft.icon')
+    return send_from_directory("./",'favicon.ico', mimetype='ximage/vnd.microsoft.icon')
+    
 @app.route('/')
 def index():
     if current_user.is_active:
@@ -60,7 +60,7 @@ def tutorial():
 def devices():
     form = AddDevice()
     try:
-        devices = Devices.query.filter_by(Username=current_user.Username).all()
+        devices = DeviceInfo.query.filter_by(Username=current_user.Username).all()
     except:
             flash("It appears there was an error.", category='alert alert-danger _login')
     return render_template("devices.html", form = form, devices = devices)
@@ -88,7 +88,7 @@ def addDevice():
         flash(form.errors['deviceid'][0], category='alert alert-danger _login')
 
     try:
-        devices = Devices.query.filter_by(Username=current_user.Username).all()
+        devices = DeviceInfo.query.filter_by(Username=current_user.Username).all()
     except:
         flash("It appears there was an error.", category='alert alert-danger _login')
     return render_template("devices.html", form = form, devices = devices)
@@ -111,7 +111,7 @@ def editDevice(deviceId):
 
     # If there's an error accessing the DB, flash it and return to previous page
     try:
-        current_device = Devices.query.filter(and_(Devices.Username == current_user.Username, Devices.DeviceId ==deviceId)).first()
+        current_device = DeviceInfo.query.filter(and_(DeviceInfo.Username == current_user.Username, DeviceInfo.DeviceId ==deviceId)).first()
     except Exception as e:
         flash("It appears there was an error.", category='alert alert-danger _login')
         return redirect(url_for("devices"))
@@ -132,7 +132,7 @@ def editDeviceProperty(deviceId):
 
         # Error handle a db access
         try:
-            current_device = Devices.query.filter(and_(Devices.Username == current_user.Username, Devices.DeviceId ==deviceId)).first()
+            current_device = DeviceInfo.query.filter(and_(DeviceInfo.Username == current_user.Username, DeviceInfo.DeviceId ==deviceId)).first()
         except Exception as e:
             flash("It appears there was an error.", category='alert alert-danger _login')
             return redirect(url_for("devices"))
@@ -155,7 +155,7 @@ def editDeviceProperty(deviceId):
 @app.route("/devices/remove/<string:deviceId>")
 @login_required
 def removeDevice(deviceId):
-    current_device = Devices.query.filter(and_(Devices.Username == current_user.Username, Devices.DeviceId ==deviceId)).first()
+    current_device = DeviceInfo.query.filter(and_(DeviceInfo.Username == current_user.Username, DeviceInfo.DeviceId ==deviceId)).first()
     
     if current_device:
         try:
@@ -1058,11 +1058,17 @@ def addDeviceToDb():
     params = request.args.to_dict()
     form = AddDeviceAPI(data=params, meta={'csrf':False})
 
+    visible = True
     response = {}
 
     if form.validate():
         try:
-            db.session.add(Devices(Username=current_user.Username, DeviceName=form.devicename.data, DeviceId=form.deviceid.data))
+            if "visibility" in params.keys() and params["visibility"] == "false":
+                visible = False
+                # if params["visibility"] == "false":
+                    # visible = False
+            db.session.add(DeviceInfo(Username=current_user.Username, DeviceName=form.devicename.data, DeviceId=form.deviceid.data, display=visible))
+            # db.session.add(Devices(Username=current_user.Username, DeviceName=form.devicename.data, DeviceId=form.deviceid.data))
             db.session.commit()
 
             response["success"] = True
@@ -1092,6 +1098,9 @@ def GenerateResponseCodes(success, errors = {}):
 @login_required
 def editSensorProperty():
     params = request.args.to_dict()
+
+
+
     form = ChangeDeviceNameAPI(data=params, meta={'csrf':False})    
 
     # Check the form validated, if so go on to get device
@@ -1099,11 +1108,20 @@ def editSensorProperty():
         deviceToEdit = None
         # Attempt to retrieve device and edit name
         try:
-            deviceToEdit = Devices.query.filter(and_(Devices.Username == current_user.Username, Devices.DeviceId==form.deviceid.data)).first()
+            deviceToEdit = DeviceInfo.query.filter(and_(DeviceInfo.Username == current_user.Username, DeviceInfo.DeviceId==form.deviceid.data)).first()
 
             # If it was a valid device, change the name and return success
             if deviceToEdit:
+                visibility = deviceToEdit.display
+                if "visibility" in params.keys():
+                    if params["visibility"] == "true":
+                        visibility = True
+                    elif params["visibility"] == "false":
+                        visibility = False
+
+
                 deviceToEdit.DeviceName = form.devicename.data
+                deviceToEdit.display = visibility
                 db.session.commit()
                 return jsonify(json.dumps(GenerateResponseCodes(True)))
             else:
@@ -1127,7 +1145,7 @@ def deleteSensor():
 
     if form.validate():
         # Checks to see if a device exists for this user
-        deviceToDelete = Devices.query.filter(and_(Devices.Username == current_user.Username, Devices.DeviceId == form.deviceid.data)).first()
+        deviceToDelete = DeviceInfo.query.filter(and_(DeviceInfo.Username == current_user.Username, DeviceInfo.DeviceId == form.deviceid.data)).first()
         if deviceToDelete:
             # Attempt to delete device: return success if it works or failure with errors 
             try:
@@ -1147,7 +1165,7 @@ def deleteSensor():
 @app.route("/mobile/user/devices", methods=["GET"])
 @login_required
 def getUserDevices():
-    devices = Devices.query.filter_by(Username=current_user.Username).all()
+    devices = DeviceInfo.query.filter_by(Username=current_user.Username).all()
     devices = convertDeviceToJsonFormat(devices)
     return jsonify(json.dumps(devices))
 
@@ -1362,7 +1380,7 @@ def updateValue(form, value):
 
 # Updates the ownership of a device
 def updateDeviceOwnership(newName):
-    devices = Devices.query.filter_by(Username=current_user.Username).all()
+    devices = DeviceInfo.query.filter_by(Username=current_user.Username).all()
     for device in devices:
         device.Username = newName
 
