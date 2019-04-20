@@ -4,81 +4,82 @@
 
 {%block content%}
 
-<img class="logo" src="{{url_for('static', filename='img/aqLogo.png')}}">
+<!-- <div class='body-wrap'> -->
+    <img class="logo" src="{{url_for('static', filename='red_cloud.jpeg')}}">
 
-<div class='signup-wrapper'>
-    <div class='toggle-form'>
+    <div class='signup-wrapper'>
+        <div class='toggle-form'>
+            {%if active == "login"%}
+                <div class='open-login active toggle-button'>Login</div>
+                <div class='open-signup toggle-button'>Signup</div>
+            {%else%}
+                <div class='open-login toggle-button'>Login</div>
+                <div class='open-signup active toggle-button'>Signup</div>
+            {%endif%}
+
+        </div>
+        
+        <!-- Checks whether the Login form should be active or not -->
         {%if active == "login"%}
-            <div class='open-login active toggle-button'>Login</div>
-            <div class='open-signup toggle-button'>Signup</div>
+            <form class="form-signin login active" method="POST" action="/login">
         {%else%}
-            <div class='open-login toggle-button'>Login</div>
-            <div class='open-signup active toggle-button'>Signup</div>
+            <form class="form-signin login" method="POST" action="/login">
         {%endif%}
+            {{ form.hidden_tag() }}
+            {{ wtf.form_field(form.username) }}
+            {{ wtf.form_field(form.password) }}
+            {{ wtf.form_field(form.remember)}}
 
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                        {% for category, message in messages %}
+                            {%if "_login" in category%}
+                                <div class="{{category}}">{{ message }}</div>
+                            {%endif%}
+                        {% endfor %}
+                    {% endif %}
+            {% endwith %}
+            <input type="hidden" name='form_type' value='login'>
+            <button class="btn btn-lg btn-danger btn-block" type="submit"> Login </button>
+        </form>
+
+        <!-- Checks whether the register form should be active or not -->
+        {%if active == "signup"%}
+            <form class="form-signin signup active" method="POST" action="/login">
+        {%else%}
+            <form class="form-signin signup" method="POST" action="/login">
+        {%endif%} 
+
+            {{ reg.hidden_tag() }}
+            {{ wtf.form_field(reg.username) }}
+            {{ wtf.form_field(reg.email) }}
+            {{ wtf.form_field(reg.password) }}
+
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                        {% for category, message in messages %}
+                            {%if "_reg" in category%}
+                                <div class="{{category}}">{{ message }}</div>
+                            {%endif%}
+                        {% endfor %}
+                    {% endif %}
+            {% endwith %}
+            <input type="hidden" name='form_type' value='register'>
+            <button class="btn btn-lg btn-danger btn-block" type="submit">Sign Up</button>
+        </form>
     </div>
-    
-    <!-- Checks whether the Login form should be active or not -->
-    {%if active == "login"%}
-        <form class="form-signin login active" method="POST" action="/login">
-    {%else%}
-        <form class="form-signin login" method="POST" action="/login">
-    {%endif%}
-        {{ form.hidden_tag() }}
-        {{ wtf.form_field(form.username) }}
-        {{ wtf.form_field(form.password) }}
-        {{ wtf.form_field(form.remember)}}
-
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                    {% for category, message in messages %}
-                        {%if "_login" in category%}
-                            <div class="{{category}}">{{ message }}</div>
-                        {%endif%}
-                    {% endfor %}
-                {% endif %}
-        {% endwith %}
-        <input type="hidden" name='form_type' value='login'>
-        <button class="btn btn-lg btn-danger btn-block" type="submit"> Login </button>
-    </form>
-
-    <!-- Checks whether the register form should be active or not -->
-    {%if active == "signup"%}
-        <form class="form-signin signup active" method="POST" action="/login">
-    {%else%}
-        <form class="form-signin signup" method="POST" action="/login">
-    {%endif%} 
-
-        {{ reg.hidden_tag() }}
-        {{ wtf.form_field(reg.firstname) }}
-        {{ wtf.form_field(reg.lastname) }}
-        {{ wtf.form_field(reg.username) }}
-        {{ wtf.form_field(reg.email) }}
-        {{ wtf.form_field(reg.password) }}
-
-
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                    {% for category, message in messages %}
-                        {%if "_reg" in category%}
-                            <div class="{{category}}">{{ message }}</div>
-                        {%endif%}
-                    {% endfor %}
-                {% endif %}
-        {% endwith %}
-        <input type="hidden" name='form_type' value='register'>
-        <button class="btn btn-lg btn-danger btn-block" type="submit">Sign Up</button>
-    </form>
-</div>
-
+<!-- </div> -->
 
 
 
 
 {{super()}}
-<link rel="stylesheet" href="{{url_for('static', filename='style/login.css')}}">
-<script src="{{url_for('static', filename='script/login.js')}}"></script>
+<link rel="stylesheet" href="{{url_for('static', filename='login.css')}}">
+<script src="{{url_for('static', filename='login.js')}}"></script>
 
 {%endblock%}
 
 
+
+<!-- <h1> You are logged in as:  {{user.username }}</h1> -->
