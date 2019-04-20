@@ -1,0 +1,248 @@
+{% extends 'layout.html' %}
+{%block content%}
+
+
+<link rel="stylesheet" href="{{url_for('static',filename='style/tutorial.css')}}">
+
+<div class="guide-container flex-column">
+    <div>
+            <h1 class="red">Application Guide</h1>
+    </div>
+    <div class="flex-row guide-ref">
+        <a class="nav-link" href="#home">Home</a>
+        <a class="nav-link" href="#account">Account</a>
+        <a class="nav-link" href="#devices">Devices</a>
+        <a class="nav-link" href="#analytics">Analytics</a>
+        <a class="nav-link" href="#map">Map</a>
+        <a class="nav-link" href="#mobile">Mobile</a>
+    </div>
+</div>
+<div class="tut-container flex-column">
+
+    <!-- HOME -->
+    <div class="tut-item flex-row"> 
+        <div class="tut-header">
+            <h1 id="home" class="red">Home</h1>
+            <p class="">To view the latest announcements from the AirU team, head to the home page to view their twitter feed.</p>
+        </div>
+        <div class="tut-body">
+                <img class="gif" src="{{url_for('static', filename='gif/tutHome.gif')}}">
+        </div>
+    </div>
+
+    <!-- ACCOUNT -->
+    <div class="tut-item flex-row"> 
+            <div class="tut-header">
+                <h1 id="account"  class="red">Account</h1>
+                <p class="">The account tab keeps track of all your personal details. To view them simply click on the account icon. Besides each field is the option to edit that particular detail.</p>
+            </div>
+            <div class="tut-body">
+                    <img class="gif" src="{{url_for('static', filename='gif/tutAccount.gif')}}">
+            </div>
+        </div>
+
+    <!-- DEVICES -->
+    <div class="flex-column tut-devices"> 
+            <div class="tut-header">
+                <h1 id="devices"  class="red">Devices</h1>
+                <p class="">Devices are identified by a unique MAC address. Upon setting up a device you can give it a more descriptive name. Here are the device edit options.</p>
+            </div>
+            <div class="tut-body">
+                    <h2 class="red">Edit</h2>
+                    <img class="gif" src="{{url_for('static', filename='gif/tuteditDevice.gif')}}">
+            </div>
+
+            <div class="tut-body">
+                    <h2 class="red"> Add To Cart</h2>
+                    <img class="gif" src="{{url_for('static', filename='gif/tutDevAdd.gif')}}">
+            </div>
+            <div class="tut-body">
+                    <h2 class="red">Delete</h2>
+                    <img class="gif" src="{{url_for('static', filename='gif/tutDevDel.gif')}}">
+            </div>
+    </div>
+
+    <!-- MAP -->
+    <div class="flex-column tut-map"> 
+            <div class="tut-header map-header">
+                <h1 id="map"  class="red">Map</h1>
+                <p class="">Each device, if allowed by the owner, appears on the map view. It is here where you can select devices to run queries against. You can either do this manually or by using the drawing tool kit. 
+                    The map view has options to toggle a heatmap layer for a particular measurement showing intensity of the readings.</p>
+            </div>
+
+            <div class=" flex-column tut-inner-body">
+                    <div class="tut-header">
+                            <h2 class="red">Draw Tool</h2>
+                            <p class="">The draw tool can be used to select devices in bulk or by using precision to capture devices within a certain area.</p>
+                        </div>
+                    <div class="tut-specific">
+                            <h3 class="red">Draw Shape</h2>
+                                <img class="gif" src="{{url_for('static', filename='gif/tutDrawShapes.gif')}}">
+                        </div>
+
+                    <div class="tut-specific">
+                            <h3 class="red">Delete Single Shape</h2>
+                                <img class="gif" src="{{url_for('static', filename='gif/tutDelSingleShape.gif')}}">
+                        </div>
+
+                    <div class="tut-specific">
+                            <h3 class="red">Delete All Shapes</h2>
+                                <img class="gif" src="{{url_for('static', filename='gif/tutDelAllShapes.gif')}}">
+                        </div>
+                </div>
+
+
+                <div class=" flex-column tut-inner-body">
+                                    <div class="tut-header">
+                        <h2 class="red">Device Set Management</h2>
+                        <p class="">The draw tool can be used to select devices in bulk or by using precision to capture devices within a certain area.</p>
+                    </div>
+                        <div class="tut-specific">
+                                <h3 class="red">Add Single Device</h2>
+                                    <img class="gif" src="{{url_for('static', filename='gif/AddSingleDev.gif')}}">
+                            </div>
+    
+                        <div class="tut-specific">
+                                <h3 class="red">Bulk Add Device</h2>
+                                    <img class="gif" src="{{url_for('static', filename='gif/AddDevicesShapes.gif')}}">
+                            </div>
+
+                        <div class="tut-specific">
+                                <h3 class="red">Remove Device From Set</h2>
+                                    <img class="gif" src="{{url_for('static', filename='gif/CartDeleting.gif')}}">
+                            </div>
+
+                        <div class="tut-specific">
+                                <h3 class="red">Toggle Device Set View</h2>
+                                    <img class="gif" src="{{url_for('static', filename='gif/cartToggle.gif')}}">
+                            </div>
+                        
+                        <div class="tut-specific">
+                                <h3 class="red">Icon Management</h2>
+                                    <img class="gif" src="{{url_for('static', filename='gif/CloseIcons.gif')}}">
+                            </div>
+    
+                    </div>
+        </div>
+            <!-- ANALYTICS -->
+    <div class="tut-item"> 
+
+            <div class="tut-header">
+                    <h1 id="analytics" class="red">Analytics</h1>
+                    <p class="">The analytics view is where you can run queries against selected devices. Upon return, you can get a preview of that device with the data display feature. Satisfactory data sets can be downloaded as a csv by toggling the tool mode to download.</p>
+                </div>
+                <div class=" flex-column tut-inner-body">
+                        <div class="tut-header">
+                                <h2 class="red"> Set Management</h2>
+                                <p class="">The analytics view consists of two sets: The All Devices set and query Set. The All Devices are populated from devices chose through the map view while the Query Set are the current devices you'd like to query against.</p>
+                            </div>
+                        <div class="tut-specific">
+                                <h3 class="red">Add Device To Query Set</h2>
+                                    <img class="gif" src="{{url_for('static', filename='gif/analyticsAddDevice.gif')}}">
+                            </div>
+    
+                        <div class="tut-specific">
+                                <h3 class="red">Remove Device From Query Set</h2>
+                                    <img class="gif" src="{{url_for('static', filename='gif/RemoveDev.gif')}}">
+                            </div>
+    
+                        <div class="tut-specific">
+                                <h3 class="red">Delete Device From All Devices</h2>
+                                    <img class="gif" src="{{url_for('static', filename='gif/delDevices.gif')}}">
+                            </div>
+                    </div>
+
+                    <div class=" flex-column tut-inner-body">
+                            <div class="tut-header">
+                                    <h2 class="red">Pollution Previewer</h2>
+                                    <p class="">The Pollution Previewer is a two in one tool. After setting the query parameters,
+                                        you have the option of either previewing the data presented or downloading the dataset. Hit the toggle button to see the 
+                                        query options change between 'preview' and 'download'.
+                                    </p>
+                                </div>
+                            <div class="tut-specific">
+                                    <h3 class="red">Toggle Preview/Download</h2>
+                                        <img class="gif" src="{{url_for('static', filename='gif/toggleTool.gif')}}">
+                                </div>
+        
+                            <div class="tut-specific">
+                                    <h3 class="red">Set Query Parameters</h2>
+                                        <img class="gif" src="{{url_for('static', filename='gif/selectPollutant.gif')}}">
+                                        <img class="gif" src="{{url_for('static', filename='gif/selectOperation.gif')}}">
+                                        <img class="gif" src="{{url_for('static', filename='gif/selectTime.gif')}}">
+                                </div>
+        
+                        </div>
+
+
+
+                    <div class=" flex-column tut-inner-body">
+                            <div class="tut-header">
+                                    <h2 class="red">Table Navigation</h2>
+                                    <p class=""> After setting the query parameters, hit the preview button. A table will be constructed based off of the Query Set devices and parameters chosen. Each row previews the most recent hour of data in the selected time window.
+                                        To see the dataset just click on a row. To show a graphical view hit the graph icon. This allows you to view the result set in either a circle or bar graph.
+                                        Bar graph views are combined into 5 minute averages the the 60 minute preview.
+                                    </p>
+                                </div>
+                            <div class="tut-specific">
+                                    <h3 class="red">Preview Device Data</h2>
+                                        <img class="gif" src="{{url_for('static', filename='gif/QueryPreview.gif')}}">
+                                </div>
+        
+                            <div class="tut-specific">
+                                    <h3 class="red">Preview Row Data</h3>
+                                        <img class="gif" src="{{url_for('static', filename='gif/PreviewTable.gif')}}">
+                                </div>
+        
+                            <div class="tut-specific">
+                                    <h3 class="red">Preview Graph</h3>
+                                        <img class="gif" src="{{url_for('static', filename='gif/GraphView.gif')}}">
+                                </div>
+
+                                <div class="tut-specific">
+                                        <h3 class="red">Download Data Set</h3>
+                                            <img class="gif" src="{{url_for('static', filename='gif/DownloadDataset.gif')}}">
+                                    </div>
+                </div>
+        </div>
+
+
+        <!-- HOME -->
+        <div class="tut-item flex-column"> 
+                <div class="tut-header">
+                <h1 id="mobile" class="red">Mobile Application</h1>
+                </div>
+                <div class="tut-body">
+                        <img class="gif mobile" src="{{url_for('static', filename='gif/Settings.gif')}}">
+                </div>
+                <div class="tut-header">
+                <h1 id="tracker" class="red">Pollution Tracker</h1>
+                </div>
+
+                <div class="tracker-body">
+                        <div class="flex-row">
+                                <div class="tracker-text">
+                                                <p>From the tracker menu, press and hold on a saved path to rename it, press the delete button to remove it, or press start new to begin a new path.</p>
+                                        </div>
+                                        <img class="tracker-pic" src="{{url_for('static', filename='img/track1.png')}}">
+                        </div>
+                        <div class="flex-row">
+                                <div class="tracker-text">
+                                        <p>
+                                                        After obtaining your gps location, press the Start Tracking button to begin making a new path. Your location will continue to be gathered while the app is in the background and when the screen is locked until pressing the Stop Tracking button or closing the app.
+                                        </p>
+                                </div>
+                                <img class="tracker-pic" src="{{url_for('static', filename='img/track2.png')}}">
+                        </div>
+                        <div class="flex-row">
+                                        <div class="tracker-text">
+                                                <p>
+                                                                After completing the path, view data about your path by dragging the slider located at the bottom of the screen. This will show the pollution levels at various points along the path on the graph. Press the More Info button to view information about the pollution level shown on the graph.                                                </p>
+                                        </div>
+                                        <img class="tracker-pic" src="{{url_for('static', filename='img/track3.png')}}">
+                                </div>
+                </div>
+
+        </div>   
+</div>
+{%endblock%}

@@ -1,0 +1,215 @@
+.wrapper{
+    height: 85vh;
+    width: 80vw;
+    display: flex;
+    flex-direction: column;
+    margin-top: -20px;
+    margin-right: 0px;
+    padding-top: 60px;
+}
+
+.wrapper h2{
+    padding-left: 0px;
+}
+
+
+/* Floats the header if you have enough devices to scroll on. */
+th{
+    position: sticky;
+    top: 0px;
+    background-color: #ffffff;
+    text-align: center;
+}
+th p, td p{
+    text-align: center;
+}
+
+td a{
+    margin-left: 25px;
+    font-size: 18px;
+}
+
+td h5{
+    margin-left: 50px;
+    margin-bottom: 0px;
+    font-size: 18px;
+}
+
+
+/* Creates a scroll bar if the number of devices exceeds height */
+.header-container{
+    width: 60%;
+    height: 50%;
+    margin-left: 50px;
+    overflow: auto;
+
+}  
+
+/* Gives styling to the 'Add device' section */
+.add-container{
+    width: 60%;
+    height: 20%;
+    margin-left: 50px;
+}
+
+
+
+h2{
+    font-family: "Gotham A","Gotham B",proxima-nova,"Helvetica Neue",helvetica,arial,sans-serif;
+    font-weight: 100;
+}
+
+.acc-header{
+    width: 40%;
+}
+
+.info-element{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 60px;
+}
+.info-element button{
+    margin-left: 5px;
+}
+
+.info-element label{
+    margin: 0px 50px;
+    justify-self: right;
+    width: 100px;
+}
+
+.user-info{
+    display: flex;
+    flex-direction: column;
+    height: 40%;
+    width: 70%;
+    justify-content: space-around;
+    margin-left: 50px;
+}
+
+
+.device-info{
+    display: flex;
+    flex-direction: column;
+    height: 40%;
+    width: 70%;
+    justify-content: space-around;
+    margin-left: 50px;
+}
+
+hr {
+    display: block;
+    position: relative;
+    padding: 0;
+    margin: 8px auto;
+    height: 0;
+    width: 90%;
+    max-height: 0;
+    font-size: 1px;
+    line-height: 0;
+    clear: both;
+    border: none;
+    border-top: 1px solid #aaaaaa;
+    border-bottom: 1px solid #ffffff;
+    z-index: -1;
+ }
+
+ .mapouter{
+     margin-top:30px;
+ }
+
+ .add-device{
+     display: flex;
+     flex-direction: row;
+     width: 400px;
+ }
+
+ .add-device form{
+     align-self:  center;
+     margin-left: 107px;
+     margin-top: 35px;
+ }
+
+.text-input{
+    border: 1px solid #ccc;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.1);
+    border-radius: 3px;
+    margin-right: 5px;
+}
+
+.info-element a{
+    text-decoration: none;
+    color: #d9534f;
+}
+
+.label-text{
+    color: #767676;
+    display: block;
+    font-weight: 500;
+}
+
+.button{
+    margin-top: 5px;
+    background-color: #d9534f;
+    width: 130px;
+    border: none;
+    color: white;
+    font-size: 14px;
+    opacity: 0.6;
+    display: inline-block;
+    text-decoration: none;
+    cursor: pointer;
+}
+.button:hover {opacity: 1}
+
+#savePwd{display: none;}
+#saveEmail{display: none;}
+#saveUser{display: none;}
+#saveLn{display: none;}
+#saveFn{display: none;}
+
+
+/* These are for the edit account page */
+.control-label, .help-block{
+    display:  none;
+}
+
+.form-group{
+    margin-top: 15px;
+    display: inline-block;
+}
+
+.alert-danger {
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebccd1;
+  }
+
+  .alert {
+    padding: 15px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    text-align: center;
+    
+  }
+
+
+  .alert-success {
+    color: #3c763d;
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+  }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  th, td {
+    text-align: left;
+    padding: 8px;
+  }
+  
+  tr:nth-child(even) {background-color: #f2f2f2;}
+

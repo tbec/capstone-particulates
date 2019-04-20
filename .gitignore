@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # ignore Pods and ios/ sub directories added as part of podfiles
 AirU_Mobile/ios/Pods/*
 AirU_Mobile/ios/AirGoogleMaps/*
@@ -14,3 +15,6 @@ AirU_Mobile/ios/Podfile~
 .idea/vcs.xml
 .idea/workspace.xml
 .idea/codeStyles/Project.xml
+=======
+.gcloudignore
+>>>>>>> Gaitlan

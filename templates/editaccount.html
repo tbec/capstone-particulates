@@ -1,0 +1,124 @@
+{% extends 'layout.html' %}
+{% import "bootstrap/wtf.html" as wtf %}
+{%block content%}
+
+<!-- <p>Logged in: {{ user.username }}</p>  -->
+
+<div class="wrapper">
+        
+    <div class="header-container">
+                <a href="/account">Account</a> > Edit</h2>
+    </div>
+    
+    <div class="user-info">
+            <!-- <div class="info-element">  -->
+        <table>
+            <tr>
+                    <th align="left" class="theaders">Field</th>
+                    <th align="left"  class="theaders">Current</th>
+                    <th align="left" class="theaders">Update</th>
+
+            </tr>
+            <tr>
+                    {%if value == "firstName"%}
+                        <td>
+                            <label class="label-text" for="{{value}}"> First Name: </label>
+                        </td>
+                        <td>
+                            <span>{{user.FirstName}}</span>
+                        </td>
+                        <td>
+                            <form class="update-field" method="POST" action="/account/edit/firstName">
+                                {{ form.hidden_tag() }}
+                                {{ wtf.form_field(form.firstname)}}
+                                <input type="hidden" name='form_type' value='register'>
+                                <button style="display: inline;" type="submit"><i class="fas fa-save"></i></button>
+                            </form>
+                        </td>
+                        
+                    {% elif value == "lastName"%}
+                    <td>
+                        <label class="label-text" for="{{value}}"> Last Name: </label>
+                    </td>
+
+                    <td>
+                            <span>{{user.LastName}}</span>
+                    </td>
+
+                    <td>
+                            <form class="update-field" method="POST" action="/account/edit/lastName">
+                                {{ form.hidden_tag() }}
+                                {{ wtf.form_field(form.lastname) }}
+                                <input type="hidden" name='form_type' value='register'>
+                                <button style="display: inline;" type="submit"><i class="fas fa-save"></i></button>
+                            </form>
+
+                    </td>
+                    {% elif value == "username"%}
+                        <td>
+                            <label class="label-text" for="{{value}}"> Username: </label>
+                        </td>
+                        <td>
+                                <span>{{user.Username}}</span>
+                        </td>
+
+                        <td>
+                                <form class="update-field" method="POST" action="/account/edit/username">
+                                    {{ form.hidden_tag() }}
+                                    {{ wtf.form_field(form.username) }}
+                                    <input type="hidden" name='form_type' value='register'>
+                                    <button style="display: inline;" type="submit"><i class="fas fa-save"></i></button>
+                                </form>
+                        </td>
+                    {% elif value == "email"%}
+                        <td>
+                            <label class="label-text" for="{{value}}"> Email: </label>
+                        </td>
+
+                        <td>
+                                <span>{{user.Email}}</span>
+                        </td>
+
+                        <td>
+                                <form class="update-field" method="POST" action="/account/edit/email">
+                                    {{ form.hidden_tag() }}
+                                    {{ wtf.form_field(form.email) }}
+                                    <input type="hidden" name='form_type' value='register'>
+                                    <button style="display: inline;" type="submit"><i class="fas fa-save"></i></button>
+                                </form>
+                        </td>
+                    {% elif value == "password" %}
+                        <td>
+                            <label class="label-text" for="{{value}}"> {{value}}: </label>
+                        </td>
+                        <td> ************ </td>
+                        <td>
+                                <form class="update-field" method="POST" action="/account/edit/password">
+                                    {{ form.hidden_tag() }}
+                                    {{ wtf.form_field(form.password) }}
+                                    {{ wtf.form_field(form.confirm) }}
+                                    <input type="hidden" name='form_type' value='register'>
+                                    <button style="display: inline;" type="submit"><i class="fas fa-save"></i></button>
+                                </form>
+                        </td>
+                    {%endif %}
+
+            </tr>
+        </table>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                    {% for category, message in messages %}
+                            <div class="{{category}}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+        {% endwith %}
+                        <!-- </div> -->
+    </div>
+
+</div>
+
+
+<link rel="stylesheet" href="{{url_for('static', filename='style/account.css')}}">
+
+{%endblock%}

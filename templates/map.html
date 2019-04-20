@@ -1,18 +1,885 @@
 {% extends 'layout.html' %}
-
 {%block content%}
 <style>
+<<<<<<< HEAD
     .mapouter{
         margin-top: 47px;
         position: fixed;
         left: 85px;
+=======
+
+    #map {
+        height: 93%;
+        width: 100%;
+      }
+
+    #outer-container{
+        display: flex;
+        flex-direction: row;
+        margin: 0px;
+        width: 100%;
     }
+
+    .cart{
+        width: 20%;
+        height: 93%;
+        background-color: #f8f8f8;
+        overflow-y: auto;
+        transition: width 0.5s;
+    }
+
+    .closed{
+        width: 0px;
+    }
+
+    h3,h4{
+        margin: 10px 2px;
+    }
+
+    .sub-right{
+        margin-left: 20px;
+    }
+
+    i:hover{
+        cursor: pointer;
+    }
+
+    .times{
+        color: #d12c2c;
+    }
+
+    .trashcan{
+        margin-left: 20px;
+        margin-top: 1px;
+        font-size: 25px;
+        color: #d12c2c;
+    }
+
+    #map-cart-controls{
+        display: flex;
+        flex-direction: row;
+    }
+
+    .map-checkbox{
+        transform: scale(1.2);
+    }
+
+    #mass-selected{
+        transform: scale(1.5);
+        margin: 20px 0px 0px 12px;
+>>>>>>> Gaitlan
+    }
+
+    .map-header-container{
+        margin: 0px auto;
+        height: 55px;
+        width: 95%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+    }
+
+    .map-option-container{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        height: 100%;
+    }
+
+    .heatmap-option-body{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        align-items: center;
+        width: 100%;
+        height:70%;
+
+    }
+    .map-option-header{
+        width: 100%;
+        height: 30%;
+        text-align: center;
+    }
+    .map-option-header p{
+        margin: 0px auto;
+        font-size:1em;
+        font-weight: 800;
+        text-decoration: underline;
+    }
+
+    #tool-options{
+        width: 30%;
+    }
+
+    #heatmap-options{
+        width: 40%;
+    }
+
+    #cart-options{
+        width: 30%;
+    }
+
+
+
+    #map-option-body{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+        width: 100%;
+        height:70%;
+    }
+
+    #map-option-body-left{
+        height: 100%;
+        margin: 0px auto;
+        display: flex;
+        flex-direction: column;
+    }
+
+    #map-option-body button{
+        width: 100px;
+        height: 25px;
+    }
+
+
+
+    .btn{
+        border-radius: 6px;
+        font-size: 11px;
+        color: #fff;
+    }
+
+    .btn-danger{
+        background-color: #d9534f;
+        border-color: #d9534f;
+    }
+
+    .btn-warning{
+        background-color: #f0ad4e;
+        border-color: #eea236;
+    }
+
+    .btn-success{
+        background-color: #5cb85c;
+        border-color: #4cae4c;
+    }
+
+    .heatmap-option-body button{
+        width: 100px;
+        height: 25px;
+    }
+
+    .finder{
+        color: #f0ad4e;
+        margin-top: 5px;
+        
+    }
+
+    select{
+        width: 140px;
+        height: 25px;
+        color: #fff;
+        background-color:#d9534f;
+        text-align-last:center;
+    }
+
+    .info-box{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+
 </style>
 <!-- <p>Logged in: {{ user.username }}</p>  -->
+<<<<<<< HEAD
 <div class="mapouter">
     <div class="gmap_canvas">
         <iframe width="1680" height="850" id="gmap_canvas" src="https://www.google.com/maps/d/embed?mid=18hhhhNs71nqVay-RQP90AIZGHI_wpCKv"  frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
-    </div>
+=======
+
+<div class="map-header-container">
+        <div class="map-option-container" id="tool-options">
+
+            <div class="map-option-header">
+                <p>Drawing Options</p>
+            </div>
+            <div id="map-option-body">
+                            <button class="btn btn-danger" id="delete-all-button">Delete All</button>
+                            <button class="btn btn-warning" id="delete-button">Delete Shape</button>
+                            <button class="btn btn-success" id="load-cart">Get Devices</button>
+                </div>
+
+        </div>
+        <div class="map-option-container" id="heatmap-options">
+
+                <div class="map-option-header">
+                        <p>Heatmap Options</p>
+
+                </div>
+                <div class="heatmap-option-body">
+                     <select>
+                        <option disabled selected value> -- Parameter -- </option>
+                        <option value="pm2.5">PM2.5</option>
+                        <option value="pm1">PM1</option>
+                        <option value="pm10">PM10</option>
+                        <option value="temperature">Temperature</option>
+                        <option value="humidity">Humidity</option>
+                        <option value="co">CO</option>
+                        <option value="no">NO</option>
+                    </select>
+                    <button id="toggle-heat-map-on" class="btn btn-success">Heatmap On</button>
+                    <button id="toggle-heat-map-off" class="btn btn-warning">Heatmap Off</button>
+                </div>
+        </div>
+
+        <div class="map-option-container" id="cart-options">
+
+                <div class="map-option-header">
+                        <p>Set Options</p>
+
+                </div>
+
+                <div class="heatmap-option-body">
+                    <button id="close-flag-icons" class="btn btn-danger">Close Icons</button>
+                    <button id="toggle-cart-button-on" class="btn btn-success">View</button>
+                    <button id="toggle-cart-button-off" class="btn btn-warning">Hide</button>
+                </div>
+        </div>
+
+
 </div>
-    <script src="{{url_for('static', filename='map.js')}}"></script>
+<div id="outer-container">
+    <div id="map"></div>
+
+    <div class="cart">
+        <!-- <input id="delete-all-cart-items" type="button" value="delete"> -->
+        <div id="map-cart-controls">
+            <h3 id= "delete-all-cart-items" value="delete">
+                <i class="fas fa-trash trashcan"></i>
+            </h3>
+            <input type="checkbox" id="mass-selected">
+        </div>
+>>>>>>> Gaitlan
+    </div>
+
+</div>
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="{{url_for('static', filename='style/data.css')}}">
+
+    <script src="{{url_for('static', filename='script/map.js')}}"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA6ykJy9dcSsPpZ5QvMkmkAGQd6MpbfkV4&callback=initMap&libraries=drawing,visualization"
+    async defer></script>
+    <script>
+        var heatmap = null;
+
+        // The max valus for each particle type
+        var particleScale = {};
+        particleScale["co"] = 800;
+        particleScale["no"] = 2000;
+        particleScale["humidity"] = 60;
+        particleScale["temperature"] = 80;
+        particleScale["pm1"] = 50;
+        particleScale["pm2.5"] = 50;
+        particleScale["pm10"] = 50;
+
+        function turnOffMap(){
+            if(heatmap)
+                heatmap.setMap(null);
+        }
+
+        $(".cart").on("click",".focus-view", function(e){
+            console.log(e.target.parentElement.parentElement.innerText);
+            map.setZoom(14);
+            map.panTo(nodeToCoords[e.target.parentElement.parentElement.innerText]["coords"]);
+            nodeToCoords[e.target.parentElement.parentElement.innerText]["window"].open(map,nodeToCoords[e.target.parentElement.parentElement.innerText]["marker"]);
+        });
+        
+        // Toggles off the map
+        document.getElementById("toggle-heat-map-off").addEventListener("click", function(e){
+            turnOffMap();
+        })
+        // Toggles the heat map on or off depending on the particulate
+        document.getElementById("toggle-heat-map-on").addEventListener("click", function(e){
+            turnOffMap();
+            // Grabs the selected option to use as the heat map overlap
+            selOpt = ([].slice.call(document.getElementsByTagName("option"))).filter(element=>element.selected);
+            if(!(selOpt[0].innerText == " -- Parameter -- ")){
+                console.log(selOpt[0].value);   
+                console.log(particleScale[selOpt[0].value]);  
+                var mapOverlayData = layMapOverlayData(selOpt[0].value); 
+                
+                // If there was a legit option paint the data set
+                if(mapOverlayData){
+                    // Creates and adds the heatmap overlap
+                    heatmap = new google.maps.visualization.HeatmapLayer({
+                                data: mapOverlayData,
+                                map: map
+                                });
+                    heatmap.setOptions({
+                        dissipating: true,
+                        maxIntensity: particleScale[selOpt[0].value],
+                        radius: 70,
+                        opacity: 0.5,
+                        //dissipating: false
+                    });
+                    // Sets the heat map to the map
+                    heatmap.setMap(map);
+                }
+            }
+            else{
+                console.log("Don't do it!");
+            }
+
+
+        });
+
+        // Finds out which option was chosen and returns its data construction
+        function layMapOverlayData(value){
+
+            // Gets the dataset for the chosen particulate
+            NoCoTemp = ["temperature","no","co"];
+            pmHumid = ["pm1","pm2.5","pm10","humidity"];
+            var dataset = [];
+            if(NoCoTemp.includes(value))
+                dataset = buildNoCoTemp(value);
+            else if(pmHumid.includes(value))
+                dataset = buildPmorHumid(value);
+            else
+                dataset = null;
+            return dataset;
+
+        }
+
+        // Function that returns the NO and CO parameters with constraints
+        // Constraint that the value is < 4000, temperatue > 0 and the sensor is giving longitude readings
+        function buildNoCoTemp(value){
+            var outData = [];
+            for(var i = 0; i < nodes.length; i++){
+                if(nodes[i][value] < 4000 && nodes[i][value] > 0 &&nodes[i]["lat"] != 0)
+                {
+                    outData.push({location: new google.maps.LatLng(nodes[i]["lat"], nodes[i]["long"]), weight:nodes[i][value]})
+                }
+            }
+            return outData;
+        }
+
+        // returns PM or humidity with constaints on max value
+        // Constrains are that the particulate or humidity can never be negative and its giving longitude reading
+        function buildPmorHumid(value){
+            var outData = [];
+            for(var i = 0; i < nodes.length; i++){
+                if(nodes[i][value] >= 0 && nodes[i][value] < 100 && nodes[i]["lat"] != 0 )
+                {
+                    outData.push({location: new google.maps.LatLng(nodes[i]["lat"], nodes[i]["long"]), weight:nodes[i][value]})
+                }
+            }
+            return outData;
+        }
+
+        
+        // DELETE RIGHT BOX SELECTED, grabs all the check boxes and deletes those checked. Resets SELECT ALL if needed
+        document.getElementById('delete-all-cart-items').addEventListener('click', function(e){
+            var buttons = getByName('selected-checkbox');
+            var i = 0;
+            for(; i < buttons.length; i++){
+                if(buttons[i].checked){
+                    // Deletes the ID from the cart
+                    deleteFromCart(buttons[i].parentElement.previousElementSibling.innerText)
+                    // Removes the card for the screen
+                    delete_selected(buttons[i].parentElement);
+                }
+            }
+
+            // Turns off the mass select button
+            // document.getElementById('mass-selected').checked = false;
+            setCheckboxValue(document.getElementById('mass-selected'), false);
+
+            // Clear the Local storage and save the new cart
+            clearLocalStorage();
+            saveCartToLocal();
+        });
+
+        // SELECT RIGHT BOX CHECKBOXES
+        document.getElementById('mass-selected').addEventListener('click', function(e){
+            // sets all the selected box to flag
+            toggleMassSelect(getByName('selected-checkbox'), e.target.checked);
+        });
+
+        // Function for toggle mass select button
+        function toggleMassSelect(buttons, value){
+            var i = 0;
+            console.log(buttons);
+            console.log(value);
+            for(; i < buttons.length;i++){
+                // buttons[i].checked = value;
+                setCheckboxValue(buttons[i], value);
+            }
+        };
+
+        // Sets the radio button to be checked depending on boolean of value
+        function setCheckboxValue(btn, value){
+            btn.checked = value;
+        }
+
+        // Help functions that return elements by: ID, Name, ClassName
+        function getById(id){
+            return document.getElementById(id);
+        };
+
+        function getByName(name){
+            return document.getElementsByName(name);
+        };
+
+        function getByClass(c_name){
+            console.log("Getting by class: ", c_name);
+            return document.getElementsByClassName(c_name);
+        };
+
+        function delete_selected(target){
+            // Grabs the parent element and it's grandparent
+            var parent = target.parentElement;
+            var g_parent = parent.parentElement;
+
+            // Changes the opacity to trigger the transition styling then removes the element after .5 seconds
+            parent.style.opacity ='0';
+            setTimeout(function(){g_parent.removeChild(parent);}, 300);
+
+        };
+
+        // Creates click handler for the dynamically producted selected elements
+        $(".cart").on('click', '.delete', function(e){
+            // Deletes the node, removes it from the cart, updates local storage
+            console.log("Deleting the current node");
+
+            delete_selected(e.target.parentElement.parentElement);
+            deleteFromCart(e.target.parentElement.parentElement.previousElementSibling.innerText);
+            clearLocalStorage();
+            saveCartToLocal();
+        });
+
+
+        // Helper functions for managing cart
+        // Deletes an item from the local cart
+        function deleteFromCart(id){
+            console.log("deleting from cart");
+            cart = cart.filter(p=>p["id"] != id);
+        }
+
+        // Add single Node to cart
+        function addNodeToCart(node){
+            node['id']= node["id"].toUpperCase();
+            cart.push(node);
+        }
+
+        // Clears the local storage cart
+        function clearLocalStorage(){
+            localStorage.clear();
+        }
+
+        // Sets the local start to the current cart
+        function saveCartToLocal(){
+            localStorage.setItem("cart", JSON.stringify(cart));
+        }
+
+        // Grabs the locally stored cart
+        function getCartFromLocal(){
+            return JSON.parse(localStorage.getItem("cart"));
+        }
+
+        // Each time this page is loaded check if there are any items in the cart, if so add them to the view
+        var cart = getCartFromLocal();
+        if(cart != null){
+            addNodesToCart(cart);
+        }
+        else{
+            cart = [];
+        }
+        
+        // Hooks up the event listener for the toggle cart button
+        document.getElementById("toggle-cart-button-on").addEventListener("click", toggleClassOn);
+        document.getElementById("toggle-cart-button-off").addEventListener("click", toggleClassOff);
+
+        // Toggles the closed attribute for the cart to colapse
+        function toggleClassOn(){
+            document.querySelector(".cart").classList.remove("closed");
+        }
+
+        function toggleClassOff(){
+            document.querySelector(".cart").classList.add("closed");
+        }
+
+        // Creates a cart "card" with that node id on it
+        function createCartNodeItem(i){
+            var right = document.querySelector('.cart');
+
+            var div = document.createElement('div');
+            div.classList.add('box');
+            // div.innerHTML = i.id;
+
+            // Creates an inner Left Div object that has ID and search btn
+            var box_left = document.createElement("div");
+            box_left.classList.add("box-left");
+            box_left.innerHTML = i.id.toUpperCase();
+
+            var find = document.createElement('h4');
+            // del.type="submit";
+            find.value="find";
+            find.innerHTML = '<i class="fas fa-search-location focus-view"></i>'
+            // <i class="fas fa-times"></i>
+            find.name="find-item"
+            find.classList.add('finder');
+
+
+
+            box_left.appendChild(find);
+
+            //Creates an Inner right div tag that holds the delete and check box
+            var box_right = document.createElement("div");
+            box_right.classList.add("box-right");
+
+
+            var del = document.createElement('h4');
+            // del.type="submit";
+            del.value="delete";
+            del.innerHTML = '<i class="fas fa-times times"></i>'
+            // <i class="fas fa-times"></i>
+            del.name="selected-item"
+            del.classList.add('delete');
+            del.classList.add("sub-right");
+
+            var check = document.createElement('input');
+            check.type="checkbox";
+            check.name="selected-checkbox";
+            check.classList.add("sub-right");
+            check.classList.add("map-checkbox")
+
+            box_right.appendChild(del);
+            box_right.appendChild(check);
+
+            div.appendChild(box_left);
+            div.appendChild(box_right);
+            right.appendChild(div);
+        };
+
+        // Adds the nodes to the cart
+        function addNodesToCart(nodes){
+                for(var i = 0; i < nodes.length; i++){
+                    // Adds a node to the html cart
+                    createCartNodeItem(nodes[i]);
+
+                    // Adds the node to the 'logical'
+                    //cart.push(nodes[i]);
+                }
+            }
+
+
+        // Converts the list of device nodes to json to put on map
+        var nodes = '{{nodes|tojson}}';
+        nodes = JSON.parse(nodes);
+
+        // Keeps track of the shapes drawn and the color of it
+        var areasDrawn = [];
+
+        // Checks whether the current node is in the cart
+        function inCart(node){
+            // Verify that the selected node isnt already in the cart, filter cart
+            var nodeExists = cart.filter(p=>p["id"] == node["id"]);
+            return nodeExists.length > 0 ? true : false;
+        }
+
+        // Adds all the devices in the intersect of the shape with the device coordinates into the cart
+        function addDevicesToCart(){
+            // Copies the current nodes
+            var nodesToChoose = nodes.slice() 
+            var selectedNodes = []
+            // Loop through shapes, loop through nodes
+            for(var i = 0; i < areasDrawn.length; i++){
+                for(var j = 0; j < nodesToChoose.length; j++){
+                    var currentNodeCoordinates = new google.maps.LatLng(nodesToChoose[j]["lat"], nodesToChoose[j]["long"]);
+                    // If the shape.contains() that nodes coordinates
+                    // Add it to another list, remove it from the nodesToChoose
+                    if( areasDrawn[i].type === "polygon" && !inCart(nodesToChoose[j])){
+                        if(google.maps.geometry.poly.containsLocation(currentNodeCoordinates,areasDrawn[i])){
+                            // Add the current node to a list of overlapping ones, remove it from the nodes to choose from
+                            createCartNodeItem(nodesToChoose[j]);
+                            addNodeToCart(nodesToChoose[j]);
+                            // selectedNodes.push(nodesToChoose[j]);
+                            nodesToChoose = nodesToChoose.filter(p => p["id"] != nodesToChoose[j]["id"]);
+                            // We walk back one since we removed an item from the array
+                            j = -1;
+                        }
+                    }
+                    else if(areasDrawn[i].type === "rectangle"){
+                        var bounds = areasDrawn[i].getBounds();
+                        if(bounds.contains(currentNodeCoordinates) && !inCart(nodesToChoose[j]) ){
+                            // Add the current node to a list of overlapping ones, remove it from the nodes to choose from
+                            //selectedNodes.push(nodesToChoose[j]);
+                            createCartNodeItem(nodesToChoose[j]);
+                            addNodeToCart(nodesToChoose[j]);
+                            nodesToChoose = nodesToChoose.filter(p => p["id"] != nodesToChoose[j]["id"]);
+                            // We walk back one since we removed an item from the array
+                            j = -1;
+                            console.log("Added node!")
+                            g = cart;
+                            console.log(cart);
+                            console.log("________")
+                        }
+                    }
+                    else if(areasDrawn[i].type === "circle"){
+                    if(areasDrawn[i].contains(currentNodeCoordinates) && !inCart(nodesToChoose[j])){
+                            // Add the current node to a list of overlapping ones, remove it from the nodes to choose from
+                            createCartNodeItem(nodesToChoose[j]);
+                            addNodeToCart(nodesToChoose[j]);
+                            // selectedNodes.push(nodesToChoose[j]);
+                            nodesToChoose = nodesToChoose.filter(p => p["id"] != nodesToChoose[j]["id"]);
+                            // We walk back one since we removed an item from the array
+                            j = -1;
+                        }
+                    }
+                }
+                    
+            }
+            //Console all the coinciding nodes
+            console.log(selectedNodes);
+            //addNodesToCart(selectedNodes);
+            clearLocalStorage();
+            saveCartToLocal();
+            g = getCartFromLocal();
+            // Upon adding nodes to the cart, delete all the drawn shapes
+            deleteAllShapes();
+        }
+
+        // Deletes the currently selecte shape
+        function deleteSelectedShape () {
+            if (selectedShape) {
+                // Grabs the unique identifier property that changes each refresh.
+                closure_id_property = Object.getOwnPropertyNames(areasDrawn[0]).filter(prop=>prop.match("closure_uid*"))[0];
+                // Filters from the areasDrawn and removes that specific object
+                areasDrawn = areasDrawn.filter(prop=> prop[closure_id_property] != selectedShape[closure_id_property]);
+
+                // Removes it from the map and sets the value to null
+                selectedShape.setMap(null);
+                selectedShape = null;
+            }
+        }
+
+        // Deletes all the drawings
+        function deleteAllShapes(){
+            for(var i = 0; i < areasDrawn.length; i++){
+                areasDrawn[i].setMap(null);
+                areasDrawn[i] = null;
+            }
+
+            areasDrawn = [];
+        }
+
+        // Creates the selection to go back to 'regular' mode
+        function clearSelection () {
+            if(typeof(selectedShape) != "undefined"){
+
+
+                if (selectedShape) {    
+                    selectedShape.setEditable(false);
+                    selectedShape = null;
+                }
+            }
+        }
+
+        // On click event sets the current shape as active
+        function setSelection (shape) {
+            if (shape.type !== 'marker') {
+                clearSelection();
+                shape.setEditable(true);
+            }
+            
+            selectedShape = shape;
+        }
+
+        // Goes through and closes all the flag window icons that were selected
+        document.querySelector("#close-flag-icons").addEventListener("click", function(){
+            for(var id in nodeToCoords){
+                nodeToCoords[id]["window"].close();
+            }
+        });
+
+        // Keeps a translation of device ID to flag coords
+        var nodeToCoords = {};
+        var map;
+
+        // Call back function that the api will use to authorize api calls
+        function initMap() {
+
+            // Prototype a function called contains onto the Circle object.
+            // This allows the bounds.contains() to use a radius rather than a rectangle perimeter
+                google.maps.Circle.prototype.contains = function(latLng) {
+                return this.getBounds().contains(latLng) && google.maps.geometry.spherical.computeDistanceBetween(this.getCenter(), latLng) <= this.getRadius();
+                }
+
+                
+            // Create the options for the map
+            var options = {
+                zoom:12,
+                center: {lat: 40.7608, lng: -111.8910}
+            };
+
+            // Create a map
+            map = new google.maps.Map(document.getElementById("map"), options);
+
+            var selectedShape;
+
+            // The options for a drawn shape
+            var drawingOptions = {
+                strokeWeight: 0,
+                fillOpacity: 0.45,
+                editable: true,
+                draggable: true
+            };
+
+            // Creates a drawing manager client
+            var drawingManager = new google.maps.drawing.DrawingManager({
+                drawingMode: google.maps.drawing.OverlayType.NULL,
+                rectangleOptions: drawingOptions,
+                circleOptions: drawingOptions,
+                polygonOptions: drawingOptions,
+                map: map,
+                drawingControlOptions: {
+                    position: google.maps.ControlPosition.TOP_CENTER,
+                        drawingModes: [
+                    google.maps.drawing.OverlayType.POLYGON,
+                    google.maps.drawing.OverlayType.CIRCLE,
+                    google.maps.drawing.OverlayType.RECTANGLE,
+                    ]
+                },
+            });
+
+            // Adds event to the drawing manager client for when a shape has completed drawing
+            google.maps.event.addListener(drawingManager, "overlaycomplete", function(e){
+
+                // Grab the current shape from the event
+                var shape = e.overlay;
+                shape.type = e.type;
+                
+                // Limits the number of shapes that can be drawn to 10.
+                if(areasDrawn.length < 10){
+                    areasDrawn.push(shape);
+                }
+                else{
+                    alert("You've reached the limit of shapes allowed.");
+                    shape.setMap(null);
+                    shape = null;
+                    return;
+                }
+
+
+                // Changes the drawing mode back to default or NULL
+                drawingManager.setDrawingMode(null);
+
+
+                // Add an event to the newly drawn shape so it can be referenced in the future
+                google.maps.event.addListener(shape, "click", function(e){
+                    // Grabs all the vertices for a POLYGON 
+                    if (e.vertex !== undefined) {
+                        if (newShape.type === google.maps.drawing.OverlayType.POLYGON) {
+                            var path = newShape.getPaths().getAt(e.path);
+                            path.removeAt(e.vertex);
+                            if (path.length < 3) {
+                                newShape.setMap(null);
+                            }
+                        }       
+                    }
+                    // Sets the currently selected shape to be the active one
+                    setSelection(shape);
+                });
+
+
+                //Makes the recently drawn shape to be the active one
+                setSelection(shape);
+            });
+            google.maps.event.addListener(map, 'click', function(e) {
+                k = e.latLng;
+
+                });
+            // Upon switching tools, delect any active shapes
+            google.maps.event.addListener(drawingManager, 'drawingmode_changed', clearSelection);
+
+            // If you click off a shape, deselect it
+            google.maps.event.addListener(map, 'click', clearSelection);
+
+            // When clicked, if there is an active shape delete it
+            google.maps.event.addDomListener(document.getElementById('delete-button'), 'click', deleteSelectedShape);
+            google.maps.event.addDomListener(document.getElementById('load-cart'), 'click', addDevicesToCart);
+            google.maps.event.addDomListener(document.getElementById('delete-all-button'), 'click', deleteAllShapes);
+
+
+            // Loops through and adds all the markers
+            for(var i = 0; i < nodes.length; i++){
+                if(nodes[i].display == "True"){
+                    add(nodes[i]);
+                }
+                else{
+                    console.log(nodes[i]);
+                }
+            }
+
+
+            // Adds a marker and pop up for each sensor
+            function add(node){
+
+                var markerCoords = {"lat" : node.lat, "lng": node.long};
+                nodeToCoords[node["id"]] = {};
+                nodeToCoords[node["id"]]["coords"] = markerCoords;
+                var marker = new google.maps.Marker({
+                    position : markerCoords,
+                    map: map,
+                    icon : "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
+            });
+
+            var currentId = String(node.id);
+            var infoContent = `<div class='info-box'>
+                                    <div class='info-box-id'>VALUE</div>
+                                    <button class="add-single-button btn btn-success" id="VALUE"> Add To Set </button>
+                                </div>
+            `;
+
+            // Replaces all VALUES with the node id
+            infoContent = infoContent.replace(/VALUE/g, node.id);
+            
+            // Creaate a popup window that contains the html 
+            var infoWindow = new google.maps.InfoWindow({
+                content: infoContent
+            });
+            nodeToCoords[node["id"]]["window"] = infoWindow;
+            nodeToCoords[node["id"]]["marker"] = marker;
+
+
+            // console.log(infoContent);
+            // console.log(node.id);
+            // Upon clicking show window
+            marker.addListener('click', function(){
+                infoWindow.open(map, marker);
+                google.maps.event.addListenerOnce(infoWindow, "domready", function(){
+                    google.maps.event.addDomListener(document.getElementById(node.id), 'click', function(e){
+                        // If the node isn't in the cart, add it.
+                        if(!inCart(node)){
+                            createCartNodeItem(node);
+                            addNodeToCart(node);
+                            saveCartToLocal();
+                        }
+                        
+                    });
+                });
+
+            })
+
+            };
+
+        };
+
+        </script>
+
 {%endblock%}

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <html lang="en">
 <head>
     {%block head%}
@@ -37,3 +38,98 @@
     <script src="{{url_for('static', filename='layout.js')}}"></script>
 </body>
 </html>
+=======
+
+
+<html lang="en">
+    <head>
+        {%block head%}
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <!-- <link rel="icon" type="image/png" href="favicon-32x32.png" sizes="32x32" />
+            <link rel="icon" type="image/png" href="favicon-16x16.png" sizes="16x16" />             -->
+            <!-- <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}"> -->
+            <meta http-equiv="X-UA-Compatible" content="ie=edge">
+            <title>Document</title>
+            <link rel="stylesheet" href="{{url_for('static', filename='style/layout.css')}}">
+            <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+            <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"/> -->
+        {%endblock%}
+    </head>
+    <body>
+        <!-- The sidebar with all the links -->
+            <div class="sidenav">
+                <div class="nav-wrapper">
+                        <div class="sidenav-element">   
+                                <a href="/welcome"><img id="welcoome-logo" src="{{url_for('static', filename='img/aqLogo.png')}}"></a>
+                        </div>
+                    <div class="sidenav-element tooltip">
+                            <a name = "index" class="nav-text" href="{{url_for('index')}}">
+                            <i class="fas fa-cloud logo"></i></a>
+                            <span class="tooltiptext"> Home </span>
+    
+                    </div>
+    
+                    <div class="sidenav-element tooltip">
+                            <a name = "account" class="nav-text" href="{{url_for('account')}}">
+                            <i class="fas fa-user logo"></i></a>
+                                    <span class="tooltiptext"> Account </span>
+                        </div>
+    
+                    <div class="sidenav-element tooltip">
+                            <a name = "devices" class="nav-text" href="{{url_for('devices')}}">
+                            <i class="fas fa-microchip logo"></i></a>
+                            <span class="tooltiptext"> Devices </span>
+    
+                    </div>
+    
+                    <div class="sidenav-element tooltip">
+                        <a name = "analytics" class="nav-text" href="{{url_for('analytics')}}">
+                        <i class="fas fa-chart-bar logo"></i></a>
+                        <span class="tooltiptext"> Analytics </span>
+    
+                    </div>
+    
+                    <div class="sidenav-element tooltip">
+                        <a name = "map" class="nav-text" href="{{url_for('map')}}">
+                            <i class="fas fa-map-marked-alt logo"></i></a> 
+                            <span class="tooltiptext"> Map </span>
+    
+                    </div>
+    
+                    <!-- <div class="sidenav-element tooltip">
+                            <a name = "download" class="nav-text" >
+                                <i class="fas fa-file logo"></i></a> 
+                                <span class="tooltiptext"> Download </span>
+    
+                        </div> -->
+                </div>
+            </div>
+            <div id="content">
+                <div class="top-nav">
+                    <div class="right">
+                        <div class="menu-option men-a">
+                                <a  href="{{url_for('account')}}">{{user.username}}</a>
+                            </div>
+                        <div class="menu-option men-b">
+                                <a href="/tutorial">Tutorial </a>
+                            </div>
+                        <div class="menu-option men-b">
+                            <a href="https://app.swaggerhub.com/apis-docs/AirU/air-u_api/1.0.0#/" target="_blank">Docs </a>
+                        </div>
+                        <div class="menu-option men-c">
+                            <a href="/contact">Contact </a>
+                        </div>
+                        <div class="menu-option men-d">
+                                <a class="logout" href="/logout"> Sign out </a>
+                            </div>
+                    </div>
+                </div>
+                <!-- This is where all the other pages that inherit this layout will put their content -->
+                {% block content %}
+                {% endblock %}
+            </div>
+        <script src="{{url_for('static', filename='script/layout.js')}}"></script>
+    </body>
+    </html>
+>>>>>>> Gaitlan

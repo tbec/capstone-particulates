@@ -3,6 +3,7 @@
 {%block content%}
         <div class="outer-wrapper">
 
+<<<<<<< HEAD
             <h1 id="welcome-h1"> Welcome: {{user.username}}</h1>
 
             <div class="container">
@@ -27,4 +28,13 @@
             </div>
     </div>
 <link rel="stylesheet" href="{{url_for('static', filename='index.css')}}">
+=======
+            <p id="welcome-h1"> Welcome: {{username}}</p>
+
+            <div class="container">
+                <a class="twitter-timeline" href="https://twitter.com/AirQualityAndU?ref_src=twsrc%5Etfw">Tweets by AirQualityAndU</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+            </div>
+    </div>
+<link rel="stylesheet" href="{{url_for('static', filename='style/index.css')}}">
+>>>>>>> Gaitlan
 {%endblock%}

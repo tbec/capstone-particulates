@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<head>
+    <title>Welcome</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='style/welcome.css')}}">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+
+</head>
+<body>
+    <div class="main">
+        <div class="main-header">
+            <div class="header-logo">
+                    <img id="welcoome-logo" src="{{url_for('static', filename='img/aqLogo.png')}}">
+            </div>
+            <div class="right">
+                    <div class="menu-option menu-border">
+                            <a href="/welcome"> Welcome</a>
+                        </div>
+                        {%if active%}
+                    <div class="menu-option menu-border">
+                            <a href="/"> Dashboard</a>
+                        </div>
+                        {%endif%}
+
+                    <div class="menu-option menu-border">
+                            <a href="https://app.swaggerhub.com/apis-docs/AirU/air-u_api/1.0.0#/" target="_blank">Docs </a>
+                        </div>
+                        <div class="menu-option menu-border">
+                                <a href="/contact">Contact</a> 
+                            </div>
+                    <div class="menu-option men-d">
+                        {%if active%}
+                            <a class="logout" href="/logout"> Sign out </a>
+                        {%else%}
+                            <a class="login" href="/login"> Sign in </a>
+
+                        {%endif%}
+                        </div>
+
+
+                </div>
+        </div>
+        <div class="main-body">
+                <div class="parallax">
+
+                </div>
+                <div class="project-description">
+                    <h1>About the Project</h1>
+
+                    <div class="info">
+                        <div class="info-text">
+                            <p>Over the last few years, low-cost commodity sensors have hit the markets allowing — for the first time — the ability to measure hyperlocal air quality conditions outside of our homes.</p>
+                        </div>
+                        <div class="info-img">
+                                <i class="fas fa-globe red"></i>
+                        </div>
+                    </div>
+                    <div class="info">
+                        <div class="info-img">
+                                <i class="fas fa-university red"></i>
+                        </div>
+                        <div class="info-text">
+                            <p>   At the University of Utah, we are building infrastructure that utilizes these new sensors to create accurate measurements of air quality microclimates. 
+                                    Our Outdoor Air Quality project leverages existing government and community-based air quality efforts to build a dense network of sensors across Salt Lake City. </p>
+                        </div>
+                    </div>
+
+                    <div class="info">
+
+                            <div class="info-text">
+                                <p> This project utilizes our research in sensor design, air quality science, computational modeling, and communication of data; furthermore, it relies on citizens to engage, promote, and facilitate science. We are currently looking for Salt Lake City residents to be part of building our outdoor network by hosting sensors at their homes. Want to get involved? Head over to the sign in tab to sign-up. 
+                                    </p>
+                            </div>
+                            <div class="info-img">
+                                    <i class="fas fa-users red"></i>
+                            </div>
+                        </div>
+
+                        <div class="info">
+                                <div class="info-img">
+                                        <i class="fas fa-heart red"></i>
+                                    </div>
+                                <div class="info-text">
+                                        <p>
+                                                This work is generously funded by grants from the National Science Foundation, the National Institutes of Health, Utah Ignite, Lawrence T. & Janet T. Dee Foundation and UCAIR.
+                                        </p>
+                                </div>
+
+                            </div>
+
+                </div>
+
+                    <div class="project-description">
+                        <h1>Tech Stack</h1>
+    
+                        <div class="info-tech">
+                            <div class="info-text-tech-left">
+                                <p>Our backend is written in Python using the mini web framework Flask! Flask - web development, one drop at a time. We felt that.</p>
+                            </div>
+                            <div class="tech-img">
+                                    <img id="welcoome-logo" src="{{url_for('static', filename='img/backTech.png')}}">
+                            </div>
+                        </div>
+
+                        <div class="info">
+                                <div class="info-img">
+                                        <img id="influx" src="{{url_for('static', filename='img/gcloud.png')}}">
+                                </div>
+                                <div class="info-text-tech-right">
+                                    <p> The web server is hosted by Google Cloud. </p>
+                                </div>
+                            </div>
+
+                            <div class="info-tech">
+                                    <div class="info-text-tech-left">
+                                        <p> In order to develop for both Android and Apple, we chose to go with React Native.</p>
+                                    </div>
+                                    <div class="tech-img">
+                                            <img id="welcoome-logo" src="{{url_for('static', filename='img/reactNative.png')}}">
+                                    </div>
+                            </div>
+
+                        <div class="info">
+                            <div class="info-img">
+                                    <img id="welcoome-logo" src="{{url_for('static', filename='img/frontTech.png')}}">
+                            </div>
+                            <div class="info-text-tech-right">
+                                <p>  Our front end is HTLM, CSS, and Vanialla Javascript. No framework used! </p>
+                            </div>
+                        </div>
+
+                        <div class="info-tech">
+                                <div class="info-text-tech-left">
+                                    <p>Device Firmware is written with C.</p>
+                                </div>
+                                <div class="tech-img">
+                                        <img id="welcoome-logo" src="{{url_for('static', filename='img/c.png')}}">
+                                </div>
+                        </div>
+    
+    
+                        <div class="info">
+                            <div class="info-img">
+                                    <img id="welcoome-logo" src="{{url_for('static', filename='img/mqtt.png')}}">
+                            </div>
+                            <div class="info-text-tech-right">
+                                <p>  Each device communicates with our server using MQTT protocol. </p>
+                            </div>
+                        </div>
+                
+                        <div class="info-tech">
+                            <div class="info-text-tech-left">
+                                <p>  InfluxDB is a time series database that works perfectly with IOT devices. </p>
+                            </div>
+                            <div class="tech-img">
+                                <img id="influx" src="{{url_for('static', filename='img/influx.png')}}">
+                            </div>
+                        </div>
+
+    
+                    </div>
+
+        </div>
+
+        </div>
+    </div>
+
+    
+</body>
+
